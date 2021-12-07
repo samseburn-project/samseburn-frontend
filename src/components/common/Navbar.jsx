@@ -2,21 +2,38 @@ import React, { useState } from "react";
 
 import styled from "styled-components";
 
-import { Menu, MenuItem } from "@mui/material";
+import {
+	Menu,
+	MenuItem,
+	Dialog,
+	DialogContent,
+	DialogActions,
+} from "@mui/material";
 
 import profile from "../../assets/icons/profile.png";
 import register from "../../assets/icons/plus.png";
+import kakao from "../../assets/icons/kakao.png";
 
 const Navbar = () => {
 	const [isLoggedIn, setLoggedIn] = useState(false);
+	const [modalOpen, setModalOpen] = useState(false);
 	const [anchorEl, setAnchorEl] = useState(null);
 	const open = Boolean(anchorEl);
+
 	const handleMouseOver = (e) => {
 		setAnchorEl(e.currentTarget);
 	};
 
-	const handleClose = () => {
+	const handleDropDownClose = () => {
 		setAnchorEl(null);
+	};
+
+	const handleModalOpen = () => {
+		setModalOpen(true);
+	};
+
+	const handleModalClose = () => {
+		setModalOpen(false);
 	};
 
 	return (
@@ -25,9 +42,21 @@ const Navbar = () => {
 				<Nav>
 					<NavContainer>
 						<NavLogo>삼세번</NavLogo>
-						<NavProfile type="button">
+						<NavProfile type="button" onClick={handleModalOpen}>
 							<img src={profile} alt="Profile icon" />
 						</NavProfile>
+						<StyledDialog open={modalOpen} onClose={handleModalClose}>
+							<StyledDialogContent>
+								삼세번과 함께 <br />
+								건강한 습관을 만들어보세요!
+								<LoginBtn type="button">
+									<LoginIcon>
+										<img src={kakao} alt="Kakao icon" />
+									</LoginIcon>
+									<LoginText>카카오 로그인</LoginText>
+								</LoginBtn>
+							</StyledDialogContent>
+						</StyledDialog>
 					</NavContainer>
 				</Nav>
 			) : (
@@ -43,7 +72,11 @@ const Navbar = () => {
 							>
 								<img src={profile} alt="Profile icon" />
 							</NavProfile>
-							<StyledMenu anchorEl={anchorEl} open={open} onClose={handleClose}>
+							<StyledMenu
+								anchorEl={anchorEl}
+								open={open}
+								onClose={handleDropDownClose}
+							>
 								<MenuItem>My page</MenuItem>
 								<MenuItem>Logout</MenuItem>
 							</StyledMenu>
@@ -122,4 +155,45 @@ const StyledMenu = styled(Menu)`
 		font-size: 1.4rem;
 		color: #ffffff;
 	}
+`;
+
+const StyledDialog = styled(Dialog)`
+	display: flex;
+	justify-content: center;
+`;
+
+const StyledDialogContent = styled(DialogContent)`
+	padding: 6rem 8rem;
+	font-size: 2.4rem;
+	letter-spacing: 0.3rem;
+	line-height: 2.8rem;
+
+	display: flex;
+	flex-direction: column;
+	gap: 4rem;
+`;
+
+const LoginBtn = styled.button`
+	width: 31.7rem;
+	height: 4rem;
+	padding: 1rem;
+	font-size: 1.6rem;
+	font-weight: bold;
+	letter-spacing: 0.2rem;
+	background-color: #ffe812;
+	border: none;
+	border-radius: 0.5rem;
+	outline: none;
+	cursor: pointer;
+
+	display: flex;
+	align-items: center;
+`;
+
+const LoginIcon = styled.span`
+	flex: 0.1;
+`;
+
+const LoginText = styled.span`
+	flex: 0.8;
 `;

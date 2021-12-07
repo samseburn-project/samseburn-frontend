@@ -1,5 +1,6 @@
 import React from "react";
 
+import Navbar from "../common/Navbar";
 import Intro from "./Intro";
 import { Divider, Grid } from "@mui/material";
 
@@ -51,12 +52,6 @@ const Main = () => {
 };
 
 export default Main;
-
-const Navbar = styled.nav`
-	width: 100%;
-	height: 8.8rem;
-	background-color: gray;
-`;
 
 const Wrapper = styled.section`
 	width: 104rem;
