@@ -1,13 +1,18 @@
-import React from "react";
+import React from 'react';
 
-import GlobalStyles from "./GlobalStyles";
+import GlobalStyles from './GlobalStyles';
+import CreatePage from './components/CreatePage';
+import StyledEngineProvider from '@mui/material/StyledEngineProvider';
 
 const App = () => {
-	return (
-		<>
-			<GlobalStyles />
-		</>
-	);
+  return (
+    <>
+      <StyledEngineProvider injectFirst>
+        <GlobalStyles />
+        <CreatePage />
+      </StyledEngineProvider>
+    </>
+  );
 };
 
 export default App;
