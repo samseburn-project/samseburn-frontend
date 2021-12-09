@@ -1,6 +1,9 @@
 import React from "react";
 
+import Navbar from "../common/Navbar";
 import Intro from "./Intro";
+import Footer from "../common/Footer";
+
 import { Divider, Grid } from "@mui/material";
 
 import styled from "styled-components";
@@ -52,12 +55,6 @@ const Main = () => {
 
 export default Main;
 
-const Navbar = styled.nav`
-	width: 100%;
-	height: 8.8rem;
-	background-color: gray;
-`;
-
 const Wrapper = styled.section`
 	width: 104rem;
 	margin: 0 auto;
@@ -91,10 +88,4 @@ const MapContainer = styled.div`
 	height: 30rem;
 	border: 1px solid black;
 	border-radius: 0.5rem;
-`;
-
-const Footer = styled.div`
-	width: 100%;
-	height: 8rem;
-	background-color: gray;
 `;
