@@ -1,7 +1,7 @@
 import React from 'react';
 
 import GlobalStyles from './GlobalStyles';
-import CreatePage from './components/CreatePage';
+import RegisterPage from './components/register/RegisterPage';
 import StyledEngineProvider from '@mui/material/StyledEngineProvider';
 
 const App = () => {
@@ -9,7 +9,7 @@ const App = () => {
     <>
       <StyledEngineProvider injectFirst>
         <GlobalStyles />
-        <CreatePage />
+        <RegisterPage />
       </StyledEngineProvider>
     </>
   );
