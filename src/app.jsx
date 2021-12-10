@@ -1,13 +1,15 @@
-import React from "react";
+import React from 'react';
 
-import GlobalStyles from "./GlobalStyles";
+import GlobalStyles from './GlobalStyles';
+import MyPage from './components/myPage/MyPage';
 
 const App = () => {
-	return (
-		<>
-			<GlobalStyles />
-		</>
-	);
+  return (
+    <>
+      <GlobalStyles />
+      <MyPage />
+    </>
+  );
 };
 
 export default App;
