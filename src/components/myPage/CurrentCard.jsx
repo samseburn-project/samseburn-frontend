@@ -69,7 +69,7 @@ function CurrentCard() {
   return (
     <>
       {challengeData.filter((data) => data.state === 0).length === 0 ? (
-        <div>참가중인 챌린지가 없습니다</div>
+        <EmptyContainer>참가중인 챌린지가 없습니다</EmptyContainer>
       ) : (
         <Grid container>
           {challengeData
@@ -133,8 +133,14 @@ export default CurrentCard;
 
 const CardContainer = styled.div`
   display: flex;
+  border: 0.1rem solid;
 `;
 
 const CardTitleContainer = styled.div`
   display: flex;
+`;
+
+const EmptyContainer = styled.div`
+  width: 100%;
+  text-align: center;
 `;

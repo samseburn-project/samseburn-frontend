@@ -69,7 +69,7 @@ function CompleteCard() {
   return (
     <>
       {challengeData.filter((data) => data.state === 2).length === 0 ? (
-        <div>완료한 챌린지가 없습니다</div>
+        <EmptyContainer>완료한 챌린지가 없습니다</EmptyContainer>
       ) : (
         <Grid container>
           {challengeData
@@ -110,8 +110,14 @@ export default CompleteCard;
 
 const CardContainer = styled.div`
   display: flex;
+  border: 0.1rem solid;
 `;
 
 const CardTitleContainer = styled.div`
   display: flex;
+`;
+
+const EmptyContainer = styled.div`
+  width: 100%;
+  text-align: center;
 `;

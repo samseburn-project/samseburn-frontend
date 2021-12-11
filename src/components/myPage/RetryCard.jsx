@@ -52,7 +52,7 @@ function RetryCard() {
   return (
     <>
       {challengeData.filter((data) => data.state === 1).length === 0 ? (
-        <div>재도전 가능한 챌린지가 없습니다</div>
+        <EmptyContainer>재도전 가능한 챌린지가 없습니다</EmptyContainer>
       ) : (
         <Grid container>
           {challengeData
@@ -90,4 +90,10 @@ export default RetryCard;
 
 const CardContainer = styled.div`
   display: flex;
+  border: 0.1rem solid;
+`;
+
+const EmptyContainer = styled.div`
+  width: 100%;
+  text-align: center;
 `;

@@ -27,19 +27,17 @@ const MyPage = () => {
   };
 
   return (
-    <div>
-      <Wrapper>
-        <TabContainer>
-          {tabArr.map((tab, i) => (
-            <Tab onClick={() => onTabSwitch(i)} key={i}>
-              {tab.tabTitle}
-            </Tab>
-          ))}
-        </TabContainer>
+    <Wrapper>
+      <TabContainer>
+        {tabArr.map((tab, i) => (
+          <Tab onClick={() => onTabSwitch(i)} key={i}>
+            {tab.tabTitle}
+          </Tab>
+        ))}
+      </TabContainer>
 
-        <div>{tabArr[activeIndex].tabContent}</div>
-      </Wrapper>
-    </div>
+      <ContentContainer>{tabArr[activeIndex].tabContent}</ContentContainer>
+    </Wrapper>
   );
 };
 
@@ -58,10 +56,6 @@ const TabContainer = styled.div`
 
 const Tab = styled.button``;
 
-const Row = styled.div``;
-
-const LabelText = styled.div`
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 2rem;
+const ContentContainer = styled.div`
+  margin: 0 8.8rem;
 `;
