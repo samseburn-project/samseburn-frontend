@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
+
+import AuthDialog from "../common/AuthDialog";
 
 import styled from "styled-components";
 
 import sample from "../../assets/sample.png";
 
 const Intro = () => {
+	const [dialogOpen, setDialogOpen] = useState(false);
+
+	const handleDialogOpen = () => {
+		setDialogOpen(true);
+	};
+
+	const handleDialogClose = () => {
+		setDialogOpen(false);
+	};
+
 	return (
 		<IntroBox>
 			<IntroContainer>
@@ -21,7 +33,17 @@ const Intro = () => {
 					<Text>2021. 01. 01 ~ 2021. 12. 31</Text>
 					<SubTitle>참가 인원</SubTitle>
 					<Text>00 / 10 명</Text>
-					<Button type="button">챌린지 참가하기</Button>
+					<ButtonRow>
+						<AuthButton type="button" onClick={handleDialogOpen}>
+							챌린지 인증
+						</AuthButton>
+						<AuthDialog
+							dialogOpen={dialogOpen}
+							handleDialogOpen={handleDialogOpen}
+							handleDialogClose={handleDialogClose}
+						/>
+						<CancelButton type="button">참가 취소</CancelButton>
+					</ButtonRow>
 				</ContentsContainer>
 			</IntroContainer>
 		</IntroBox>
@@ -100,8 +122,31 @@ const Text = styled.div`
 	margin-bottom: 2.4rem;
 `;
 
-const Button = styled.button`
-	width: 37.7rem;
+const ButtonRow = styled.div`
+	display: flex;
+	gap: 2.4rem;
+`;
+
+const AuthButton = styled.button`
+	width: 17.6rem;
+	height: 5.5rem;
+	font-size: 2rem;
+	font-weight: bold;
+	color: #ffffff;
+	background-color: #eb3901;
+	outline: none;
+	border: none;
+	border-radius: 0.5rem;
+	cursor: pointer;
+	transition: opacity 0.3s;
+
+	&:hover {
+		opacity: 0.7;
+	}
+`;
+
+const CancelButton = styled.button`
+	width: 17.6rem;
 	height: 5.5rem;
 	font-size: 2rem;
 	font-weight: bold;
