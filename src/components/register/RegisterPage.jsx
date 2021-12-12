@@ -11,7 +11,7 @@ import { ReactComponent as ArrowForward } from '../../assets/icons/arrow.svg';
 import { ReactComponent as Delete } from '../../assets/icons/delete.svg';
 
 import Category from '../common/Category';
-import BasicButton from '../common/BasicButton';
+import StyledButton from '../common/StyledButton';
 
 function RegisterPage() {
   const MAX_DATE = 99;
@@ -196,11 +196,6 @@ const CustomContainer = styled.div`
   justify-content: space-between;
 `;
 
-// const BoxContainer = styled.div`
-//   display: flex;
-//   align-items: center;
-// `;
-
 const LabelText = styled.div`
   font-size: 2rem;
   font-weight: bold;
@@ -274,7 +269,7 @@ const ButtonContainer = styled.div`
   gap: 1rem;
 `;
 
-const BlackSmallButton = styled(BasicButton)`
+const BlackSmallButton = styled(StyledButton)`
   background-color: #c4c4c4;
   color: white;
 
@@ -290,7 +285,7 @@ const BlackSmallButton = styled(BasicButton)`
   }
 `;
 
-const BlackBigButton = styled(BasicButton)`
+const BlackBigButton = styled(StyledButton)`
   background-color: #c4c4c4;
   color: white;
 
@@ -306,7 +301,7 @@ const BlackBigButton = styled(BasicButton)`
   }
 `;
 
-const RedSmallButton = styled(BasicButton)`
+const RedSmallButton = styled(StyledButton)`
   background-color: #eb3901;
   color: white;
 
@@ -321,7 +316,7 @@ const RedSmallButton = styled(BasicButton)`
   }
 `;
 
-const RedBigButton = styled(BasicButton)`
+const RedBigButton = styled(StyledButton)`
   background-color: #eb3901;
   color: white;
 
