@@ -1,19 +1,49 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { TextField, Grid, Box } from '@mui/material';
 
+import { TextField, Box } from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateRangePicker from '@mui/lab/DateRangePicker';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import addDays from 'date-fns/addDays';
-import ImageUpload from '../common/ImageUpload';
-import CategoryFilter from './CategoryFilter';
+import IconButton from '@mui/material/IconButton';
+import { ReactComponent as ArrowForward } from '../../assets/icons/arrow.svg';
+import { ReactComponent as Delete } from '../../assets/icons/delete.svg';
 
-const MAX_DATE = 99;
+import Category from '../common/Category';
+import BasicButton from '../common/BasicButton';
 
 function RegisterPage() {
+  const MAX_DATE = 99;
+  const topics = ['운동', '공부', '취미', '독서', '기타'];
+  const types = ['온라인', '오프라인'];
+
   const [date, setDate] = useState([null, null]);
+  const [image, setImage] = useState({
+    imageFile: null,
+    imageUrl: null,
+  });
+
+  const setImageFromFile = ({ file, setImageUrl }) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImageUrl({ result: reader.result });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const onLoadFile = ({ target: { files } }) => {
+    if (files.length) {
+      setImageFromFile({
+        file: files[0],
+        setImageUrl: ({ result }) =>
+          setImage({
+            imageFile: files[0],
+            imageUrl: result,
+          }),
+      });
+    }
+  };
 
   return (
     <>
@@ -25,8 +55,9 @@ function RegisterPage() {
               {/* 챌린지명 */}
               <LabelText>챌린지명*</LabelText>
               <BasicInput placeholder="챌린지명" size="small" required />
-              <LabelText>챌린지 기간*</LabelText>
+
               {/* 챌린지 기간 */}
+              <LabelText>챌린지 기간*</LabelText>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DateRangePicker
                   disablePast
@@ -44,20 +75,50 @@ function RegisterPage() {
                     <>
                       <DateInput {...startProps} size="small" />
                       <Box sx={{ mx: 2 }}>
-                        <ArrowForwardIcon />
+                        <ArrowForward />
                       </Box>
                       <DateInput {...endProps} size="small" />
                     </>
                   )}
                 />
               </LocalizationProvider>
+
               {/* 챌린지 인원 */}
               <LabelText>챌린지 인원*</LabelText>
               <BasicInput placeholder="챌린지 인원" size="small" />
             </div>
+
             {/* 챌린지 이미지 */}
             <ImageContainer>
-              <ImageUpload />
+              {/* 이미지 미리보기 */}
+              <ThumbnailContainer>
+                {image.imageFile ? (
+                  <ImageThumbnail
+                    alt={image.imageFile.name}
+                    src={image.imageUrl}
+                  />
+                ) : (
+                  <DefaultThumbnail></DefaultThumbnail>
+                )}
+                {/* 이미지 삭제 버튼 */}
+                <StackBox>
+                  <IconButton>
+                    <Delete />
+                  </IconButton>
+                </StackBox>
+              </ThumbnailContainer>
+
+              {/* 이미지 업로드 버튼 */}
+              <label htmlFor="input-image">
+                <ImageFileInput
+                  type="file"
+                  accept="image/*"
+                  name="file"
+                  onChange={onLoadFile}
+                  id="input-image"
+                />
+                <RedSmallButton component="span">이미지 업로드</RedSmallButton>
+              </label>
             </ImageContainer>
           </CustomContainer>
 
@@ -66,11 +127,22 @@ function RegisterPage() {
             <LabelText>카테고리*</LabelText>
 
             {/* 카테고리-챌린지주제 */}
+            <SmallLabelText>챌린지 주제*</SmallLabelText>
+            <CategoryContainer>
+              {topics.map((topic, i) => (
+                <Category key={i}>{topic}</Category>
+              ))}
+            </CategoryContainer>
+
             {/* 카테고리-챌린지유형 */}
-            <CategoryFilter />
+            <SmallLabelText>챌린지 유형*</SmallLabelText>
+            <CategoryContainer>
+              {types.map((type, i) => (
+                <Category key={i}>{type}</Category>
+              ))}
+            </CategoryContainer>
 
             {/* 카테고리-오프라인주소입력 */}
-
             <SmallLabelText>오프라인 장소</SmallLabelText>
             <Box>
               <BasicInput
@@ -124,12 +196,10 @@ const CustomContainer = styled.div`
   justify-content: space-between;
 `;
 
-const ImageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
+// const BoxContainer = styled.div`
+//   display: flex;
+//   align-items: center;
+// `;
 
 const LabelText = styled.div`
   font-size: 2rem;
@@ -171,55 +241,115 @@ const BasicTextarea = styled.textarea`
   margin-bottom: 3rem;
 `;
 
+const ImageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ImageThumbnail = styled.img`
+  width: 24.2rem;
+  height: 24.2rem;
+  border-radius: 0.5rem;
+  object-fit: cover;
+  margin-bottom: 2rem;
+`;
+
+const DefaultThumbnail = styled.div`
+  width: 24.2rem;
+  height: 24.2rem;
+  border-radius: 0.5rem;
+  background-color: lightgray;
+  margin-bottom: 2rem;
+`;
+
+const ImageFileInput = styled.input`
+  display: none;
+`;
+
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
+  gap: 1rem;
 `;
 
-const BlackSmallButton = styled.button`
+const BlackSmallButton = styled(BasicButton)`
   background-color: #c4c4c4;
   color: white;
-  border: none;
-  border-radius: 0.5rem;
+
   font-size: 1.6rem;
   font-weight: bold;
 
-  cursor: pointer;
-  margin: 0 1rem;
+  /* margin: 0 1rem; */
+  margin-bottom: 2rem;
+
+  &:hover {
+    background-color: white;
+    color: #e5e5e5;
+  }
 `;
 
-const BlackBigButton = styled.button`
+const BlackBigButton = styled(BasicButton)`
   background-color: #c4c4c4;
   color: white;
-  border: none;
-  border-radius: 0.5rem;
 
   font-size: 2rem;
   font-weight: bold;
 
-  cursor: pointer;
-  margin: 0 1rem;
+  /* margin: 0 1rem; */
+  margin-bottom: 2rem;
 
   &:hover {
     background-color: white;
-    color: #c4c4c4;
+    color: #e5e5e5;
   }
 `;
 
-const RedBigButton = styled.button`
+const RedSmallButton = styled(BasicButton)`
   background-color: #eb3901;
   color: white;
-  border: none;
-  border-radius: 0.5rem;
+
+  font-size: 1.6rem;
+  font-weight: bold;
+
+  margin-bottom: 2rem;
+
+  &:hover {
+    background-color: #ffe6db;
+    color: #eb3901;
+  }
+`;
+
+const RedBigButton = styled(BasicButton)`
+  background-color: #eb3901;
+  color: white;
 
   font-size: 2rem;
   font-weight: bold;
 
-  cursor: pointer;
-  margin: 0 1rem;
+  /* margin: 0 1rem; */
+  margin-bottom: 2rem;
 
   &:hover {
-    background-color: white;
+    background-color: #ffe6db;
     color: #eb3901;
   }
+`;
+
+const CategoryContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+`;
+
+const ThumbnailContainer = styled.div`
+  position: relative;
+`;
+
+const StackBox = styled.div`
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  z-index: 1;
 `;
