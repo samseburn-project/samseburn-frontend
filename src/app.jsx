@@ -1,7 +1,7 @@
 import React from "react";
 
 import GlobalStyles from "./GlobalStyles";
-import Main from "./components/detail/Main";
+import Main from "./components/home/Main";
 
 const App = () => {
 	return (
