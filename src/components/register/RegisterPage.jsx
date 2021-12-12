@@ -55,6 +55,7 @@ function RegisterPage() {
               <LabelText>챌린지 인원*</LabelText>
               <BasicInput placeholder="챌린지 인원" size="small" />
             </div>
+            {/* 챌린지 이미지 */}
             <ImageContainer>
               <ImageUpload />
             </ImageContainer>
@@ -123,7 +124,12 @@ const CustomContainer = styled.div`
   justify-content: space-between;
 `;
 
-const ImageContainer = styled.div``;
+const ImageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
 
 const LabelText = styled.div`
   font-size: 2rem;
