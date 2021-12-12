@@ -1,18 +1,16 @@
 import React from 'react';
 
-import GlobalStyles from './GlobalStyles';
+import GlobalStyles from "./GlobalStyles";
+import Main from "./components/home/Main";
 import RegisterPage from './components/register/RegisterPage';
-import StyledEngineProvider from '@mui/material/StyledEngineProvider';
 
 const App = () => {
-  return (
-    <>
-      <StyledEngineProvider injectFirst>
-        <GlobalStyles />
-        <RegisterPage />
-      </StyledEngineProvider>
-    </>
-  );
+	return (
+		<>
+			<GlobalStyles />
+			<Main />
+		</>
+	);
 };
 
 export default App;
