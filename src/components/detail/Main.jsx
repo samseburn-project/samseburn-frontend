@@ -1,8 +1,6 @@
 import React from "react";
 
-import Navbar from "../common/Navbar";
 import Intro from "./Intro";
-import Footer from "../common/Footer";
 import { Divider, Grid } from "@mui/material";
 
 import styled from "styled-components";
@@ -12,7 +10,6 @@ import PlaceMap from "./PlaceMap";
 const Main = () => {
 	return (
 		<>
-			<Navbar />
 			<Intro />
 			<Wrapper>
 				<Row>
@@ -50,7 +47,6 @@ const Main = () => {
 					</Grid>
 				</Row>
 			</Wrapper>
-			<Footer />
 		</>
 	);
 };
