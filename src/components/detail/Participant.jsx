@@ -4,6 +4,8 @@ import { Grid } from "@mui/material";
 
 import styled from "styled-components";
 
+import FeedCarousel from "./FeedCarousel";
+
 import profileImg from "../../assets/profile-sample.png";
 
 const Participant = () => {
@@ -21,7 +23,7 @@ const Participant = () => {
 				</ProfileBox>
 			</Grid>
 			<Grid item>
-				<FeedSlider />
+				<FeedCarousel />
 			</Grid>
 		</Grid>
 	);
@@ -59,11 +61,4 @@ const ProfileId = styled.div`
 
 const ProfileText = styled.div`
 	font-size: 1.6rem;
-`;
-
-const FeedSlider = styled.div`
-	width: 68.6rem;
-	height: 20rem;
-	border: 1px solid #e5e5e5;
-	border-radius: 0.5rem;
 `;
