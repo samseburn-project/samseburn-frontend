@@ -117,8 +117,31 @@ const Text = styled.div`
 	margin-bottom: 2.4rem;
 `;
 
-const Button = styled.button`
-	width: 37.7rem;
+const ButtonRow = styled.div`
+	display: flex;
+	gap: 2.4rem;
+`;
+
+const AuthButton = styled.button`
+	width: 17.6rem;
+	height: 5.5rem;
+	font-size: 2rem;
+	font-weight: bold;
+	color: #ffffff;
+	background-color: #eb3901;
+	outline: none;
+	border: none;
+	border-radius: 0.5rem;
+	cursor: pointer;
+	transition: opacity 0.3s;
+
+	&:hover {
+		opacity: 0.7;
+	}
+`;
+
+const CancelButton = styled.button`
+	width: 17.6rem;
 	height: 5.5rem;
 	font-size: 2rem;
 	font-weight: bold;
