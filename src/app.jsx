@@ -1,8 +1,7 @@
 import React from 'react';
 
 import GlobalStyles from "./GlobalStyles";
-import Main from "./components/home/Main";
-import RegisterPage from './components/register/RegisterPage';
+import Main from "./components/detail/Main";
 
 const App = () => {
 	return (

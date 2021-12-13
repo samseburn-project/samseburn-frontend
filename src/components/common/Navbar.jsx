@@ -2,13 +2,7 @@ import React, { useState } from "react";
 
 import styled from "styled-components";
 
-import {
-	Menu,
-	MenuItem,
-	Dialog,
-	DialogContent,
-	DialogActions,
-} from "@mui/material";
+import { Menu, MenuItem, Dialog, DialogContent } from "@mui/material";
 
 import profile from "../../assets/icons/profile.png";
 import register from "../../assets/icons/plus.png";
