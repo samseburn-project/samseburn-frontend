@@ -1,33 +1,31 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Navbar from '../common/Navbar';
-import Hero from './Hero';
-import Contents from './Contents';
-import SearchBar from './SearchBar';
-import CategoryFilter from './CategoryFilter';
-import SortFilter from './SortFilter';
+import Hero from "./Hero";
+import Contents from "./Contents";
+import SearchBar from "./SearchBar";
+import CategoryFilter from "./CategoryFilter";
+import SortFilter from "./SortFilter";
 import ChallengeList from './ChallengeList';
 
 const Main = () => {
-  return (
-    <>
-      <Navbar />
-      <Hero />
-      <Contents />
-      <Wrapper>
-        <Title>챌린지 리스트</Title>
-        <SearchBarRow>
-          <SearchBar />
-        </SearchBarRow>
-        <FilterRow>
-          <CategoryFilter />
-          <SortFilter />
-        </FilterRow>
-        <ChallengeList />
-      </Wrapper>
-    </>
-  );
+	return (
+		<>
+			<Hero />
+			<Contents />
+			<Wrapper>
+				<Title>챌린지 리스트</Title>
+				<SearchBarRow>
+					<SearchBar />
+				</SearchBarRow>
+				<FilterRow>
+					<CategoryFilter />
+					<SortFilter />
+				</FilterRow>
+				<ChallengeList />
+			</Wrapper>
+		</>
+	);
 };
 
 export default Main;
