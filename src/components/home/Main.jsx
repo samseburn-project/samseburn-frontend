@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-import Navbar from "../common/Navbar";
 import Hero from "./Hero";
 import Contents from "./Contents";
 import SearchBar from "./SearchBar";
@@ -12,7 +11,6 @@ import ChallengeCard from "./ChallengeCard";
 const Main = () => {
 	return (
 		<>
-			<Navbar />
 			<Hero />
 			<Contents />
 			<Wrapper>

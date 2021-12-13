@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 import styled from "styled-components";
 
@@ -35,7 +36,9 @@ const Navbar = () => {
 			{!isLoggedIn ? (
 				<Nav>
 					<NavContainer>
-						<NavLogo>삼세번</NavLogo>
+						<NavLink to="/">
+							<NavLogo>삼세번</NavLogo>
+						</NavLink>
 						<NavProfile type="button" onClick={handleModalOpen}>
 							<img src={profile} alt="Profile icon" />
 						</NavProfile>
@@ -90,6 +93,10 @@ export default Navbar;
 const Nav = styled.nav`
 	width: 100%;
 	height: 8.8rem;
+`;
+
+const NavLink = styled(Link)`
+	text-decoration: none;
 `;
 
 const NavContainer = styled.div`
