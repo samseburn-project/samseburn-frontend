@@ -24,6 +24,7 @@ const ChallengeList = () => {
     <ListContainer>
       {list.map((challenge) => (
         <ChallengeCard
+          key={challenge.challengeId}
           title={challenge.title}
           category={challenge.category.name}
           locationType={challenge.locationType}
