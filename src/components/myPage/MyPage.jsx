@@ -54,7 +54,16 @@ const TabContainer = styled.div`
   margin: 0 8.8rem;
 `;
 
-const Tab = styled.button``;
+const Tab = styled.button`
+  font-size: 2rem;
+  font-weight: bold;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+
+  margin-right: 2rem;
+  margin-bottom: 6rem;
+`;
 
 const ContentContainer = styled.div`
   margin: 0 8.8rem;
