@@ -9,11 +9,14 @@ import addDays from 'date-fns/addDays';
 import IconButton from '@mui/material/IconButton';
 import { ReactComponent as ArrowForward } from '../../assets/icons/arrow.svg';
 import { ReactComponent as Delete } from '../../assets/icons/delete.svg';
+import { ReactComponent as Close } from '../../assets/icons/close.svg';
 
 import Category from '../common/Category';
 import StyledButton from '../common/StyledButton';
+import DaumPostcode from 'react-daum-postcode';
+import Modal from 'react-modal';
 
-function RegisterPage() {
+function RegisterPage(props) {
   const MAX_DATE = 99;
   const topics = ['운동', '공부', '취미', '독서', '기타'];
   const types = ['온라인', '오프라인'];
@@ -23,6 +26,13 @@ function RegisterPage() {
     imageFile: null,
     imageUrl: null,
   });
+
+  const [inputs, setInputs] = useState({
+    roadAddress: '',
+    detailAddress: '',
+  });
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const { roadAddress, detailAddress } = inputs;
 
   const setImageFromFile = ({ file, setImageUrl }) => {
     const reader = new FileReader();
@@ -43,6 +53,68 @@ function RegisterPage() {
           }),
       });
     }
+  };
+
+  const onChange = ({ target: { value, name } }) => {
+    setInputs({
+      ...inputs,
+      [name]: value,
+    });
+  };
+
+  const handleComplete = (data) => {
+    let fullAddress = data.address;
+    let extraAddress = '';
+
+    if (data.addressType === 'R') {
+      if (data.bname !== '') {
+        extraAddress += data.bname;
+      }
+      if (data.buildingName !== '') {
+        extraAddress +=
+          extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
+      }
+      fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
+    }
+
+    setInputs({ ...inputs, roadAddress: fullAddress });
+    setIsPopupOpen(false);
+  };
+
+  const onClickHandler = () => {
+    setIsPopupOpen(!isPopupOpen);
+  };
+
+  const onModalHandler = () => {
+    setIsPopupOpen(!isPopupOpen);
+  };
+
+  const modalStyles = {
+    overlay: {
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.25)',
+      zIndex: 10,
+    },
+    content: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      background: 'white',
+      overflow: 'auto',
+      top: '22vh',
+      left: '18vw',
+      right: '18vw',
+      bottom: '30vh',
+      WebkitOverflowScrolling: 'touch',
+      borderRadius: '14px',
+      outline: 'none',
+      zIndex: 10,
+    },
   };
 
   return (
@@ -149,10 +221,33 @@ function RegisterPage() {
                 placeholder="도로명 주소"
                 size="small"
                 isNext={true}
+                name="roadAddress"
+                value={roadAddress}
+                onChange={onChange}
+                readOnly
               />
-              <BlackSmallButton>주소 검색</BlackSmallButton>
+              <BlackSmallButton onClick={onClickHandler}>
+                주소 검색
+              </BlackSmallButton>
             </Box>
-            <BasicInput placeholder="상세주소" size="small" />
+            <BasicInput
+              placeholder="상세주소"
+              size="small"
+              name="detailAddress"
+              value={detailAddress}
+              onChange={onChange}
+            />
+            <Modal
+              isOpen={isPopupOpen}
+              ariaHideApp={false}
+              onRequestClose={onModalHandler}
+              style={modalStyles}
+            >
+              <CloseIconButton onClick={onModalHandler}>
+                <Close />
+              </CloseIconButton>
+              <DaumPostcode onComplete={handleComplete} {...props} />;
+            </Modal>
           </Row>
 
           {/* 챌린지 설명 */}
@@ -347,4 +442,8 @@ const StackBox = styled.div`
   top: 0px;
   right: 0px;
   z-index: 1;
+`;
+
+const CloseIconButton = styled(IconButton)`
+  margin-left: auto;
 `;
