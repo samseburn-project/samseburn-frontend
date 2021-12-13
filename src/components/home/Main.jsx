@@ -7,7 +7,6 @@ import Contents from './Contents';
 import SearchBar from './SearchBar';
 import CategoryFilter from './CategoryFilter';
 import SortFilter from './SortFilter';
-import ChallengeCard from './ChallengeCard';
 import ChallengeList from './ChallengeList';
 
 const Main = () => {
@@ -25,7 +24,6 @@ const Main = () => {
           <CategoryFilter />
           <SortFilter />
         </FilterRow>
-        <ChallengeCard />
         <ChallengeList />
       </Wrapper>
     </>

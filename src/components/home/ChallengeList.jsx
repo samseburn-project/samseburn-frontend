@@ -1,24 +1,16 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-// import ChallengeCard from './ChallengeCard';
+import ChallengeCard from './ChallengeCard';
 
-// const base_url = 'https://api.fevertime.shop';
-// 'Access-Control-Allow-Credentials': true,
+const ChallengeList = () => {
+  const [list, setList] = useState([]);
 
-function ChallengeList() {
   const fetchChallenges = async () => {
     try {
-      const response = await axios.get(
-        'https://api.fevertime.shop/challenges?kind=All',
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-          },
-        }
-      );
-      console.log(response);
+      const { data } = await axios.get('/challenges?kind=All');
+      console.log(data);
+      setList(data);
     } catch (e) {
       console.error(e);
     }
@@ -29,10 +21,27 @@ function ChallengeList() {
   }, []);
 
   return (
-    <div>
-      <div></div>
-    </div>
+    <ListContainer>
+      {list.map((challenge) => (
+        <ChallengeCard
+          title={challenge.title}
+          category={challenge.category.name}
+          locationType={challenge.locationType}
+          startDate={challenge.startDate}
+          endDate={challenge.endDate}
+          imgUrl={challenge.imgUrl}
+          limitPerson={challenge.limitPerson}
+          participants={challenge.participants}
+        />
+      ))}
+    </ListContainer>
   );
-}
+};
 
 export default ChallengeList;
+
+const ListContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+`;
