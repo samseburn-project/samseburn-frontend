@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
 import styled from "styled-components";
 
+import { Grid, Box } from "@mui/material";
 import Hero from "./Hero";
 import Contents from "./Contents";
 import SearchBar from "./SearchBar";
@@ -9,6 +12,25 @@ import SortFilter from "./SortFilter";
 import ChallengeCard from "./ChallengeCard";
 
 const Main = () => {
+	const [sortBy, setSortBy] = useState("createdAt");
+
+	useEffect(() => {
+		fetchData();
+	}, [sortBy]);
+
+	const fetchData = async () => {
+		try {
+			const res = await axios.get("/challenges/filter", {
+				params: {
+					sortBy: sortBy,
+				},
+			});
+			console.log(res);
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
 	return (
 		<>
 			<Hero />
@@ -20,9 +42,39 @@ const Main = () => {
 				</SearchBarRow>
 				<FilterRow>
 					<CategoryFilter />
-					<SortFilter />
+					<SortFilter sortBy={sortBy} setSortBy={setSortBy} />
 				</FilterRow>
-				<ChallengeCard />
+				<ListRow sx={{ width: "100%" }}>
+					<Grid container spacing={4}>
+						<Grid item xs={4}>
+							<ChallengeCard />
+						</Grid>
+						<Grid item xs={4}>
+							<ChallengeCard />
+						</Grid>
+						<Grid item xs={4}>
+							<ChallengeCard />
+						</Grid>
+						<Grid item xs={4}>
+							<ChallengeCard />
+						</Grid>
+						<Grid item xs={4}>
+							<ChallengeCard />
+						</Grid>
+						<Grid item xs={4}>
+							<ChallengeCard />
+						</Grid>
+						<Grid item xs={4}>
+							<ChallengeCard />
+						</Grid>
+						<Grid item xs={4}>
+							<ChallengeCard />
+						</Grid>
+						<Grid item xs={4}>
+							<ChallengeCard />
+						</Grid>
+					</Grid>
+				</ListRow>
 			</Wrapper>
 		</>
 	);
@@ -44,6 +96,10 @@ const FilterRow = styled.div`
 	display: flex;
 	justify-content: space-between;
 	margin-top: 8rem;
+`;
+
+const ListRow = styled(Box)`
+	margin-top: 6rem;
 `;
 
 const SearchBarRow = styled.div`
