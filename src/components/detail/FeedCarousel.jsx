@@ -1,36 +1,89 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
+
+import AuthDialog from "../common/AuthDialog";
 
 import styled from "styled-components";
 import Slider from "react-slick";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import sample from "../../assets/sample.png";
 
-export default class FeedCarousel extends Component {
-	render() {
-		const settings = {
-			arrows: true,
-			infinite: true,
-			dots: true,
-			speed: 500,
-			slidesToShow: 3,
-			slidesToScroll: 3,
-		};
+const FeedCarousel = () => {
+	const [dialogOpen, setDialogOpen] = useState(false);
+	const settings = {
+		arrows: true,
+		infinite: true,
+		dots: true,
+		speed: 500,
+		slidesToShow: 3,
+		slidesToScroll: 3,
+	};
 
-		return (
-			<CarouselContainer>
-				<StyledCarousel {...settings}>
-					<Slide />
-					<Slide />
-					<Slide />
-					<Slide />
-					<Slide />
-					<Slide />
-				</StyledCarousel>
-			</CarouselContainer>
-		);
-	}
-}
+	const handleDialogOpen = () => {
+		setDialogOpen(true);
+	};
+
+	const handleDialogClose = () => {
+		setDialogOpen(false);
+	};
+
+	return (
+		<CarouselContainer>
+			<StyledCarousel {...settings}>
+				<Feed>
+					<FeedThumbnail
+						src={sample}
+						alt="Feed Thumbnail"
+						onClick={handleDialogOpen}
+					/>
+					<AuthDialog
+						dialogOpen={dialogOpen}
+						handleDialogOpen={handleDialogOpen}
+						handleDialogClose={handleDialogClose}
+					/>
+				</Feed>
+				<Feed>
+					<FeedThumbnail
+						src={sample}
+						alt="Feed Thumbnail"
+						onClick={handleDialogOpen}
+					/>
+				</Feed>
+				<Feed>
+					<FeedThumbnail
+						src={sample}
+						alt="Feed Thumbnail"
+						onClick={handleDialogOpen}
+					/>
+				</Feed>
+				<Feed>
+					<FeedThumbnail
+						src={sample}
+						alt="Feed Thumbnail"
+						onClick={handleDialogOpen}
+					/>
+				</Feed>
+				<Feed>
+					<FeedThumbnail
+						src={sample}
+						alt="Feed Thumbnail"
+						onClick={handleDialogOpen}
+					/>
+				</Feed>
+				<Feed>
+					<FeedThumbnail
+						src={sample}
+						alt="Feed Thumbnail"
+						onClick={handleDialogOpen}
+					/>
+				</Feed>
+			</StyledCarousel>
+		</CarouselContainer>
+	);
+};
+
+export default FeedCarousel;
 
 const CarouselContainer = styled.div`
 	width: 68.6rem;
@@ -55,8 +108,15 @@ const StyledCarousel = styled(Slider)`
 	}
 `;
 
-const Slide = styled.div`
+const Feed = styled.div`
 	height: 15rem;
-	border: 1px solid red;
+	padding: 1rem;
 	box-sizing: border-box;
+`;
+
+const FeedThumbnail = styled.img`
+	width: 100%;
+	height: 100%;
+	border-radius: 0.5rem;
+	cursor: pointer;
 `;
