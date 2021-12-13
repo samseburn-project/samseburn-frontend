@@ -1,12 +1,12 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 import Hero from "./Hero";
 import Contents from "./Contents";
 import SearchBar from "./SearchBar";
 import CategoryFilter from "./CategoryFilter";
 import SortFilter from "./SortFilter";
-import ChallengeCard from "./ChallengeCard";
+import ChallengeList from './ChallengeList';
 
 const Main = () => {
 	return (
@@ -22,7 +22,7 @@ const Main = () => {
 					<CategoryFilter />
 					<SortFilter />
 				</FilterRow>
-				<ChallengeCard />
+				<ChallengeList />
 			</Wrapper>
 		</>
 	);
@@ -31,23 +31,23 @@ const Main = () => {
 export default Main;
 
 const Wrapper = styled.section`
-	width: 104rem;
-	margin: 10rem auto;
+  width: 104rem;
+  margin: 10rem auto;
 `;
 
 const Title = styled.div`
-	font-size: 2.4rem;
-	font-weight: bold;
+  font-size: 2.4rem;
+  font-weight: bold;
 `;
 
 const FilterRow = styled.div`
-	display: flex;
-	justify-content: space-between;
-	margin-top: 8rem;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8rem;
 `;
 
 const SearchBarRow = styled.div`
-	margin-top: 3.7rem;
-	display: flex;
-	justify-content: center;
+  margin-top: 3.7rem;
+  display: flex;
+  justify-content: center;
 `;
