@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import Category from "../common/Category";
 import CommonDialog from "../common/CommonDialog";
+import StyledButton from "../common/StyledButton";
 
 import sample from "../../assets/sample.png";
 
@@ -33,9 +34,9 @@ const Intro = ({ ...props }) => {
 					<Text>2021. 01. 01 ~ 2021. 12. 31</Text>
 					<SubTitle>참가 인원</SubTitle>
 					<Text>00 / 10 명</Text>
-					<Button type="button" onClick={handleDialogOpen}>
+					<ApplyButton type="button" onClick={handleDialogOpen}>
 						챌린지 참가하기
-					</Button>
+					</ApplyButton>
 					<CommonDialog
 						dialogOpen={dialogOpen}
 						handleDialogOpen={handleDialogOpen}
@@ -117,43 +118,49 @@ const Text = styled.div`
 	margin-bottom: 2.4rem;
 `;
 
-const ButtonRow = styled.div`
-	display: flex;
-	gap: 2.4rem;
-`;
-
-const AuthButton = styled.button`
-	width: 17.6rem;
+const ApplyButton = styled(StyledButton)`
+	width: 37.7rem;
 	height: 5.5rem;
 	font-size: 2rem;
-	font-weight: bold;
-	color: #ffffff;
-	background-color: #eb3901;
-	outline: none;
-	border: none;
-	border-radius: 0.5rem;
-	cursor: pointer;
-	transition: opacity 0.3s;
-
-	&:hover {
-		opacity: 0.7;
-	}
 `;
 
-const CancelButton = styled.button`
-	width: 17.6rem;
-	height: 5.5rem;
-	font-size: 2rem;
-	font-weight: bold;
-	color: #ffffff;
-	background-color: #eb3901;
-	outline: none;
-	border: none;
-	border-radius: 0.5rem;
-	cursor: pointer;
-	transition: opacity 0.3s;
+// const ButtonRow = styled.div`
+// 	display: flex;
+// 	gap: 2.4rem;
+// `;
 
-	&:hover {
-		opacity: 0.7;
-	}
-`;
+// const AuthButton = styled.button`
+// 	width: 17.6rem;
+// 	height: 5.5rem;
+// 	font-size: 2rem;
+// 	font-weight: bold;
+// 	color: #ffffff;
+// 	background-color: #eb3901;
+// 	outline: none;
+// 	border: none;
+// 	border-radius: 0.5rem;
+// 	cursor: pointer;
+// 	transition: opacity 0.3s;
+
+// 	&:hover {
+// 		opacity: 0.7;
+// 	}
+// `;
+
+// const CancelButton = styled.button`
+// 	width: 17.6rem;
+// 	height: 5.5rem;
+// 	font-size: 2rem;
+// 	font-weight: bold;
+// 	color: #ffffff;
+// 	background-color: #eb3901;
+// 	outline: none;
+// 	border: none;
+// 	border-radius: 0.5rem;
+// 	cursor: pointer;
+// 	transition: opacity 0.3s;
+
+// 	&:hover {
+// 		opacity: 0.7;
+// 	}
+// `;
