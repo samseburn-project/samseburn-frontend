@@ -1,18 +1,12 @@
 import React, { useState } from "react";
 
-import styled from "styled-components";
+import { Menu, MenuItem, Dialog, DialogContent } from "@mui/material";
+import KakaoSocialLogin from "./KakaoSocialLogin";
 
-import {
-	Menu,
-	MenuItem,
-	Dialog,
-	DialogContent,
-	DialogActions,
-} from "@mui/material";
+import styled from "styled-components";
 
 import profile from "../../assets/icons/profile.png";
 import register from "../../assets/icons/plus.png";
-import kakao from "../../assets/icons/kakao.png";
 
 const Navbar = () => {
 	const [isLoggedIn, setLoggedIn] = useState(false);
@@ -49,12 +43,10 @@ const Navbar = () => {
 							<StyledDialogContent>
 								삼세번과 함께 <br />
 								건강한 습관을 만들어보세요!
-								<LoginBtn type="button">
-									<LoginIcon>
-										<img src={kakao} alt="Kakao icon" />
-									</LoginIcon>
-									<LoginText>카카오 로그인</LoginText>
-								</LoginBtn>
+								<KakaoSocialLogin
+									onClose={handleModalClose}
+									setLoggedIn={setLoggedIn}
+								/>
 							</StyledDialogContent>
 						</StyledDialog>
 					</NavContainer>
@@ -171,29 +163,4 @@ const StyledDialogContent = styled(DialogContent)`
 	display: flex;
 	flex-direction: column;
 	gap: 4rem;
-`;
-
-const LoginBtn = styled.button`
-	width: 31.7rem;
-	height: 4rem;
-	padding: 1rem;
-	font-size: 1.6rem;
-	font-weight: bold;
-	letter-spacing: 0.2rem;
-	background-color: #ffe812;
-	border: none;
-	border-radius: 0.5rem;
-	outline: none;
-	cursor: pointer;
-
-	display: flex;
-	align-items: center;
-`;
-
-const LoginIcon = styled.span`
-	flex: 0.1;
-`;
-
-const LoginText = styled.span`
-	flex: 0.8;
 `;
