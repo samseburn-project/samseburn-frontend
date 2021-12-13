@@ -82,20 +82,21 @@ function CompleteCard() {
                   </div>
                   <div>
                     <CardTitleContainer>
-                      <div>{data.title}</div>
+                      <LabelText>{data.title}</LabelText>
                       <div>{viewMedalIcon(data.total_cnt)}</div>
                     </CardTitleContainer>
-                    <div>
+                    <CategoryContainer>
                       {data.categories.map((category, i) => (
-                        <button key={i}>{category}</button>
+                        <Category key={i}>{category}</Category>
                       ))}
-                    </div>
-                    <div>
+                    </CategoryContainer>
+                    <SmallLabelText>
                       {data.start_date} ~ {data.end_date}
-                    </div>
-                    <div>
-                      <button>재도전하기</button>
-                    </div>
+                    </SmallLabelText>
+                    <BlackSmallLabelText>
+                      누적 <RedBigLabelText>{data.total_cnt}</RedBigLabelText>회
+                      달성🎉
+                    </BlackSmallLabelText>
                   </div>
                 </CardContainer>
               </Grid>
@@ -108,11 +109,6 @@ function CompleteCard() {
 
 export default CompleteCard;
 
-const CardContainer = styled.div`
-  display: flex;
-  border: 0.1rem solid;
-`;
-
 const CardTitleContainer = styled.div`
   display: flex;
 `;
@@ -120,4 +116,88 @@ const CardTitleContainer = styled.div`
 const EmptyContainer = styled.div`
   width: 100%;
   text-align: center;
+`;
+
+const CardContainer = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  width: 42rem;
+  height: 20rem;
+  box-shadow: 0.6rem 1.1rem 2rem rgba(0, 0, 0, 0.25);
+  margin-bottom: 6rem;
+  border-radius: 0.5rem;
+
+  word-break: break-all;
+
+  div > img {
+    width: 15rem;
+    height: 15rem;
+    object-fit: cover;
+    margin: 1.5rem;
+    border-radius: 0.5rem;
+  }
+`;
+
+const LabelText = styled.div`
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+`;
+
+const SmallLabelText = styled.div`
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+`;
+
+const RedSmallLabelText = styled.div`
+  color: #eb3901;
+  font-size: 1.6rem;
+  font-weight: bold;
+`;
+
+const BlackSmallLabelText = styled.div`
+  font-size: 2rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+`;
+
+const RedBigLabelText = styled.div`
+  font-size: 3.4rem;
+  font-weight: bold;
+  color: #eb3901;
+`;
+
+const CategoryContainer = styled.div`
+  display: flex;
+  margin-bottom: 1rem;
+`;
+
+const Category = styled.div`
+  font-size: 1.2rem;
+  color: #8f8f8f;
+  background-color: #e5e5e5;
+  border-radius: 2rem;
+  margin-right: 1rem;
+`;
+
+const RetryButton = styled.button`
+  background-color: #eb3901;
+  color: white;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  &:hover {
+    background-color: #ffe6db;
+    color: #eb3901;
+  }
+  margin: 0 auto;
+`;
+
+const CardContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
 `;

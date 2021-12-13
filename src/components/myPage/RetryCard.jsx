@@ -63,7 +63,7 @@ function RetryCard() {
                   <div>
                     <img src={data.image_url} />
                   </div>
-                  <div>
+                  <CardContentContainer>
                     <LabelText>{data.title}</LabelText>
                     <CategoryContainer>
                       {data.categories.map((category, i) => (
@@ -73,10 +73,10 @@ function RetryCard() {
                     <SmallLabelText>
                       {data.start_date} ~ {data.end_date}
                     </SmallLabelText>
-                    <div>
-                      <button>재도전하기</button>
-                    </div>
-                  </div>
+                    {/* <RetryButtonContainer> */}
+                    <RetryButton>재도전하기</RetryButton>
+                    {/* </RetryButtonContainer> */}
+                  </CardContentContainer>
                 </CardContainer>
               </Grid>
             ))}
@@ -126,27 +126,9 @@ const SmallLabelText = styled.div`
   margin-bottom: 1rem;
 `;
 
-const RedSmallLabelText = styled.div`
-  color: #eb3901;
-  font-size: 1.6rem;
-  font-weight: bold;
-`;
-
-const BlackSmallLabelText = styled.div`
-  font-size: 2rem;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-`;
-
-const RedBigLabelText = styled.div`
-  font-size: 3.4rem;
-  font-weight: bold;
-  color: #eb3901;
-`;
-
 const CategoryContainer = styled.div`
   display: flex;
+  margin-bottom: 1rem;
 `;
 
 const Category = styled.div`
@@ -155,4 +137,23 @@ const Category = styled.div`
   background-color: #e5e5e5;
   border-radius: 2rem;
   margin-right: 1rem;
+`;
+
+const RetryButton = styled.button`
+  background-color: #eb3901;
+  color: white;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  &:hover {
+    background-color: #ffe6db;
+    color: #eb3901;
+  }
+  margin: 0 auto;
+`;
+
+const CardContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
 `;

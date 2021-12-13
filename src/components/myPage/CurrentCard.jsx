@@ -198,6 +198,7 @@ const RedBigLabelText = styled.div`
 
 const CategoryContainer = styled.div`
   display: flex;
+  margin-bottom: 1rem;
 `;
 
 const Category = styled.div`
