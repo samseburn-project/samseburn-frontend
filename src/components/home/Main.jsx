@@ -3,6 +3,8 @@ import axios from "axios";
 
 import styled from "styled-components";
 
+import { Box } from "@mui/material";
+
 import Hero from "./Hero";
 import Contents from "./Contents";
 import SearchBar from "./SearchBar";
@@ -12,10 +14,6 @@ import ChallengeList from "./ChallengeList";
 
 const Main = () => {
 	const [sortBy, setSortBy] = useState("createdAt");
-
-	useEffect(() => {
-		fetchData();
-	}, [sortBy]);
 
 	const fetchData = async () => {
 		try {
@@ -30,6 +28,10 @@ const Main = () => {
 		}
 	};
 
+	useEffect(() => {
+		fetchData();
+	}, [sortBy]);
+
 	return (
 		<>
 			<Hero />
@@ -43,7 +45,9 @@ const Main = () => {
 					<CategoryFilter />
 					<SortFilter sortBy={sortBy} setSortBy={setSortBy} />
 				</FilterRow>
-				<ChallengeList />
+				<ListContainer sx={{ width: "100%" }}>
+					<ChallengeList />
+				</ListContainer>
 			</Wrapper>
 		</>
 	);
@@ -71,4 +75,9 @@ const SearchBarRow = styled.div`
 	margin-top: 3.7rem;
 	display: flex;
 	justify-content: center;
+`;
+
+const ListContainer = styled(Box)`
+	margin-top: 6rem;
+	margin-bottom: 18rem;
 `;
