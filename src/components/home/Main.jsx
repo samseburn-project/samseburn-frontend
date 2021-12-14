@@ -3,13 +3,12 @@ import axios from "axios";
 
 import styled from "styled-components";
 
-import { Grid, Box } from "@mui/material";
 import Hero from "./Hero";
 import Contents from "./Contents";
 import SearchBar from "./SearchBar";
 import CategoryFilter from "./CategoryFilter";
 import SortFilter from "./SortFilter";
-import ChallengeList from './ChallengeList';
+import ChallengeList from "./ChallengeList";
 
 const Main = () => {
 	const [sortBy, setSortBy] = useState("createdAt");
@@ -53,27 +52,23 @@ const Main = () => {
 export default Main;
 
 const Wrapper = styled.section`
-  width: 104rem;
-  margin: 10rem auto;
+	width: 104rem;
+	margin: 10rem auto;
 `;
 
 const Title = styled.div`
-  font-size: 2.4rem;
-  font-weight: bold;
+	font-size: 2.4rem;
+	font-weight: bold;
 `;
 
 const FilterRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-top: 8rem;
-`;
-
-const ListRow = styled(Box)`
-	margin-top: 6rem;
+	display: flex;
+	justify-content: space-between;
+	margin-top: 8rem;
 `;
 
 const SearchBarRow = styled.div`
-  margin-top: 3.7rem;
-  display: flex;
-  justify-content: center;
+	margin-top: 3.7rem;
+	display: flex;
+	justify-content: center;
 `;

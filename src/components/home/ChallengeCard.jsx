@@ -1,52 +1,51 @@
-import React from 'react';
+import React from "react";
+import { Link } from "react-router-dom";
 
-import { Card, CardContent, CardMedia, CardActionArea } from '@mui/material';
+import { Card, CardContent, CardMedia, CardActionArea } from "@mui/material";
+import Category from "../common/Category";
 
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import sample from '../../assets/sample.png';
-import calendar from '../../assets/icons/calendar.png';
+import calendar from "../../assets/icons/calendar.png";
 
-const ChallengeCard = ({
-  title,
-  category,
-  startDate,
-  endDate,
-  limitPerson,
-  participants,
-  imgUrl,
-  locationType,
-}) => {
-  return (
-    <StyledCard>
-      <CardActionArea>
-        <CardMedia component="img" image={imgUrl} />
-        <StyledCardContent>
-          <CardTitle>{title}</CardTitle>
-          <Row>
-            <CardCategory>{category}</CardCategory>
-            <CardCategory>
-              {locationType === 'ONLINE' ? '온라인' : '오프라인'}
-            </CardCategory>
-          </Row>
-          <Row>
-            <CardIcon>
-              <img src={calendar} alt="Calendar icon" />
-            </CardIcon>
-            <CardDate>
-              {startDate} ~ {endDate}
-            </CardDate>
-          </Row>
-          <CardMember>
-            현재 {participants}/{limitPerson} 명이 참여중입니다.
-          </CardMember>
-        </StyledCardContent>
-      </CardActionArea>
-    </StyledCard>
-  );
+const ChallengeCard = ({ ...props }) => {
+	console.log(props.id);
+	return (
+		<StyledLink to={`/detail/${props.id}`}>
+			<StyledCard>
+				<CardActionArea>
+					<CardMedia component="img" image={props.imgUrl} />
+					<StyledCardContent>
+						<CardTitle>{props.title}</CardTitle>
+						<Row>
+							<CardCategory>{props.category}</CardCategory>
+							<CardCategory>
+								{props.locationType === "ONLINE" ? "온라인" : "오프라인"}
+							</CardCategory>
+						</Row>
+						<Row>
+							<CardIcon>
+								<img src={calendar} alt="Calendar icon" />
+							</CardIcon>
+							<CardDate>
+								{props.startDate} ~ {props.endDate}
+							</CardDate>
+						</Row>
+						<CardMember>
+							현재 {props.participants}/{props.limitPerson} 명이 참여중입니다.
+						</CardMember>
+					</StyledCardContent>
+				</CardActionArea>
+			</StyledCard>
+		</StyledLink>
+	);
 };
 
 export default ChallengeCard;
+
+const StyledLink = styled(Link)`
+	text-decoration: none;
+`;
 
 const StyledCard = styled(Card)`
 	height: 36.3rem;
@@ -63,47 +62,43 @@ const StyledCard = styled(Card)`
 `;
 
 const StyledCardContent = styled(CardContent)`
-  height: 18.15rem;
-  box-sizing: border-box;
+	height: 18.15rem;
+	box-sizing: border-box;
 `;
 
 const CardTitle = styled.div`
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 0.7rem;
+	font-size: 2rem;
+	font-weight: bold;
+	margin-bottom: 0.7rem;
 `;
 
 const Row = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+	display: flex;
+	gap: 0.5rem;
+	margin-bottom: 1rem;
 `;
 
-const CardCategory = styled.span`
-  font-size: 1.2rem;
-  color: #8f8f8f;
-  background-color: #e5e5e5;
-  border-radius: 2rem;
-  padding: 0.5rem 1rem;
-  letter-spacing: 0.2px;
+const CardCategory = styled(Category)`
+	font-size: 1.2rem;
+	padding: 0.5rem 1rem;
 `;
 
 const CardDate = styled.div`
-  font-size: 1.4rem;
-  letter-spacing: 0.2px;
+	font-size: 1.4rem;
+	letter-spacing: 0.2px;
 `;
 
 const CardIcon = styled.div`
-  width: 1.6rem;
-  height: 1.6rem;
+	width: 1.6rem;
+	height: 1.6rem;
 
-  img {
-    width: 100%;
-    height: 100%;
-  }
+	img {
+		width: 100%;
+		height: 100%;
+	}
 `;
 
 const CardMember = styled.div`
-  font-size: 1.6rem;
-  margin-top: 3rem;
+	font-size: 1.6rem;
+	margin-top: 3rem;
 `;

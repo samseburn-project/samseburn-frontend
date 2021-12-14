@@ -17,7 +17,7 @@ const CategoryFilter = () => {
 	return (
 		<CategoryContainer>
 			{categories.map((category, i) => (
-				<Category key={i}>{category}</Category>
+				<MainCategory key={i}>{category}</MainCategory>
 			))}
 		</CategoryContainer>
 	);
@@ -28,4 +28,14 @@ export default CategoryFilter;
 const CategoryContainer = styled.div`
 	display: flex;
 	gap: 1rem;
+`;
+
+const MainCategory = styled(Category)`
+	font-size: 1.4rem;
+	padding: 0.8rem 1.4rem;
+
+	&:hover {
+		color: #ffffff;
+		background-color: #8f8f8f;
+	}
 `;

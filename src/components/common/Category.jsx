@@ -15,9 +15,4 @@ const StyledCategory = styled.button`
 	text-align: center;
 	letter-spacing: 2px;
 	cursor: pointer;
-
-	&:hover {
-		color: #ffffff;
-		background-color: #8f8f8f;
-	}
 `;

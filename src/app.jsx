@@ -12,7 +12,7 @@ const App = () => {
 			<GlobalStyles />
 			<Routes>
 				<Route path="/" element={<Home />} />
-				<Route path="/detail" element={<Detail />} />
+				<Route path="/detail/:id" element={<Detail />} />
 				<Route path="/register" element={<RegisterPage />} />
 			</Routes>
 		</BrowserRouter>
