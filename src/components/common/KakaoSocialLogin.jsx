@@ -11,26 +11,27 @@ dotenv.config();
 
 const KakaoSocialLogin = ({ ...props }) => {
 	const onSuccess = async (res) => {
-		console.log(res);
-
-		const { profile, response } = res;
+		const { response } = res;
 
 		try {
-			const userInfo = {
-				username: profile.properties.nickname,
-				token: response.access_token,
-			};
+			const kakaoToken = { token: response.access_token };
+			console.log(JSON.stringify(kakaoToken));
 
-			const res = await axios.post("/login/kakao", userInfo);
+			const res = await axios
+				.post("/login/kakao", kakaoToken, {
+					headers: { "Content-Type": `application/json` },
+				})
+				.then((res) => {
+					console.log("SUCCESS", res);
+				})
+				.catch((err) => console.log("ERROR", err));
 
-			console.log(res);
-
-			if (res.status === 200) {
-				localStorage.setItem("user_name", userInfo.username);
-				localStorage.setItem("user_img", userInfo.imgUrl);
-				props.setLoggedIn(true);
-				props.handleModalClose();
-			}
+			// if (res.status === 200) {
+			// 	localStorage.setItem("username", res.username);
+			// 	localStorage.setItem("token", res.token);
+			// 	props.setLoggedIn(true);
+			// 	props.handleModalClose();
+			// }
 		} catch (err) {
 			console.error(err);
 		}
@@ -41,7 +42,6 @@ const KakaoSocialLogin = ({ ...props }) => {
 			token={process.env.REACT_APP_KAKAO_APPKEY}
 			onSuccess={onSuccess}
 			onFail={(err) => console.error("FAILED", err)}
-			onLogout={() => console.log("LOGOUT")}
 			render={({ onClick }) => (
 				<KakaoLoginButton
 					onClick={(e) => {
