@@ -49,16 +49,17 @@ const ChallengeCard = ({
 export default ChallengeCard;
 
 const StyledCard = styled(Card)`
-  width: 33.1rem;
-  height: 36.3rem;
-  box-shadow: 0.6rem 1.1rem 2rem rgba(0, 0, 0, 0.25);
-  img {
-    height: 18.15rem;
-  }
+	height: 36.3rem;
+	box-shadow: 0.6rem 1.1rem 2rem rgba(0, 0, 0, 0.25);
 
-  .css-46bh2p-MuiCardContent-root {
-    padding: 2rem;
-  }
+	img {
+		height: 18.15rem;
+	}
+
+	.css-46bh2p-MuiCardContent-root {
+		padding: 2rem;
+		cursor: pointer;
+	}
 `;
 
 const StyledCardContent = styled(CardContent)`
