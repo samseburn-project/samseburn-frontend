@@ -9,7 +9,7 @@ import Contents from "./Contents";
 import SearchBar from "./SearchBar";
 import CategoryFilter from "./CategoryFilter";
 import SortFilter from "./SortFilter";
-import ChallengeCard from "./ChallengeCard";
+import ChallengeList from './ChallengeList';
 
 const Main = () => {
 	const [sortBy, setSortBy] = useState("createdAt");
@@ -44,37 +44,7 @@ const Main = () => {
 					<CategoryFilter />
 					<SortFilter sortBy={sortBy} setSortBy={setSortBy} />
 				</FilterRow>
-				<ListRow sx={{ width: "100%" }}>
-					<Grid container spacing={4}>
-						<Grid item xs={4}>
-							<ChallengeCard />
-						</Grid>
-						<Grid item xs={4}>
-							<ChallengeCard />
-						</Grid>
-						<Grid item xs={4}>
-							<ChallengeCard />
-						</Grid>
-						<Grid item xs={4}>
-							<ChallengeCard />
-						</Grid>
-						<Grid item xs={4}>
-							<ChallengeCard />
-						</Grid>
-						<Grid item xs={4}>
-							<ChallengeCard />
-						</Grid>
-						<Grid item xs={4}>
-							<ChallengeCard />
-						</Grid>
-						<Grid item xs={4}>
-							<ChallengeCard />
-						</Grid>
-						<Grid item xs={4}>
-							<ChallengeCard />
-						</Grid>
-					</Grid>
-				</ListRow>
+				<ChallengeList />
 			</Wrapper>
 		</>
 	);
@@ -83,19 +53,19 @@ const Main = () => {
 export default Main;
 
 const Wrapper = styled.section`
-	width: 104rem;
-	margin: 10rem auto;
+  width: 104rem;
+  margin: 10rem auto;
 `;
 
 const Title = styled.div`
-	font-size: 2.4rem;
-	font-weight: bold;
+  font-size: 2.4rem;
+  font-weight: bold;
 `;
 
 const FilterRow = styled.div`
-	display: flex;
-	justify-content: space-between;
-	margin-top: 8rem;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8rem;
 `;
 
 const ListRow = styled(Box)`
@@ -103,7 +73,7 @@ const ListRow = styled(Box)`
 `;
 
 const SearchBarRow = styled.div`
-	margin-top: 3.7rem;
-	display: flex;
-	justify-content: center;
+  margin-top: 3.7rem;
+  display: flex;
+  justify-content: center;
 `;
