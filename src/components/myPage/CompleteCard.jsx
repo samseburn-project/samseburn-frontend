@@ -9,19 +9,30 @@ import { ReactComponent as ThirdMedal } from '../../assets/3rd-medal-icon.svg';
 function CompleteCard() {
   const challengeData = [
     {
+      challengeId: 1,
       title: '아침 8시 일어나기',
-      image_url: 'blahblah',
-      categories: ['생활', '온라인'],
+      description: '아침 기상을 인증하는 챌린지입니다',
       start_date: '2021-10-11',
       end_date: '2021-12-31',
+      limitPerson: 10,
+      // locationType: "ONLINE",
+      address: '',
+      image_url:
+        'https://images.unsplash.com/photo-1422433555807-2559a27433bd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+      // category: {
+      //   name: "생활"
+      // },
+      categories: ['생활', '온라인'],
+      participants: 1,
       isComplete: false,
       total_cnt: 1,
-      state: 0,
+      state: 2,
       retry_limit: 3,
     },
     {
       title: '자기 전 스트레칭하기',
-      image_url: 'blahblah',
+      image_url:
+        'https://images.unsplash.com/photo-1422433555807-2559a27433bd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
       categories: ['생활', '온라인'],
       start_date: '2021-10-01',
       end_date: '2021-12-31',
@@ -32,7 +43,8 @@ function CompleteCard() {
     },
     {
       title: '과일 먹기',
-      image_url: 'blahblah',
+      image_url:
+        'https://images.unsplash.com/photo-1422433555807-2559a27433bd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
       categories: ['생활', '온라인'],
       start_date: '2021-10-01',
       end_date: '2021-12-31',
@@ -43,7 +55,8 @@ function CompleteCard() {
     },
     {
       title: '책상 정리하기',
-      image_url: 'blahblah',
+      image_url:
+        'https://images.unsplash.com/photo-1422433555807-2559a27433bd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
       categories: ['생활', '온라인'],
       start_date: '2021-10-01',
       end_date: '2021-12-31',
@@ -175,12 +188,13 @@ const CategoryContainer = styled.div`
   margin-bottom: 1rem;
 `;
 
-const Category = styled.div`
+const Category = styled.span`
   font-size: 1.2rem;
   color: #8f8f8f;
   background-color: #e5e5e5;
   border-radius: 2rem;
-  margin-right: 1rem;
+  padding: 0.5rem 1rem;
+  letter-spacing: 0.2px;
 `;
 
 const RetryButton = styled.button`

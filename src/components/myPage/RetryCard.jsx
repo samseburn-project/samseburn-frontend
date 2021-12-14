@@ -6,7 +6,8 @@ function RetryCard() {
   const challengeData = [
     {
       title: '아침 8시 일어나기',
-      image_url: 'blahblah',
+      image_url:
+        'https://images.unsplash.com/photo-1422433555807-2559a27433bd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
       categories: ['생활', '온라인'],
       start_date: '2021-10-11',
       end_date: '2021-12-31',
@@ -17,7 +18,8 @@ function RetryCard() {
     },
     {
       title: '자기 전 스트레칭하기',
-      image_url: 'blahblah',
+      image_url:
+        'https://images.unsplash.com/photo-1422433555807-2559a27433bd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
       categories: ['생활', '온라인'],
       start_date: '2021-10-01',
       end_date: '2021-12-31',
@@ -28,7 +30,8 @@ function RetryCard() {
     },
     {
       title: '과일 먹기',
-      image_url: 'blahblah',
+      image_url:
+        'https://images.unsplash.com/photo-1422433555807-2559a27433bd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
       categories: ['생활', '온라인'],
       start_date: '2021-10-01',
       end_date: '2021-12-31',
@@ -39,7 +42,8 @@ function RetryCard() {
     },
     {
       title: '책상 정리하기',
-      image_url: 'blahblah',
+      image_url:
+        'https://images.unsplash.com/photo-1422433555807-2559a27433bd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
       categories: ['생활', '온라인'],
       start_date: '2021-10-01',
       end_date: '2021-12-31',
