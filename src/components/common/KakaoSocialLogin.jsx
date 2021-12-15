@@ -26,12 +26,12 @@ const KakaoSocialLogin = ({ ...props }) => {
 				})
 				.catch((err) => console.log("ERROR", err));
 
-			// if (res.status === 200) {
-			// 	localStorage.setItem("username", res.username);
-			// 	localStorage.setItem("token", res.token);
-			// 	props.setLoggedIn(true);
-			// 	props.handleModalClose();
-			// }
+			if (res.status === 200) {
+				localStorage.setItem("username", res.username);
+				localStorage.setItem("token", res.token);
+				props.setLoggedIn(true);
+				props.handleModalClose();
+			}
 		} catch (err) {
 			console.error(err);
 		}
