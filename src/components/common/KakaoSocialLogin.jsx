@@ -12,14 +12,14 @@ dotenv.config();
 const KakaoSocialLogin = ({ ...props }) => {
 	const onSuccess = async (res) => {
 		const { response } = res;
+		console.log(response);
 
 		try {
 			const kakaoToken = { token: response.access_token };
-			console.log(JSON.stringify(kakaoToken));
 
 			const res = await axios
 				.post("/login/kakao", kakaoToken, {
-					headers: { "Content-Type": `application/json` },
+					headers: { "Content-Type": "application/json" },
 				})
 				.then((res) => {
 					console.log("SUCCESS", res);

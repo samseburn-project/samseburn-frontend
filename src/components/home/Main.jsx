@@ -24,7 +24,6 @@ const Main = () => {
 					sortBy: sortBy,
 				},
 			});
-			console.log(res);
 		} catch (err) {
 			console.error(err);
 		}

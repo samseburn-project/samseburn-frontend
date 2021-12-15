@@ -5,7 +5,6 @@ import { Menu, MenuItem, Dialog, DialogContent } from "@mui/material";
 import KakaoSocialLogin from "./KakaoSocialLogin";
 
 import styled from "styled-components";
-import { Menu, MenuItem, Dialog, DialogContent } from "@mui/material";
 
 import profile from "../../assets/icons/profile.png";
 import register from "../../assets/icons/plus.png";

@@ -9,7 +9,6 @@ import styled from "styled-components";
 import calendar from "../../assets/icons/calendar.png";
 
 const ChallengeCard = ({ ...props }) => {
-	console.log(props.id);
 	return (
 		<StyledLink to={`/detail/${props.id}`}>
 			<StyledCard>
