@@ -1,18 +1,37 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
 import styled from "styled-components";
 
-import Navbar from "../common/Navbar";
 import Hero from "./Hero";
 import Contents from "./Contents";
 import SearchBar from "./SearchBar";
 import CategoryFilter from "./CategoryFilter";
 import SortFilter from "./SortFilter";
-import ChallengeCard from "./ChallengeCard";
+import ChallengeList from "./ChallengeList";
 
 const Main = () => {
+	const [sortBy, setSortBy] = useState("createdAt");
+
+	useEffect(() => {
+		fetchData();
+	}, [sortBy]);
+
+	const fetchData = async () => {
+		try {
+			const res = await axios.get("/challenges/filter", {
+				params: {
+					sortBy: sortBy,
+				},
+			});
+			console.log(res);
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
 	return (
 		<>
-			<Navbar />
 			<Hero />
 			<Contents />
 			<Wrapper>
@@ -22,9 +41,9 @@ const Main = () => {
 				</SearchBarRow>
 				<FilterRow>
 					<CategoryFilter />
-					<SortFilter />
+					<SortFilter sortBy={sortBy} setSortBy={setSortBy} />
 				</FilterRow>
-				<ChallengeCard />
+				<ChallengeList />
 			</Wrapper>
 		</>
 	);
