@@ -9,8 +9,6 @@ import styled from "styled-components";
 import calendar from "../../assets/icons/calendar.png";
 
 const ChallengeCard = ({ ...props }) => {
-	const navigate = useNavigate();
-
 	return (
 		<StyledCard onClick={() => navigate(`/detail/${props.id}`)}>
 			<CardActionArea>
