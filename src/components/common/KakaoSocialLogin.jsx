@@ -1,6 +1,6 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import KakaoLogin from "react-kakao-login";
 
 import styled from "styled-components";
 
@@ -9,53 +9,46 @@ import kakao from "../../assets/icons/kakao.png";
 import dotenv from "dotenv";
 dotenv.config();
 
+const { Kakao } = window;
+
 const KakaoSocialLogin = ({ ...props }) => {
-	const onSuccess = async (res) => {
-		const { response } = res;
-		console.log(response);
-
-		try {
-			const kakaoToken = { token: response.access_token };
-
-			const res = await axios
-				.post("/login/kakao", kakaoToken, {
-					headers: { "Content-Type": "application/json" },
-				})
-				.then((res) => {
-					console.log("SUCCESS", res);
-				})
-				.catch((err) => console.log("ERROR", err));
-
-			if (res.status === 200) {
-				localStorage.setItem("username", res.username);
-				localStorage.setItem("token", res.token);
-				props.setLoggedIn(true);
-				props.handleModalClose();
-			}
-		} catch (err) {
-			console.error(err);
-		}
+	const navigate = useNavigate();
+	const kakaoLoginHandler = () => {
+		Kakao.Auth.login({
+			success: (response) => {
+				const token = response.access_token;
+				console.log(token);
+				axios
+					.post(
+						"https://api.fevertime.shop/login/kakao",
+						JSON.stringify({ token: token }),
+						{
+							headers: { "Content-Type": "application/json" },
+						}
+					)
+					.then((res) => {
+						console.log(res);
+						if (res.data.token) {
+							localStorage.setItem("token", res.data.token);
+							props.onClose();
+							navigate(0);
+						}
+					})
+					.catch((err) => console.error(err));
+			},
+			fail: (err) => {
+				console.log(err);
+			},
+		});
 	};
 
 	return (
-		<KakaoLogin
-			token={process.env.REACT_APP_KAKAO_APPKEY}
-			onSuccess={onSuccess}
-			onFail={(err) => console.error("FAILED", err)}
-			render={({ onClick }) => (
-				<KakaoLoginButton
-					onClick={(e) => {
-						e.preventDefault();
-						onClick();
-					}}
-				>
-					<LoginIcon>
-						<img src={kakao} alt="Kakao icon" />
-					</LoginIcon>
-					<LoginText>카카오 로그인</LoginText>
-				</KakaoLoginButton>
-			)}
-		/>
+		<KakaoLoginButton onClick={kakaoLoginHandler}>
+			<LoginIcon>
+				<img src={kakao} alt="Kakao icon" />
+			</LoginIcon>
+			<LoginText>카카오 로그인</LoginText>
+		</KakaoLoginButton>
 	);
 };
 

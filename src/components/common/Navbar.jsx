@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import { Menu, MenuItem, Dialog, DialogContent } from "@mui/material";
@@ -14,6 +14,12 @@ const Navbar = () => {
 	const [modalOpen, setModalOpen] = useState(false);
 	const [anchorEl, setAnchorEl] = useState(null);
 	const open = Boolean(anchorEl);
+
+	const userToken = localStorage.getItem("token");
+
+	useEffect(() => {
+		if (userToken) setLoggedIn(true);
+	}, []);
 
 	const handleMouseOver = (e) => {
 		setAnchorEl(e.currentTarget);
