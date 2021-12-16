@@ -36,7 +36,7 @@ const MyPage = () => {
         ))}
       </TabContainer>
 
-      <ContentContainer>{tabArr[activeIndex].tabContent}</ContentContainer>
+      {tabArr[activeIndex].tabContent}
     </Wrapper>
   );
 };
@@ -48,9 +48,7 @@ const Wrapper = styled.section`
   margin: 0 auto;
 `;
 
-const TabContainer = styled.div`
-  margin: 0 8.8rem;
-`;
+const TabContainer = styled.div``;
 
 const Tab = styled.button`
   font-size: 2rem;
@@ -64,5 +62,5 @@ const Tab = styled.button`
 `;
 
 const ContentContainer = styled.div`
-  margin: 0 8.8rem;
+  margin: 0;
 `;
