@@ -14,6 +14,7 @@ const StyledMuiButton = styled(Button)`
   background-color: #eb3901;
   cursor: pointer;
   transition: opacity 0.3s;
+
   &:hover {
     background-color: #eb3901;
     opacity: 0.6;
