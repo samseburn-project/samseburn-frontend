@@ -6,7 +6,6 @@ import {
   //   CardMedia,
   //   CardActionArea,
   Grid,
-  Box,
 } from '@mui/material';
 import styled from 'styled-components';
 
@@ -44,7 +43,7 @@ const ChallengeCard = ({
       return <FirstMedal />;
     }
   };
-  // console.log(totalCnt);
+
   return (
     <Grid key={key} item xs={6}>
       <StyledCard>
@@ -203,12 +202,12 @@ const ProgressIcons = styled.div`
   justify-content: space-around;
   width: 100%;
   position: relative;
-  z-index: 10;
+  z-index: 1;
 `;
 
 // const ProgressLineContainer = styled.div`
 //   height: 1.8rem;
-//   z-index: 9;
+//   z-index: 2;
 // `;
 
 // const ProgressLine = styled.div`

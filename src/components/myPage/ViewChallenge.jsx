@@ -25,7 +25,7 @@ const ViewChallenge = () => {
       participants: 1,
       missionStatus: false,
       totalCnt: 3,
-      state: 0,
+
       retryLimit: 3,
       challengeStatus: 'JOIN',
     },
@@ -46,7 +46,6 @@ const ViewChallenge = () => {
       participants: 2,
       missionStatus: true,
       totalCnt: 15,
-      state: 0,
       retryLimit: 3,
       challengeStatus: 'JOIN',
     },
@@ -110,7 +109,6 @@ const ViewChallenge = () => {
       participants: 1,
       missionStatus: false,
       totalCnt: 3,
-      state: 0,
       retryLimit: 3,
       challengeStatus: 'RETRY',
     },
@@ -131,7 +129,6 @@ const ViewChallenge = () => {
       participants: 2,
       missionStatus: true,
       totalCnt: 15,
-      state: 0,
       retryLimit: 3,
       challengeStatus: 'RETRY',
     },
@@ -195,7 +192,6 @@ const ViewChallenge = () => {
       participants: 1,
       missionStatus: false,
       totalCnt: 3,
-      state: 0,
       retryLimit: 3,
       challengeStatus: 'COMPLETE',
     },
@@ -216,7 +212,7 @@ const ViewChallenge = () => {
       participants: 2,
       missionStatus: true,
       totalCnt: 15,
-      state: 0,
+
       retryLimit: 3,
       challengeStatus: 'COMPLETE',
     },
@@ -283,63 +279,72 @@ const ViewChallenge = () => {
       </Row>
       <Row>
         <Title>참가중인 챌린지</Title>
-        <Grid container>
-          {currentChallenges.map((challenge) => (
-            <ChallengeCard
-              key={challenge.challengeId}
-              title={challenge.title}
-              category={challenge.category.name}
-              locationType={challenge.locationType}
-              challengeStartDate={challenge.startDate}
-              challengeEndDate={challenge.endDate}
-              certiCount={challenge.totalCnt}
-              imgUrl={challenge.imgUrl}
-              challengeStatus={challenge.challengeStatus}
-              missionStatus={challenge.missionStatus}
-            />
-          ))}
-        </Grid>
-        {/* <CurrentCard /> */}
+        {currentChallenges.length === 0 ? (
+          <EmptyContainer>참가중인 챌린지가 없습니다</EmptyContainer>
+        ) : (
+          <Grid container>
+            {currentChallenges.map((challenge) => (
+              <ChallengeCard
+                key={challenge.challengeId}
+                title={challenge.title}
+                category={challenge.category.name}
+                locationType={challenge.locationType}
+                challengeStartDate={challenge.startDate}
+                challengeEndDate={challenge.endDate}
+                certiCount={challenge.totalCnt}
+                imgUrl={challenge.imgUrl}
+                challengeStatus={challenge.challengeStatus}
+                missionStatus={challenge.missionStatus}
+              />
+            ))}
+          </Grid>
+        )}
       </Row>
       <Row>
         <Title>재도전 가능 챌린지</Title>
-        <Grid container>
-          {retryChallenges.map((challenge) => (
-            <ChallengeCard
-              key={challenge.challengeId}
-              title={challenge.title}
-              category={challenge.category.name}
-              locationType={challenge.locationType}
-              challengeStartDate={challenge.startDate}
-              challengeEndDate={challenge.endDate}
-              certiCount={challenge.totalCnt}
-              imgUrl={challenge.imgUrl}
-              challengeStatus={challenge.challengeStatus}
-              missionStatus={challenge.missionStatus}
-            />
-          ))}
-        </Grid>
-        {/* <RetryCard /> */}
+        {retryChallenges.length === 0 ? (
+          <EmptyContainer>재도전 가능한 챌린지가 없습니다</EmptyContainer>
+        ) : (
+          <Grid container>
+            {retryChallenges.map((challenge) => (
+              <ChallengeCard
+                key={challenge.challengeId}
+                title={challenge.title}
+                category={challenge.category.name}
+                locationType={challenge.locationType}
+                challengeStartDate={challenge.startDate}
+                challengeEndDate={challenge.endDate}
+                certiCount={challenge.totalCnt}
+                imgUrl={challenge.imgUrl}
+                challengeStatus={challenge.challengeStatus}
+                missionStatus={challenge.missionStatus}
+              />
+            ))}
+          </Grid>
+        )}
       </Row>
       <Row>
         <Title>완료한 챌린지</Title>
-        <Grid container>
-          {completeChallenges.map((challenge) => (
-            <ChallengeCard
-              key={challenge.challengeId}
-              title={challenge.title}
-              category={challenge.category.name}
-              locationType={challenge.locationType}
-              challengeStartDate={challenge.startDate}
-              challengeEndDate={challenge.endDate}
-              certiCount={challenge.totalCnt}
-              imgUrl={challenge.imgUrl}
-              challengeStatus={challenge.challengeStatus}
-              missionStatus={challenge.missionStatus}
-            />
-          ))}
-        </Grid>
-        {/* <CompleteCard /> */}
+        {completeChallenges.length === 0 ? (
+          <EmptyContainer>완료한 챌린지가 없습니다</EmptyContainer>
+        ) : (
+          <Grid container>
+            {completeChallenges.map((challenge) => (
+              <ChallengeCard
+                key={challenge.challengeId}
+                title={challenge.title}
+                category={challenge.category.name}
+                locationType={challenge.locationType}
+                challengeStartDate={challenge.startDate}
+                challengeEndDate={challenge.endDate}
+                certiCount={challenge.totalCnt}
+                imgUrl={challenge.imgUrl}
+                challengeStatus={challenge.challengeStatus}
+                missionStatus={challenge.missionStatus}
+              />
+            ))}
+          </Grid>
+        )}
       </Row>
     </ViewChallengeBox>
   );
@@ -353,6 +358,12 @@ const ViewChallengeBox = styled.div`
 
 const Row = styled.div`
   margin: 0;
+`;
+
+const EmptyContainer = styled.div`
+  width: 100%;
+  text-align: center;
+  font-size: 2rem;
 `;
 
 const Title = styled.div`
