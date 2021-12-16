@@ -263,7 +263,7 @@ const ViewChallenge = () => {
   ];
 
   return (
-    <>
+    <ViewChallengeBox>
       <Row>
         <Title>챌린지 현황</Title>
         <CountContainer>
@@ -341,19 +341,19 @@ const ViewChallenge = () => {
         </Grid>
         {/* <CompleteCard /> */}
       </Row>
-    </>
+    </ViewChallengeBox>
   );
 };
 
 export default ViewChallenge;
 
-const Row = styled.div``;
+const ViewChallengeBox = styled.div`
+  padding-bottom: 20rem;
+`;
 
-// const LabelText = styled.div`
-//   font-size: 2rem;
-//   font-weight: bold;
-//   margin-bottom: 2rem;
-// `;
+const Row = styled.div`
+  margin: 0;
+`;
 
 const Title = styled.div`
   font-size: 2.4rem;
