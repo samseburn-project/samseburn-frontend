@@ -6,9 +6,7 @@ import Category from "../common/Category";
 import CommonDialog from "../common/CommonDialog";
 import StyledButton from "../common/StyledButton";
 
-import sample from "../../assets/sample.png";
-
-const Intro = ({ ...props }) => {
+const Intro = ({ challenge }) => {
 	const [dialogOpen, setDialogOpen] = useState(false);
 
 	const handleDialogOpen = () => {
@@ -22,18 +20,22 @@ const Intro = ({ ...props }) => {
 		<IntroBox>
 			<IntroContainer>
 				<IntroThumbnail>
-					<img src={sample} alt="Challenge Thumbnail" />
+					<img src={challenge?.imgUrl} alt="Challenge Thumbnail" />
 				</IntroThumbnail>
 				<ContentsContainer>
-					<Title>챌린지 이름</Title>
+					<Title>{challenge?.title}</Title>
 					<CategoryRow>
-						<IntroCategory>카테고리</IntroCategory>
-						<IntroCategory>카테고리</IntroCategory>
+						<IntroCategory>{challenge?.locationType}</IntroCategory>
+						<IntroCategory>{challenge?.category.name}</IntroCategory>
 					</CategoryRow>
 					<SubTitle>진행 기간</SubTitle>
-					<Text>2021. 01. 01 ~ 2021. 12. 31</Text>
+					<Text>
+						{challenge?.startDate} ~ {challenge?.endDate}
+					</Text>
 					<SubTitle>참가 인원</SubTitle>
-					<Text>00 / 10 명</Text>
+					<Text>
+						{challenge?.participants} / {challenge?.limitPerson} 명
+					</Text>
 					<ApplyButton type="button" onClick={handleDialogOpen}>
 						챌린지 참가하기
 					</ApplyButton>
@@ -102,6 +104,7 @@ const CategoryRow = styled.div`
 const IntroCategory = styled(Category)`
 	font-size: 1.4rem;
 	padding: 0.8rem 1.4rem;
+	cursor: default;
 `;
 
 const SubTitle = styled.div`
@@ -114,7 +117,7 @@ const SubTitle = styled.div`
 const Text = styled.div`
 	font-size: 2.4rem;
 	font-weight: bold;
-	line-spacing: 0.2px;
+	letter-spacing: 2px;
 	margin-bottom: 2.4rem;
 `;
 
