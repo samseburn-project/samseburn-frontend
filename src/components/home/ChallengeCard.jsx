@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { Card, CardContent, CardMedia, CardActionArea } from "@mui/material";
 import Category from "../common/Category";
@@ -10,41 +10,35 @@ import calendar from "../../assets/icons/calendar.png";
 
 const ChallengeCard = ({ ...props }) => {
 	return (
-		<StyledLink to={`/detail/${props.id}`}>
-			<StyledCard>
-				<CardActionArea>
-					<CardMedia component="img" image={props.imgUrl} />
-					<StyledCardContent>
-						<CardTitle>{props.title}</CardTitle>
-						<Row>
-							<CardCategory>{props.category}</CardCategory>
-							<CardCategory>
-								{props.locationType === "ONLINE" ? "온라인" : "오프라인"}
-							</CardCategory>
-						</Row>
-						<Row>
-							<CardIcon>
-								<img src={calendar} alt="Calendar icon" />
-							</CardIcon>
-							<CardDate>
-								{props.startDate} ~ {props.endDate}
-							</CardDate>
-						</Row>
-						<CardMember>
-							현재 {props.participants}/{props.limitPerson} 명이 참여중입니다.
-						</CardMember>
-					</StyledCardContent>
-				</CardActionArea>
-			</StyledCard>
-		</StyledLink>
+		<StyledCard onClick={() => navigate(`/detail/${props.id}`)}>
+			<CardActionArea>
+				<CardMedia component="img" image={props.imgUrl} />
+				<StyledCardContent>
+					<CardTitle>{props.title}</CardTitle>
+					<Row>
+						<CardCategory>{props.category}</CardCategory>
+						<CardCategory>
+							{props.locationType === "ONLINE" ? "온라인" : "오프라인"}
+						</CardCategory>
+					</Row>
+					<Row>
+						<CardIcon>
+							<img src={calendar} alt="Calendar icon" />
+						</CardIcon>
+						<CardDate>
+							{props.startDate} ~ {props.endDate}
+						</CardDate>
+					</Row>
+					<CardMember>
+						현재 {props.participants}/{props.limitPerson} 명이 참여중입니다.
+					</CardMember>
+				</StyledCardContent>
+			</CardActionArea>
+		</StyledCard>
 	);
 };
 
 export default ChallengeCard;
-
-const StyledLink = styled(Link)`
-	text-decoration: none;
-`;
 
 const StyledCard = styled(Card)`
 	height: 36.3rem;
