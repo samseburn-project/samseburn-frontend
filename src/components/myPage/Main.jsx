@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ViewChallenge from './ViewChallenge';
 import ModifyUser from './ModifyUser';
 import ManageChallenge from './ManageChallenge';
 
-const MyPage = () => {
+const Main = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const tabArr = [
@@ -28,29 +28,27 @@ const MyPage = () => {
 
   return (
     <Wrapper>
-      <TabContainer>
+      <Row>
         {tabArr.map((tab, i) => (
           <Tab onClick={() => onTabSwitch(i)} key={i}>
             {tab.tabTitle}
           </Tab>
         ))}
-      </TabContainer>
+      </Row>
 
-      <ContentContainer>{tabArr[activeIndex].tabContent}</ContentContainer>
+      {tabArr[activeIndex].tabContent}
     </Wrapper>
   );
 };
 
-export default MyPage;
+export default Main;
 
 const Wrapper = styled.section`
   width: 104rem;
   margin: 0 auto;
 `;
 
-const TabContainer = styled.div`
-  margin: 0 8.8rem;
-`;
+const Row = styled.div``;
 
 const Tab = styled.button`
   font-size: 2rem;
@@ -61,8 +59,4 @@ const Tab = styled.button`
 
   margin-right: 2rem;
   margin-bottom: 6rem;
-`;
-
-const ContentContainer = styled.div`
-  margin: 0 8.8rem;
 `;
