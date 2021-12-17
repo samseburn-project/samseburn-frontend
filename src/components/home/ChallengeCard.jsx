@@ -9,35 +9,35 @@ import styled from 'styled-components';
 import calendar from '../../assets/icons/calendar.png';
 
 const ChallengeCard = ({ ...props }) => {
-  const navigate = useNavigate();
-  return (
-    <StyledCard onClick={() => navigate(`/detail/${props.id}`)}>
-      {/* <StyledCard> */}
-      <CardActionArea>
-        <CardMedia component="img" image={props.imgUrl} />
-        <StyledCardContent>
-          <CardTitle>{props.title}</CardTitle>
-          <Row>
-            <CardCategory>{props.category}</CardCategory>
-            <CardCategory>
-              {props.locationType === 'ONLINE' ? '온라인' : '오프라인'}
-            </CardCategory>
-          </Row>
-          <Row>
-            <CardIcon>
-              <img src={calendar} alt="Calendar icon" />
-            </CardIcon>
-            <CardDate>
-              {props.startDate} ~ {props.endDate}
-            </CardDate>
-          </Row>
-          <CardMember>
-            현재 {props.participants}/{props.limitPerson} 명이 참여중입니다.
-          </CardMember>
-        </StyledCardContent>
-      </CardActionArea>
-    </StyledCard>
-  );
+	const navigate = useNavigate();
+
+	return (
+		<StyledCard onClick={() => navigate(`/detail/${props.id}`)}>
+			<CardActionArea>
+				<CardMedia component="img" image={props.imgUrl} />
+				<StyledCardContent>
+					<CardTitle>{props.title}</CardTitle>
+					<Row>
+						<CardCategory>{props.category}</CardCategory>
+						<CardCategory>
+							{props.locationType === "ONLINE" ? "온라인" : "오프라인"}
+						</CardCategory>
+					</Row>
+					<Row>
+						<CardIcon>
+							<img src={calendar} alt="Calendar icon" />
+						</CardIcon>
+						<CardDate>
+							{props.startDate} ~ {props.endDate}
+						</CardDate>
+					</Row>
+					<CardMember>
+						현재 {props.participants}/{props.limitPerson} 명이 참여중입니다.
+					</CardMember>
+				</StyledCardContent>
+			</CardActionArea>
+		</StyledCard>
+	);
 };
 
 export default ChallengeCard;

@@ -7,23 +7,49 @@ import styled from "styled-components";
 import FeedCarousel from "./FeedCarousel";
 
 import profileImg from "../../assets/profile-sample.png";
+import { ReactComponent as FirstMedal } from "../../assets/1st-medal-icon.svg";
+import { ReactComponent as SecondMedal } from "../../assets/2nd-medal-icon.svg";
+import { ReactComponent as ThirdMedal } from "../../assets/3rd-medal-icon.svg";
 
-const Participant = () => {
+const Participant = ({ ...props }) => {
+	const renderMedal = (count) => {
+		if (count < 5) {
+			return null;
+		} else if (count < 10) {
+			return <ThirdMedal />;
+		} else if (count < 15) {
+			return <SecondMedal />;
+		} else {
+			return <FirstMedal />;
+		}
+	};
+
 	return (
 		<Grid container spacing={2.5}>
 			<Grid item>
 				<ProfileBox>
 					<ProfileImg>
-						<img src={profileImg} alt="Profile" />
+						<img
+							src={
+								props.participant.imgUrl ? props.participant.imgUrl : profileImg
+							}
+							alt="Profile"
+						/>
 					</ProfileImg>
 					<ProfileContainer>
-						<ProfileId>참가자 아이디</ProfileId>
-						<ProfileText>1주차 진행중</ProfileText>
+						<ProfileId>{props.participant.username}</ProfileId>
+						<ProfileText>
+							{props.firstWeekMission === "YES"
+								? `${props.participant.certiCount}회 인증 ${renderMedal(
+										props.participant.certiCount
+								  )}`
+								: "1주차 진행중"}
+						</ProfileText>
 					</ProfileContainer>
 				</ProfileBox>
 			</Grid>
 			<Grid item>
-				<FeedCarousel />
+				<FeedCarousel certifies={props.participant.certifies} />
 			</Grid>
 		</Grid>
 	);
@@ -46,7 +72,12 @@ const ProfileBox = styled.div`
 const ProfileImg = styled.div`
 	width: 13rem;
 	height: 13rem;
-	border-radius: 50%;
+
+	img {
+		width: 100%;
+		height: 100%;
+		border-radius: 50%;
+	}
 `;
 
 const ProfileContainer = styled.div`
