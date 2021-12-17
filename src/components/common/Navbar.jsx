@@ -63,7 +63,9 @@ const Navbar = () => {
 			) : (
 				<Nav>
 					<NavContainer>
-						<NavLogo>삼세번</NavLogo>
+						<NavLink to="/">
+							<NavLogo>삼세번</NavLogo>
+						</NavLink>
 						<NavIcon>
 							<NavProfile
 								type="button"
