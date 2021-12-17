@@ -13,6 +13,7 @@ const Main = () => {
 	const params = useParams();
 	const id = Number(params.id);
 	const [challenge, setChallenge] = useState();
+	const [participants, setParticipants] = useState([]);
 
 	const fetchChallenge = async () => {
 		try {
@@ -23,8 +24,18 @@ const Main = () => {
 		}
 	};
 
+	const fetchParticipants = async () => {
+		try {
+			const { data } = await axios.get(`/challenges/${id}/users`);
+			setParticipants(data);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
 	useEffect(() => {
 		fetchChallenge();
+		fetchParticipants();
 	}, []);
 
 	return (
@@ -50,15 +61,11 @@ const Main = () => {
 				<Row>
 					<Title>챌린지 참가 현황</Title>
 					<Grid container rowSpacing={3}>
-						<Grid item>
-							<Participant />
-						</Grid>
-						<Grid item>
-							<Participant />
-						</Grid>
-						<Grid item>
-							<Participant />
-						</Grid>
+						{participants.map((participant) => (
+							<Grid item key={participant.id}>
+								<Participant participant={participant} />
+							</Grid>
+						))}
 					</Grid>
 				</Row>
 			</Wrapper>

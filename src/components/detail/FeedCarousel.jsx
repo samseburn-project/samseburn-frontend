@@ -1,20 +1,22 @@
 import React, { useState } from "react";
 
-import AuthDialog from "../common/AuthDialog";
-
 import styled from "styled-components";
+
 import Slider from "react-slick";
+import AuthDialog from "../common/AuthDialog";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import sample from "../../assets/sample.png";
 
-const FeedCarousel = () => {
+const FeedCarousel = ({ ...props }) => {
 	const [dialogOpen, setDialogOpen] = useState(false);
+	const certifies = props.certifies;
+	const placeholderImgUrl = "https://plchldr.co/i/186x130?&bg=C4C4C4&fc=ffffff";
+
 	const settings = {
-		arrows: true,
-		infinite: true,
 		dots: true,
+		infinite: true,
 		speed: 500,
 		slidesToShow: 3,
 		slidesToScroll: 3,
@@ -28,59 +30,93 @@ const FeedCarousel = () => {
 		setDialogOpen(false);
 	};
 
-	return (
-		<CarouselContainer>
+	const renderFeedCarousel = (list) => {
+		if (list.length === 0) {
+			return (
+				<StyledCarousel {...settings}>
+					<Feed>
+						<FeedThumbnail src={placeholderImgUrl} alt="Feed Thumbnail" />
+					</Feed>
+					<Feed>
+						<FeedThumbnail src={placeholderImgUrl} alt="Feed Thumbnail" />
+					</Feed>
+					<Feed>
+						<FeedThumbnail src={placeholderImgUrl} alt="Feed Thumbnail" />
+					</Feed>
+				</StyledCarousel>
+			);
+		} else if (list.length === 1) {
 			<StyledCarousel {...settings}>
 				<Feed>
 					<FeedThumbnail
-						src={sample}
+						src={list[0].imgUrl}
 						alt="Feed Thumbnail"
 						onClick={handleDialogOpen}
 					/>
 					<AuthDialog
 						dialogOpen={dialogOpen}
-						handleDialogOpen={handleDialogOpen}
 						handleDialogClose={handleDialogClose}
+						certify={list[0]}
+					/>
+				</Feed>
+				<Feed>
+					<FeedThumbnail src={placeholderImgUrl} alt="Feed Thumbnail" />
+				</Feed>
+				<Feed>
+					<FeedThumbnail src={placeholderImgUrl} alt="Feed Thumbnail" />
+				</Feed>
+			</StyledCarousel>;
+		} else if (list.length === 2) {
+			<StyledCarousel {...settings}>
+				<Feed>
+					<FeedThumbnail
+						src={list[0].imgUrl}
+						alt="Feed Thumbnail"
+						onClick={handleDialogOpen}
+					/>
+					<AuthDialog
+						dialogOpen={dialogOpen}
+						handleDialogClose={handleDialogClose}
+						certify={list[0]}
 					/>
 				</Feed>
 				<Feed>
 					<FeedThumbnail
-						src={sample}
+						src={list[1].imgUrl}
 						alt="Feed Thumbnail"
 						onClick={handleDialogOpen}
+					/>
+					<AuthDialog
+						dialogOpen={dialogOpen}
+						handleDialogClose={handleDialogClose}
+						certify={list[1]}
 					/>
 				</Feed>
 				<Feed>
-					<FeedThumbnail
-						src={sample}
-						alt="Feed Thumbnail"
-						onClick={handleDialogOpen}
-					/>
+					<FeedThumbnail src={placeholderImgUrl} alt="Feed Thumbnail" />
 				</Feed>
-				<Feed>
-					<FeedThumbnail
-						src={sample}
-						alt="Feed Thumbnail"
-						onClick={handleDialogOpen}
-					/>
-				</Feed>
-				<Feed>
-					<FeedThumbnail
-						src={sample}
-						alt="Feed Thumbnail"
-						onClick={handleDialogOpen}
-					/>
-				</Feed>
-				<Feed>
-					<FeedThumbnail
-						src={sample}
-						alt="Feed Thumbnail"
-						onClick={handleDialogOpen}
-					/>
-				</Feed>
-			</StyledCarousel>
-		</CarouselContainer>
-	);
+			</StyledCarousel>;
+		} else {
+			<StyledCarousel {...settings}>
+				{list.map((item) => (
+					<Feed key={item.certificationId}>
+						<FeedThumbnail
+							src={item.imgUrl}
+							alt="Feed Thumbnail"
+							onClick={handleDialogOpen}
+						/>
+						<AuthDialog
+							dialogOpen={dialogOpen}
+							handleDialogClose={handleDialogClose}
+							certify={item}
+						/>
+					</Feed>
+				))}
+			</StyledCarousel>;
+		}
+	};
+
+	return <CarouselContainer>{renderFeedCarousel(certifies)}</CarouselContainer>;
 };
 
 export default FeedCarousel;
@@ -97,10 +133,7 @@ const CarouselContainer = styled.div`
 `;
 
 const StyledCarousel = styled(Slider)`
-	width: 60rem;
-
-	display: flex;
-	align-items: center;
+	width: 90%;
 
 	.slick-next:before,
 	.slick-prev:before {

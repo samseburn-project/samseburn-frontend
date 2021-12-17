@@ -1,8 +1,9 @@
 import React from "react";
 
-import { Grid, Dialog, DialogContent, Box, TextField } from "@mui/material";
-
 import styled from "styled-components";
+
+import { Grid, Dialog, DialogContent, Box, TextField } from "@mui/material";
+import StyledButton from "../common/StyledButton";
 
 import close from "../../assets/icons/close.png";
 import trash from "../../assets/icons/trash.png";
@@ -20,33 +21,73 @@ const AuthDialog = ({ ...props }) => {
 					<Grid container direction="column" rowSpacing={4}>
 						<Grid item container direction="column">
 							<Grid item>
-								<AuthThumbnail>
-									<DeleteButton>
-										<img src={trash} alt="Trash Icon" />
-									</DeleteButton>
-								</AuthThumbnail>
+								{!props.certify ? (
+									<AuthThumbnail>
+										<DeleteButton>
+											<img src={trash} alt="Trash Icon" />
+										</DeleteButton>
+									</AuthThumbnail>
+								) : (
+									<AuthThumbnail>
+										<img src={props.certify.imgUrl} alt="Auth Thumbnail" />
+									</AuthThumbnail>
+								)}
 							</Grid>
 							<Grid item textAlign="center">
 								<label htmlFor="auth-image">
-									<UploadInput accept="image/*" id="auth-image" type="file" />
-									<UploadButton type="button">이미지 업로드</UploadButton>
+									{!props.certify ? (
+										<>
+											<UploadInput
+												accept="image/*"
+												id="auth-image"
+												type="file"
+											/>
+											<UploadButton type="button">이미지 업로드</UploadButton>{" "}
+										</>
+									) : (
+										""
+									)}
 								</label>
 							</Grid>
 						</Grid>
 						<Grid item>
 							<LabelText>챌린지 인증 날짜</LabelText>
-							<DateInput
-								id="auth-date"
-								InputProps={{ readOnly: true }}
-								defaultValue={today}
-							/>
+							{!props.certify ? (
+								<DateInput
+									id="auth-date"
+									InputProps={{ readOnly: true }}
+									defaultValue={today}
+								/>
+							) : (
+								<DateInput
+									id="auth-date"
+									InputProps={{ readOnly: true }}
+									defaultValue={props.certify.createdDate}
+								/>
+							)}
 						</Grid>
 						<Grid item>
 							<LabelText>챌린지 인증 후기</LabelText>
-							<TextInput id="auth-text" multiline rows={8} />
+							{!props.certify ? (
+								<TextInput id="auth-text" multiline rows={8} />
+							) : (
+								<TextInput
+									id="auth-text"
+									multiline
+									rows={8}
+									InputProps={{ readOnly: true }}
+									defaultValue={props.certify.contents}
+								/>
+							)}
 						</Grid>
 						<Grid item textAlign="center">
-							<EnrollButton type="submit">등록</EnrollButton>
+							{!props.certify ? (
+								<EnrollButton type="submit">등록</EnrollButton>
+							) : (
+								<ConfirmButton type="button" onClick={props.handleDialogClose}>
+									확인
+								</ConfirmButton>
+							)}
 						</Grid>
 					</Grid>
 				</Box>
@@ -76,6 +117,11 @@ const AuthThumbnail = styled.div`
 	background-color: gray;
 	border-radius: 0.5rem;
 	position: relative;
+
+	img {
+		width: 100%;
+		height: 100%;
+	}
 `;
 
 const DeleteButton = styled.span`
@@ -138,19 +184,12 @@ const TextInput = styled(TextField)`
 	}
 `;
 
-const EnrollButton = styled.button`
+const EnrollButton = styled(StyledButton)`
 	padding: 0.8rem 1.8rem;
 	font-size: 1.6rem;
-	font-weight: bold;
-	color: #ffffff;
-	background-color: #eb3901;
-	outline: none;
-	border: none;
-	border-radius: 0.5rem;
-	cursor: pointer;
-	transition: opacity 0.3s;
+`;
 
-	&:hover {
-		opacity: 0.7;
-	}
+const ConfirmButton = styled(StyledButton)`
+	padding: 0.8rem 1.8rem;
+	font-size: 1.6rem;
 `;
