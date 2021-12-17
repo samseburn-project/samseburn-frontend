@@ -4,7 +4,7 @@ import axios from "axios";
 
 import styled from "styled-components";
 
-import kakao from "../../assets/icons/kakao.png";
+import { ReactComponent as KakaoIcon } from "../../assets/icons/kakao.svg";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -45,7 +45,7 @@ const KakaoSocialLogin = ({ ...props }) => {
 	return (
 		<KakaoLoginButton onClick={kakaoLoginHandler}>
 			<LoginIcon>
-				<img src={kakao} alt="Kakao icon" />
+				<KakaoIcon alt="Kakao icon" />
 			</LoginIcon>
 			<LoginText>카카오 로그인</LoginText>
 		</KakaoLoginButton>

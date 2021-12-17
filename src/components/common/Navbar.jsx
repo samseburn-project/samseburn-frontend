@@ -6,8 +6,8 @@ import KakaoSocialLogin from "./KakaoSocialLogin";
 
 import styled from "styled-components";
 
-import profile from "../../assets/icons/profile.png";
-import register from "../../assets/icons/plus.png";
+import { ReactComponent as Profile } from "../../assets/icons/profile.svg";
+import { ReactComponent as Register } from "../../assets/icons/plus.svg";
 
 const Navbar = () => {
 	const [isLoggedIn, setLoggedIn] = useState(false);
@@ -46,7 +46,7 @@ const Navbar = () => {
 							<NavLogo>삼세번</NavLogo>
 						</NavLink>
 						<NavProfile type="button" onClick={handleModalOpen}>
-							<img src={profile} alt="Profile icon" />
+							<Profile alt="Profile icon" />
 						</NavProfile>
 						<StyledDialog open={modalOpen} onClose={handleModalClose}>
 							<StyledDialogContent>
@@ -73,7 +73,7 @@ const Navbar = () => {
 								aria-expanded={open ? "true" : undefined}
 								onMouseOver={handleMouseOver}
 							>
-								<img src={profile} alt="Profile icon" />
+								<Profile alt="Profile icon" />
 							</NavProfile>
 							<StyledMenu
 								anchorEl={anchorEl}
@@ -84,7 +84,7 @@ const Navbar = () => {
 								<MenuItem>Logout</MenuItem>
 							</StyledMenu>
 							<NavRegister>
-								<img src={register} alt="Register icon" />
+								<Register alt="Register icon" />
 							</NavRegister>
 						</NavIcon>
 					</NavContainer>

@@ -5,6 +5,7 @@ import axios from "axios";
 import styled from "styled-components";
 
 import { Divider, Grid } from "@mui/material";
+
 import Intro from "./Intro";
 import Participant from "./Participant";
 import PlaceMap from "./PlaceMap";

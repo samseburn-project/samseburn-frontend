@@ -2,13 +2,13 @@ import React from "react";
 
 import styled from "styled-components";
 
-import heroImg from "../../assets/hero_img.png";
+import { ReactComponent as HeroImg } from "../../assets/home-hero.svg";
 
 const Hero = () => {
 	return (
 		<HeroBox>
 			<HeroContainer>
-				<img src={heroImg} alt="Hero" />
+				<HeroImg alt="Hero img" />
 				<HeroContents>
 					<HeroSubTitle>번번이 습관 만들기에 실패한다면?</HeroSubTitle>
 					<HeroSubTitle>작심삼일부터 천천히 시작해보세요!</HeroSubTitle>
