@@ -11,28 +11,65 @@ import { ReactComponent as ArrowForward } from '../../assets/icons/arrow.svg';
 import { ReactComponent as Delete } from '../../assets/icons/delete.svg';
 import { ReactComponent as Close } from '../../assets/icons/close.svg';
 
-import Category from '../common/Category';
 import StyledButton from '../common/StyledButton';
 import DaumPostcode from 'react-daum-postcode';
 import Modal from 'react-modal';
+import axios from 'axios';
 
 function RegisterPage(props) {
   const MAX_DATE = 99;
-  const topics = ['운동', '공부', '취미', '독서', '기타'];
-  const types = ['온라인', '오프라인'];
+  const categories = ['운동', '공부', '취미', '독서', '기타'];
+  const locationTypes = ['ONLINE', 'OFFLINE'];
 
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [participants, setParticipants] = useState(0);
+  const [roadAddress, setRoadAddress] = useState('');
+  const [detailAddress, setDetailAddress] = useState('');
+  const [category, setCategory] = useState('');
+  const [locationType, setLocationType] = useState('');
   const [date, setDate] = useState([null, null]);
   const [image, setImage] = useState({
     imageFile: null,
     imageUrl: null,
   });
-
-  const [inputs, setInputs] = useState({
-    roadAddress: '',
-    detailAddress: '',
-  });
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const { roadAddress, detailAddress } = inputs;
+
+  const onChange = (event) => {
+    event.preventDefault();
+    const {
+      target: { name, value },
+    } = event;
+    if (name === 'title') {
+      setTitle(value);
+    } else if (name === 'participants') {
+      setParticipants(value);
+    } else if (name === 'roadAddress') {
+      setRoadAddress(value);
+    } else if (name === 'detailAddress') {
+      setDetailAddress(value);
+    } else if (name === 'description') {
+      setDescription(value);
+    }
+  };
+
+  const onCategory = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setCategory(value);
+  };
+
+  const onLocationType = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setLocationType(value);
+    if (value === 'ONLINE') {
+      setRoadAddress('');
+      setDetailAddress('');
+    }
+  };
 
   const setImageFromFile = ({ file, setImageUrl }) => {
     const reader = new FileReader();
@@ -55,13 +92,6 @@ function RegisterPage(props) {
     }
   };
 
-  const onChange = ({ target: { value, name } }) => {
-    setInputs({
-      ...inputs,
-      [name]: value,
-    });
-  };
-
   const handleComplete = (data) => {
     let fullAddress = data.address;
     let extraAddress = '';
@@ -77,16 +107,47 @@ function RegisterPage(props) {
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
 
-    setInputs({ ...inputs, roadAddress: fullAddress });
+    setRoadAddress(fullAddress);
     setIsPopupOpen(false);
   };
 
-  const onClickHandler = () => {
-    setIsPopupOpen(!isPopupOpen);
+  const onClickPopupHandler = () => {
+    setIsPopupOpen(true);
   };
 
   const onModalHandler = () => {
     setIsPopupOpen(!isPopupOpen);
+  };
+
+  const onSubmitFormData = () => {
+    const userToken = localStorage.getItem('token'); // 헤더에 넣기
+    console.log(typeof userToken);
+    const address =
+      locationType === 'ONLINE' ? '' : roadAddress + detailAddress;
+
+    const formData = new FormData();
+
+    formData.append('image', image.imageFile);
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('challengeStartDate', date[0].toISOString().slice(0, 10));
+    formData.append('challengeEndDate', date[1].toISOString().slice(0, 10));
+    formData.append('limitPerson', participants);
+    formData.append('category', category);
+    formData.append('locationType', locationType);
+    formData.append('address', address);
+    formData.append('challengeProgress', 'INPROGRESS');
+
+    for (let data of formData.entries()) {
+      console.log(data[0] + ', ' + data[1]);
+    }
+    return axios
+      .post('/challenge', formData, {
+        headers: {
+          Authorization: userToken,
+        },
+      })
+      .then((response) => console.log);
   };
 
   const modalStyles = {
@@ -117,161 +178,208 @@ function RegisterPage(props) {
     },
   };
 
+  console.log(typeof date);
+
   return (
-    <>
-      <Wrapper>
-        <Title>챌린지 생성</Title>
-        <FormContainer>
-          <CustomContainer>
-            <div>
-              {/* 챌린지명 */}
-              <LabelText>챌린지명*</LabelText>
-              <BasicInput placeholder="챌린지명" size="small" required />
-
-              {/* 챌린지 기간 */}
-              <LabelText>챌린지 기간*</LabelText>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DateRangePicker
-                  disablePast
-                  inputFormat={'yyyy-MM-dd'}
-                  mask={'____-__-__'}
-                  maxDate={addDays(date[0], MAX_DATE)}
-                  size="small"
-                  startText="시작 일자"
-                  endText="종료 일자"
-                  value={date}
-                  onChange={(newValue) => {
-                    setDate(newValue);
-                  }}
-                  renderInput={(startProps, endProps) => (
-                    <>
-                      <DateInput {...startProps} size="small" />
-                      <Box sx={{ mx: 2 }}>
-                        <ArrowForward />
-                      </Box>
-                      <DateInput {...endProps} size="small" />
-                    </>
-                  )}
-                />
-              </LocalizationProvider>
-
-              {/* 챌린지 인원 */}
-              <LabelText>챌린지 인원*</LabelText>
-              <BasicInput placeholder="챌린지 인원" size="small" />
-            </div>
-
-            {/* 챌린지 이미지 */}
-            <ImageContainer>
-              {/* 이미지 미리보기 */}
-              <ThumbnailContainer>
-                {image.imageFile ? (
-                  <ImageThumbnail
-                    alt={image.imageFile.name}
-                    src={image.imageUrl}
-                  />
-                ) : (
-                  <DefaultThumbnail></DefaultThumbnail>
-                )}
-                {/* 이미지 삭제 버튼 */}
-                <StackBox>
-                  <IconButton>
-                    <Delete />
-                  </IconButton>
-                </StackBox>
-              </ThumbnailContainer>
-
-              {/* 이미지 업로드 버튼 */}
-              <label htmlFor="input-image">
-                <ImageFileInput
-                  type="file"
-                  accept="image/*"
-                  name="file"
-                  onChange={onLoadFile}
-                  id="input-image"
-                />
-                <RedSmallButton component="span">이미지 업로드</RedSmallButton>
-              </label>
-            </ImageContainer>
-          </CustomContainer>
-
-          {/* 카테고리 */}
-          <Row>
-            <LabelText>카테고리*</LabelText>
-
-            {/* 카테고리-챌린지주제 */}
-            <SmallLabelText>챌린지 주제*</SmallLabelText>
-            <CategoryContainer>
-              {topics.map((topic, i) => (
-                <Category key={i}>{topic}</Category>
-              ))}
-            </CategoryContainer>
-
-            {/* 카테고리-챌린지유형 */}
-            <SmallLabelText>챌린지 유형*</SmallLabelText>
-            <CategoryContainer>
-              {types.map((type, i) => (
-                <Category key={i}>{type}</Category>
-              ))}
-            </CategoryContainer>
-
-            {/* 카테고리-오프라인주소입력 */}
-            <SmallLabelText>오프라인 장소</SmallLabelText>
-            <Box>
-              <BasicInput
-                placeholder="도로명 주소"
-                size="small"
-                isNext={true}
-                name="roadAddress"
-                value={roadAddress}
-                onChange={onChange}
-                readOnly
-              />
-              <BlackSmallButton onClick={onClickHandler}>
-                주소 검색
-              </BlackSmallButton>
-            </Box>
+    <RegisterPageBox>
+      <Title>챌린지 생성</Title>
+      <FormContainer>
+        <CustomContainer>
+          <div>
+            {/* 챌린지명 */}
+            <LabelText>챌린지명*</LabelText>
             <BasicInput
-              placeholder="상세주소"
+              placeholder="챌린지명"
               size="small"
-              name="detailAddress"
-              value={detailAddress}
+              value={title}
+              name="title"
+              onChange={onChange}
+              required
+            />
+
+            {/* 챌린지 기간 */}
+            <LabelText>챌린지 기간*</LabelText>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DateRangePicker
+                disablePast
+                inputFormat={'yyyy-MM-dd'}
+                mask={'____-__-__'}
+                maxDate={addDays(date[0], MAX_DATE)}
+                size="small"
+                startText="시작 일자"
+                endText="종료 일자"
+                value={date}
+                onChange={(newValue) => {
+                  setDate(newValue);
+                }}
+                renderInput={(startProps, endProps) => (
+                  <>
+                    <DateInput {...startProps} size="small" />
+                    <Box sx={{ mx: 2 }}>
+                      <ArrowForward />
+                    </Box>
+                    <DateInput {...endProps} size="small" />
+                  </>
+                )}
+              />
+            </LocalizationProvider>
+
+            {/* 챌린지 인원 */}
+            <LabelText>챌린지 인원*</LabelText>
+            <BasicInput
+              placeholder="챌린지 인원"
+              size="small"
+              name="participants"
+              value={participants}
               onChange={onChange}
             />
-            <Modal
-              isOpen={isPopupOpen}
-              ariaHideApp={false}
-              onRequestClose={onModalHandler}
-              style={modalStyles}
-            >
-              <CloseIconButton onClick={onModalHandler}>
-                <Close />
-              </CloseIconButton>
-              <DaumPostcode onComplete={handleComplete} {...props} />;
-            </Modal>
-          </Row>
+          </div>
 
-          {/* 챌린지 설명 */}
-          <Row>
-            <LabelText>챌린지 설명*</LabelText>
-            <BasicTextarea></BasicTextarea>
-          </Row>
+          {/* 챌린지 이미지 */}
+          <ImageContainer>
+            {/* 이미지 미리보기 */}
+            <ThumbnailContainer>
+              {image.imageFile ? (
+                <ImageThumbnail
+                  alt={image.imageFile.name}
+                  src={image.imageUrl}
+                />
+              ) : (
+                <DefaultThumbnail></DefaultThumbnail>
+              )}
+              {/* 이미지 삭제 버튼 */}
+              <StackBox>
+                <IconButton>
+                  <Delete />
+                </IconButton>
+              </StackBox>
+            </ThumbnailContainer>
 
-          <ButtonContainer>
-            <RedBigButton>등록</RedBigButton>
-            <BlackBigButton>취소</BlackBigButton>
-          </ButtonContainer>
-        </FormContainer>
-      </Wrapper>
-    </>
+            {/* 이미지 업로드 버튼 */}
+            <label htmlFor="input-image">
+              <ImageFileInput
+                type="file"
+                accept="image/*"
+                name="file"
+                onChange={onLoadFile}
+                id="input-image"
+              />
+              <RedSmallButton component="span">이미지 업로드</RedSmallButton>
+            </label>
+          </ImageContainer>
+        </CustomContainer>
+
+        {/* 카테고리 */}
+        <Row>
+          <LabelText>카테고리*</LabelText>
+
+          {/* 카테고리-챌린지주제 */}
+          <SmallLabelText>챌린지 주제*</SmallLabelText>
+          <CategoryContainer>
+            {categories.map((item, i) => (
+              <CategoryLabel className="categoryGroup" key={i}>
+                <CategoryRadio
+                  type="radio"
+                  name="category"
+                  value={item}
+                  onChange={onCategory}
+                  checked={category === item}
+                ></CategoryRadio>
+                <CategorySpan>{item}</CategorySpan>
+              </CategoryLabel>
+            ))}
+          </CategoryContainer>
+
+          {/* 카테고리-챌린지유형 */}
+          <SmallLabelText>챌린지 유형*</SmallLabelText>
+          <CategoryContainer>
+            {locationTypes.map((item, i) => (
+              <LocationTypeLabel className="locationTypeGroup" key={i}>
+                <LocationTypeRadio
+                  type="radio"
+                  name="locationType"
+                  value={item}
+                  onChange={onLocationType}
+                  checked={locationType === item}
+                ></LocationTypeRadio>
+                <LocationTypeSpan>
+                  {item === 'ONLINE' ? '온라인' : '오프라인'}
+                </LocationTypeSpan>
+              </LocationTypeLabel>
+            ))}
+          </CategoryContainer>
+
+          {locationType === 'OFFLINE' ? (
+            <>
+              <SmallLabelText>오프라인 장소</SmallLabelText>
+              <Box>
+                <BasicInput
+                  placeholder="도로명 주소"
+                  size="small"
+                  isNext={true}
+                  name="roadAddress"
+                  value={roadAddress}
+                  onChange={onChange}
+                  readOnly
+                />
+                <BlackSmallButton onClick={onClickPopupHandler}>
+                  주소 검색
+                </BlackSmallButton>
+              </Box>
+              <BasicInput
+                placeholder="상세주소"
+                size="small"
+                name="detailAddress"
+                value={detailAddress}
+                onChange={onChange}
+              />
+              <Modal
+                isOpen={isPopupOpen}
+                ariaHideApp={false}
+                onRequestClose={onModalHandler}
+                style={modalStyles}
+              >
+                <CloseIconButton onClick={onModalHandler}>
+                  <Close />
+                </CloseIconButton>
+                <DaumPostcode onComplete={handleComplete} {...props} />;
+              </Modal>
+            </>
+          ) : (
+            ''
+          )}
+          {/* 카테고리-오프라인주소입력 */}
+        </Row>
+
+        {/* 챌린지 설명 */}
+        <Row>
+          <LabelText>챌린지 설명*</LabelText>
+          <BasicTextarea
+            name="description"
+            value={description}
+            onChange={onChange}
+          ></BasicTextarea>
+        </Row>
+
+        <ButtonContainer>
+          <RedBigButton onClick={onSubmitFormData}>등록</RedBigButton>
+          <BlackBigButton>취소</BlackBigButton>
+        </ButtonContainer>
+      </FormContainer>
+    </RegisterPageBox>
   );
 }
 
 export default RegisterPage;
 
-const Wrapper = styled.section`
-  width: 104rem;
-  margin: 10rem auto;
+const RegisterPageBox = styled.div`
+  padding: 0 17.7rem;
 `;
+
+// const Wrapper = styled.section`
+//   width: 104rem;
+//   margin: 10rem auto;
+// `;
 
 const Title = styled.div`
   font-size: 2.4rem;
@@ -281,7 +389,10 @@ const Title = styled.div`
 `;
 
 const FormContainer = styled.div`
-  margin: 0 8.8rem;
+  /* margin: 0 8.8rem; */
+  &:checked {
+    background-color: #000000;
+  }
 `;
 
 const Row = styled.div``;
@@ -446,4 +557,78 @@ const StackBox = styled.div`
 
 const CloseIconButton = styled(IconButton)`
   margin-left: auto;
+`;
+
+const CategoryLabel = styled.label`
+  width: 6.5rem;
+  height: 3.2rem;
+
+  font-size: 1.6rem;
+  font-weight: bold;
+  text-align: center;
+  letter-spacing: 2px;
+  cursor: pointer;
+  line-height: 3.2rem;
+
+  input:checked + span {
+    background-color: #ffa883;
+    color: white;
+  }
+`;
+
+const CategoryRadio = styled.input`
+  display: none;
+`;
+
+const CategorySpan = styled.span`
+  display: inline-block;
+  width: 6.5rem;
+  height: 3.2rem;
+
+  color: #ffa883;
+  background-color: #ffffff;
+  border: 1px solid #ffa883;
+  border-radius: 2rem;
+
+  &:hover {
+    background-color: #ffa883;
+    color: white;
+  }
+`;
+
+const LocationTypeLabel = styled.label`
+  width: 8.9rem;
+  height: 3.2rem;
+
+  font-size: 1.6rem;
+  font-weight: bold;
+  text-align: center;
+  letter-spacing: 2px;
+  cursor: pointer;
+  line-height: 3.2rem;
+
+  input:checked + span {
+    background-color: #ffa883;
+    color: white;
+  }
+`;
+
+const LocationTypeRadio = styled.input`
+  display: none;
+`;
+
+const LocationTypeSpan = styled.span`
+  display: inline-block;
+  width: 8.9rem;
+  height: 3.2rem;
+
+  color: #ffa883;
+  background-color: #ffffff;
+  border: 1px solid #ffa883;
+  border-radius: 2rem;
+
+  &:hover {
+    background-color: #ffa883;
+    color: white;
+  }
 `;
