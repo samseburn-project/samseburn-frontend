@@ -1,8 +1,9 @@
 import React from "react";
 
-import { Dialog, DialogContent } from "@mui/material";
-
 import styled from "styled-components";
+
+import { Dialog, DialogContent } from "@mui/material";
+import StyledButton from "./StyledButton";
 
 import close from "../../assets/icons/close.png";
 
@@ -19,9 +20,9 @@ const CommonDialog = ({ ...props }) => {
 						<SubText>{props.subText}</SubText>
 					</Row>
 					<Row>
-						<Button type="button" onClick={props.handleDialogClose}>
+						<ConfirmButton type="button" onClick={props.handleDialogClose}>
 							확인
-						</Button>
+						</ConfirmButton>
 					</Row>
 				</Container>
 			</StyledDialogContent>
@@ -65,19 +66,7 @@ const SubText = styled.div`
 	letter-spacing: 1px;
 `;
 
-const Button = styled.button`
+const ConfirmButton = styled(StyledButton)`
 	padding: 0.8rem 1.8rem;
 	font-size: 1.6rem;
-	font-weight: bold;
-	color: #ffffff;
-	background-color: #eb3901;
-	outline: none;
-	border: none;
-	border-radius: 0.5rem;
-	cursor: pointer;
-	transition: opacity 0.3s;
-
-	&:hover {
-		opacity: 0.7;
-	}
 `;
