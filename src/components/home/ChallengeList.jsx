@@ -1,48 +1,45 @@
-import { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import axios from 'axios';
-import ChallengeCard from './ChallengeCard';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
+import { Grid } from "@mui/material";
+import ChallengeCard from "./ChallengeCard";
 
 const ChallengeList = () => {
-  const [list, setList] = useState([]);
+	const [list, setList] = useState([]);
 
-  const fetchChallenges = async () => {
-    try {
-      const { data } = await axios.get('/challenges?kind=All');
-      console.log(data);
-      setList(data);
-    } catch (e) {
-      console.error(e);
-    }
-  };
+	const fetchChallenges = async () => {
+		try {
+			const { data } = await axios.get("/challenges?kind=All");
+			setList(data);
+		} catch (e) {
+			console.error(e);
+		}
+	};
 
-  useEffect(() => {
-    fetchChallenges();
-  }, []);
+	useEffect(() => {
+		fetchChallenges();
+	}, []);
 
-  return (
-    <ListContainer>
-      {list.map((challenge) => (
-        <ChallengeCard
-          key={challenge.challengeId}
-          title={challenge.title}
-          category={challenge.category.name}
-          locationType={challenge.locationType}
-          startDate={challenge.startDate}
-          endDate={challenge.endDate}
-          imgUrl={challenge.imgUrl}
-          limitPerson={challenge.limitPerson}
-          participants={challenge.participants}
-        />
-      ))}
-    </ListContainer>
-  );
+	return (
+		<Grid container spacing={4}>
+			{list.map((challenge) => (
+				<Grid item xs={4} key={challenge.challengeId}>
+					<ChallengeCard
+						key={challenge.challengeId}
+						id={challenge.challengeId}
+						title={challenge.title}
+						category={challenge.category.name}
+						locationType={challenge.locationType}
+						startDate={challenge.startDate}
+						endDate={challenge.endDate}
+						imgUrl={challenge.imgUrl}
+						limitPerson={challenge.limitPerson}
+						participants={challenge.participants}
+					/>
+				</Grid>
+			))}
+		</Grid>
+	);
 };
 
 export default ChallengeList;
-
-const ListContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-`;
