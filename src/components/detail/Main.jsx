@@ -1,38 +1,50 @@
-import React from "react";
-
-import Navbar from "../common/Navbar";
-import Intro from "./Intro";
-import Footer from "../common/Footer";
-import { Divider, Grid } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 import styled from "styled-components";
+
+import { Divider, Grid } from "@mui/material";
+import Intro from "./Intro";
 import Participant from "./Participant";
 import PlaceMap from "./PlaceMap";
 
 const Main = () => {
+	const params = useParams();
+	const id = Number(params.id);
+	const [challenge, setChallenge] = useState();
+
+	const fetchChallenge = async () => {
+		try {
+			const { data } = await axios.get(`/challenges/${id}`);
+			setChallenge(data);
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
+	useEffect(() => {
+		fetchChallenge();
+	}, []);
+
 	return (
 		<>
-			<Navbar />
-			<Intro />
+			<Intro challenge={challenge} />
 			<Wrapper>
 				<Row>
 					<Title>챌린지 설명</Title>
-					<Text>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Neque, non
-						eget et lectus at sed. Id viverra purus proin vitae. Fusce leo
-						vestibulum condimentum in. Aliquet amet ut felis volutpat a. Libero,
-						auctor nam est mauris dapibus neque. Nisi, eu convallis eget non eu.
-						Bibendum faucibus pellentesque fusce justo mauris tristique congue.
-						Sit id aliquet scelerisque lectus est commodo. Vitae in quisque
-						volutpat vestibulum morbi netus pulvinar.
-					</Text>
+					<Text>{challenge?.description}</Text>
 				</Row>
 				<Row>
 					<Title>챌린지 참가 장소</Title>
-					<AddressText>도로명 주소</AddressText>
-					<MapContainer>
-						<PlaceMap />
-					</MapContainer>
+					<AddressText>{challenge?.address}</AddressText>
+					{challenge?.address ? (
+						<MapContainer>
+							<PlaceMap />
+						</MapContainer>
+					) : (
+						<OnlineText>본 챌린지는 온라인으로 진행됩니다.</OnlineText>
+					)}
 				</Row>
 				<Divider />
 				<Row>
@@ -50,7 +62,6 @@ const Main = () => {
 					</Grid>
 				</Row>
 			</Wrapper>
-			<Footer />
 		</>
 	);
 };
@@ -89,6 +100,15 @@ const Text = styled.div`
 const MapContainer = styled.div`
 	width: 86.2rem;
 	height: 30rem;
-	border-radius: 0.5rem;
 	margin: 0 auto;
+
+	#map {
+		border-radius: 0.5rem;
+	}
+`;
+
+const OnlineText = styled.div`
+	margin: 8rem 0;
+	font-size: 2rem;
+	text-align: center;
 `;

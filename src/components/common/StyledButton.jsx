@@ -8,7 +8,15 @@ const StyledButton = (props) => {
 export default StyledButton;
 
 const StyledMuiButton = styled(Button)`
-  border: none;
   border-radius: 0.5rem;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #eb3901;
   cursor: pointer;
+  transition: opacity 0.3s;
+
+  &:hover {
+    background-color: #eb3901;
+    opacity: 0.6;
+  }
 `;

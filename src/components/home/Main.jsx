@@ -1,18 +1,38 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
 import styled from "styled-components";
 
-import Navbar from "../common/Navbar";
+import { Box } from "@mui/material";
+
 import Hero from "./Hero";
 import Contents from "./Contents";
 import SearchBar from "./SearchBar";
 import CategoryFilter from "./CategoryFilter";
 import SortFilter from "./SortFilter";
-import ChallengeCard from "./ChallengeCard";
+import ChallengeList from "./ChallengeList";
 
 const Main = () => {
+	const [sortBy, setSortBy] = useState("createdAt");
+
+	const fetchData = async () => {
+		try {
+			const res = await axios.get("/challenges/filter", {
+				params: {
+					sortBy: sortBy,
+				},
+			});
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
+	useEffect(() => {
+		fetchData();
+	}, [sortBy]);
+
 	return (
 		<>
-			<Navbar />
 			<Hero />
 			<Contents />
 			<Wrapper>
@@ -22,9 +42,11 @@ const Main = () => {
 				</SearchBarRow>
 				<FilterRow>
 					<CategoryFilter />
-					<SortFilter />
+					<SortFilter sortBy={sortBy} setSortBy={setSortBy} />
 				</FilterRow>
-				<ChallengeCard />
+				<ListContainer sx={{ width: "100%" }}>
+					<ChallengeList />
+				</ListContainer>
 			</Wrapper>
 		</>
 	);
@@ -52,4 +74,9 @@ const SearchBarRow = styled.div`
 	margin-top: 3.7rem;
 	display: flex;
 	justify-content: center;
+`;
+
+const ListContainer = styled(Box)`
+	margin-top: 6rem;
+	margin-bottom: 18rem;
 `;

@@ -1,30 +1,37 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import { Card, CardContent, CardMedia, CardActionArea } from "@mui/material";
+import Category from "../common/Category";
 
 import styled from "styled-components";
 
-import sample from "../../assets/sample.png";
 import calendar from "../../assets/icons/calendar.png";
 
-const ChallengeCard = () => {
+const ChallengeCard = ({ ...props }) => {
 	return (
-		<StyledCard>
+		<StyledCard onClick={() => navigate(`/detail/${props.id}`)}>
 			<CardActionArea>
-				<CardMedia component="img" image={sample} />
+				<CardMedia component="img" image={props.imgUrl} />
 				<StyledCardContent>
-					<CardTitle>챌린지 이름</CardTitle>
+					<CardTitle>{props.title}</CardTitle>
 					<Row>
-						<CardCategory>카테고리</CardCategory>
-						<CardCategory>카테고리</CardCategory>
+						<CardCategory>{props.category}</CardCategory>
+						<CardCategory>
+							{props.locationType === "ONLINE" ? "온라인" : "오프라인"}
+						</CardCategory>
 					</Row>
 					<Row>
 						<CardIcon>
 							<img src={calendar} alt="Calendar icon" />
 						</CardIcon>
-						<CardDate>2021. 01. 01 ~ 2021. 12. 31</CardDate>
+						<CardDate>
+							{props.startDate} ~ {props.endDate}
+						</CardDate>
 					</Row>
-					<CardMember>현재 00/10 명이 참여중입니다.</CardMember>
+					<CardMember>
+						현재 {props.participants}/{props.limitPerson} 명이 참여중입니다.
+					</CardMember>
 				</StyledCardContent>
 			</CardActionArea>
 		</StyledCard>
@@ -34,15 +41,16 @@ const ChallengeCard = () => {
 export default ChallengeCard;
 
 const StyledCard = styled(Card)`
-	width: 33.1rem;
 	height: 36.3rem;
 	box-shadow: 0.6rem 1.1rem 2rem rgba(0, 0, 0, 0.25);
+
 	img {
 		height: 18.15rem;
 	}
 
 	.css-46bh2p-MuiCardContent-root {
 		padding: 2rem;
+		cursor: pointer;
 	}
 `;
 
@@ -63,13 +71,9 @@ const Row = styled.div`
 	margin-bottom: 1rem;
 `;
 
-const CardCategory = styled.span`
+const CardCategory = styled(Category)`
 	font-size: 1.2rem;
-	color: #8f8f8f;
-	background-color: #e5e5e5;
-	border-radius: 2rem;
 	padding: 0.5rem 1rem;
-	letter-spacing: 0.2px;
 `;
 
 const CardDate = styled.div`

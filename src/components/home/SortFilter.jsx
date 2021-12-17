@@ -1,27 +1,27 @@
-import React, { useState } from "react";
+import React from "react";
+
 import styled from "styled-components";
+
 import { FormControl, Select, MenuItem } from "@mui/material";
 
-const SortFilter = () => {
-	const [sortBy, setSortBy] = useState("");
-
+const SortFilter = ({ ...props }) => {
 	const handleChange = (e) => {
-		setSortBy(e.target.value);
+		props.setSortBy(e.target.value);
 	};
 
 	return (
 		<FormControl sx={{ minWidth: 150 }}>
 			<StyledSelect
 				name="sortBy"
-				value={sortBy}
+				value={props.sortBy}
 				onChange={handleChange}
 				displayEmpty
 			>
 				<StyledMenuItem value={""} disabled>
 					정렬 필터
 				</StyledMenuItem>
-				<StyledMenuItem value={"newest"}>최신순</StyledMenuItem>
-				<StyledMenuItem value={"in-progress"}>진행중인 챌린지</StyledMenuItem>
+				<StyledMenuItem value={"createdAt"}>최신순</StyledMenuItem>
+				<StyledMenuItem value={"inProgress"}>진행중인 챌린지</StyledMenuItem>
 			</StyledSelect>
 		</FormControl>
 	);

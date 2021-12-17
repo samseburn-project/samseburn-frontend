@@ -1,24 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+
+import { Menu, MenuItem, Dialog, DialogContent } from "@mui/material";
+import KakaoSocialLogin from "./KakaoSocialLogin";
 
 import styled from "styled-components";
 
-import {
-	Menu,
-	MenuItem,
-	Dialog,
-	DialogContent,
-	DialogActions,
-} from "@mui/material";
-
 import profile from "../../assets/icons/profile.png";
 import register from "../../assets/icons/plus.png";
-import kakao from "../../assets/icons/kakao.png";
 
 const Navbar = () => {
 	const [isLoggedIn, setLoggedIn] = useState(false);
 	const [modalOpen, setModalOpen] = useState(false);
 	const [anchorEl, setAnchorEl] = useState(null);
 	const open = Boolean(anchorEl);
+
+	const userToken = localStorage.getItem("token");
+
+	useEffect(() => {
+		if (userToken) setLoggedIn(true);
+	}, []);
 
 	const handleMouseOver = (e) => {
 		setAnchorEl(e.currentTarget);
@@ -41,7 +42,9 @@ const Navbar = () => {
 			{!isLoggedIn ? (
 				<Nav>
 					<NavContainer>
-						<NavLogo>삼세번</NavLogo>
+						<NavLink to="/">
+							<NavLogo>삼세번</NavLogo>
+						</NavLink>
 						<NavProfile type="button" onClick={handleModalOpen}>
 							<img src={profile} alt="Profile icon" />
 						</NavProfile>
@@ -49,12 +52,10 @@ const Navbar = () => {
 							<StyledDialogContent>
 								삼세번과 함께 <br />
 								건강한 습관을 만들어보세요!
-								<LoginBtn type="button">
-									<LoginIcon>
-										<img src={kakao} alt="Kakao icon" />
-									</LoginIcon>
-									<LoginText>카카오 로그인</LoginText>
-								</LoginBtn>
+								<KakaoSocialLogin
+									onClose={handleModalClose}
+									setLoggedIn={setLoggedIn}
+								/>
 							</StyledDialogContent>
 						</StyledDialog>
 					</NavContainer>
@@ -96,6 +97,10 @@ export default Navbar;
 const Nav = styled.nav`
 	width: 100%;
 	height: 8.8rem;
+`;
+
+const NavLink = styled(Link)`
+	text-decoration: none;
 `;
 
 const NavContainer = styled.div`
@@ -171,29 +176,4 @@ const StyledDialogContent = styled(DialogContent)`
 	display: flex;
 	flex-direction: column;
 	gap: 4rem;
-`;
-
-const LoginBtn = styled.button`
-	width: 31.7rem;
-	height: 4rem;
-	padding: 1rem;
-	font-size: 1.6rem;
-	font-weight: bold;
-	letter-spacing: 0.2rem;
-	background-color: #ffe812;
-	border: none;
-	border-radius: 0.5rem;
-	outline: none;
-	cursor: pointer;
-
-	display: flex;
-	align-items: center;
-`;
-
-const LoginIcon = styled.span`
-	flex: 0.1;
-`;
-
-const LoginText = styled.span`
-	flex: 0.8;
 `;

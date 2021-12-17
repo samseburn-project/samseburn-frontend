@@ -6,7 +6,7 @@ const Category = (props) => {
 
 export default Category;
 
-const StyledCategory = styled.button`
+const StyledCategory = styled.span`
 	font-weight: bold;
 	color: #8f8f8f;
 	background-color: #ffffff;
@@ -16,8 +16,6 @@ const StyledCategory = styled.button`
 	letter-spacing: 2px;
 	cursor: pointer;
 
-	&:hover {
-		color: #ffffff;
-		background-color: #8f8f8f;
-	}
+	display: flex;
+	align-items: center;
 `;
