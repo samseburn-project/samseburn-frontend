@@ -9,10 +9,14 @@ import close from "../../assets/icons/close.png";
 
 const CommonDialog = ({ ...props }) => {
 	return (
-		<Dialog onClose={props.handleDialogClose} open={props.dialogOpen}>
+		<Dialog onClose={() => props.handleDialogClose()} open={props.dialogOpen}>
 			<StyledDialogContent>
 				<CloseButton>
-					<img src={close} alt="Close icon" onClick={props.handleDialogClose} />
+					<img
+						src={close}
+						alt="Close icon"
+						onClick={() => props.handleDialogClose()}
+					/>
 				</CloseButton>
 				<Container>
 					<Row>
@@ -20,7 +24,10 @@ const CommonDialog = ({ ...props }) => {
 						<SubText>{props.subText}</SubText>
 					</Row>
 					<Row>
-						<ConfirmButton type="button" onClick={props.handleDialogClose}>
+						<ConfirmButton
+							type="button"
+							onClick={() => props.handleDialogClose()}
+						>
 							확인
 						</ConfirmButton>
 					</Row>

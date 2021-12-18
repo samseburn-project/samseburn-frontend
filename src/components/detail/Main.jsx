@@ -14,6 +14,9 @@ const Main = () => {
 	const id = Number(params.id);
 	const [challenge, setChallenge] = useState();
 	const [participants, setParticipants] = useState([]);
+	const [join, setJoin] = useState(false);
+	const [dialogOpen, setDialogOpen] = useState(false);
+	const userToken = localStorage.getItem("token");
 
 	const fetchChallenge = async () => {
 		try {
@@ -33,6 +36,42 @@ const Main = () => {
 		}
 	};
 
+	const handleDialogOpen = () => {
+		setDialogOpen(true);
+	};
+
+	const handleDialogClose = () => {
+		setDialogOpen(false);
+	};
+
+	const handleChallengeJoin = async () => {
+		try {
+			const res = await axios.post(`/challenges/${id}/join`, {
+				headers: {
+					Authorization: `Bearer ${userToken}`,
+				},
+			});
+
+			if (res.status === 200) setJoin(true);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const handleChallengeCancel = async () => {
+		try {
+			const res = await axios.delete(`/challenges/${id}/cancel`, {
+				headers: {
+					Authorization: `Bearer ${userToken}`,
+				},
+			});
+
+			if (res.status === 200) setJoin(false);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
 	useEffect(() => {
 		fetchChallenge();
 		fetchParticipants();
@@ -40,7 +79,16 @@ const Main = () => {
 
 	return (
 		<>
-			<Intro challenge={challenge} />
+			<Intro
+				userToken={userToken}
+				challenge={challenge}
+				join={join}
+				handleChallengeJoin={handleChallengeJoin}
+				handleChallengeCancel={handleChallengeCancel}
+				dialogOpen={dialogOpen}
+				handleDialogOpen={handleDialogOpen}
+				handleDialogClose={handleDialogClose}
+			/>
 			<Wrapper>
 				<Row>
 					<Title>챌린지 설명</Title>

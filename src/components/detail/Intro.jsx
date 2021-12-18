@@ -1,50 +1,87 @@
-import React, { useState } from "react";
+import React from "react";
+import { useSnackbar } from "notistack";
 
 import styled from "styled-components";
 
 import Category from "../common/Category";
-import CommonDialog from "../common/CommonDialog";
 import StyledButton from "../common/StyledButton";
+import CommonDialog from "../common/CommonDialog";
+import AuthDialog from "../common/AuthDialog";
 
-const Intro = ({ challenge }) => {
-	const [dialogOpen, setDialogOpen] = useState(false);
+const Intro = ({ ...props }) => {
+	const { enqueueSnackbar } = useSnackbar();
 
-	const handleDialogOpen = () => {
-		setDialogOpen(true);
-	};
-
-	const handleDialogClose = () => {
-		setDialogOpen(false);
-	};
 	return (
 		<IntroBox>
 			<IntroContainer>
 				<IntroThumbnail>
-					<img src={challenge?.imgUrl} alt="Challenge Thumbnail" />
+					<img src={props.challenge?.imgUrl} alt="Challenge Thumbnail" />
 				</IntroThumbnail>
 				<ContentsContainer>
-					<Title>{challenge?.title}</Title>
+					<Title>{props.challenge?.title}</Title>
 					<CategoryRow>
-						<IntroCategory>{challenge?.locationType}</IntroCategory>
-						<IntroCategory>{challenge?.category.name}</IntroCategory>
+						<IntroCategory>{props.challenge?.locationType}</IntroCategory>
+						<IntroCategory>{props.challenge?.category.name}</IntroCategory>
 					</CategoryRow>
 					<SubTitle>진행 기간</SubTitle>
 					<Text>
-						{challenge?.startDate} ~ {challenge?.endDate}
+						{props.challenge?.startDate} ~ {props.challenge?.endDate}
 					</Text>
 					<SubTitle>참가 인원</SubTitle>
 					<Text>
-						{challenge?.participants} / {challenge?.limitPerson} 명
+						{props.challenge?.participants} / {props.challenge?.limitPerson} 명
 					</Text>
-					<ApplyButton type="button" onClick={handleDialogOpen}>
-						챌린지 참가하기
-					</ApplyButton>
-					<CommonDialog
-						dialogOpen={dialogOpen}
-						handleDialogOpen={handleDialogOpen}
-						handleDialogClose={handleDialogClose}
-						mainText={"챌린지 참가 신청이 완료되었습니다."}
-					/>
+					{!props.join ? (
+						<>
+							<ApplyButton
+								type="button"
+								onClick={() => {
+									if (props.userToken) {
+										props.handleChallengeJoin();
+										props.handleDialogOpen();
+									} else {
+										enqueueSnackbar("로그인이 필요한 기능입니다!", {
+											variant: "warning",
+											autoHideDuration: 2000,
+										});
+									}
+								}}
+							>
+								챌린지 참가하기
+							</ApplyButton>
+							<ApplyDialog
+								dialogOpen={props.dialogOpen}
+								handleDialogOpen={props.handleDialogOpen}
+								handleDialogClose={props.handleDialogClose}
+								mainText={"챌린지 참가 신청이 완료되었습니다."}
+							/>
+						</>
+					) : (
+						<ButtonRow>
+							<AuthButton onClick={props.handleDialogOpen}>
+								챌린지 인증
+							</AuthButton>
+							<AuthDialog
+								dialogOpen={props.dialogOpen}
+								handleDialogOpen={props.handleDialogOpen}
+								handleDialogClose={props.handleDialogClose}
+							/>
+							<CancelButton
+								onClick={() => {
+									props.handleChallengeCancel();
+									props.handleDialogOpen();
+								}}
+							>
+								참가 취소
+							</CancelButton>
+							<CancelDialog
+								dialogOpen={props.dialogOpen}
+								handleDialogOpen={props.handleDialogOpen}
+								handleDialogClose={props.handleDialogClose}
+								mainText={"챌린지 참가 신청이 취소되었습니다."}
+							/>
+						</ButtonRow>
+					)}
 				</ContentsContainer>
 			</IntroContainer>
 		</IntroBox>
@@ -127,43 +164,22 @@ const ApplyButton = styled(StyledButton)`
 	font-size: 2rem;
 `;
 
-// const ButtonRow = styled.div`
-// 	display: flex;
-// 	gap: 2.4rem;
-// `;
+const ApplyDialog = styled(CommonDialog)``;
 
-// const AuthButton = styled.button`
-// 	width: 17.6rem;
-// 	height: 5.5rem;
-// 	font-size: 2rem;
-// 	font-weight: bold;
-// 	color: #ffffff;
-// 	background-color: #eb3901;
-// 	outline: none;
-// 	border: none;
-// 	border-radius: 0.5rem;
-// 	cursor: pointer;
-// 	transition: opacity 0.3s;
+const ButtonRow = styled.div`
+	display: flex;
+	gap: 2.4rem;
+`;
 
-// 	&:hover {
-// 		opacity: 0.7;
-// 	}
-// `;
+const AuthButton = styled(StyledButton)`
+	width: 17.6rem;
+	height: 5.5rem;
+	font-size: 2rem;
+`;
 
-// const CancelButton = styled.button`
-// 	width: 17.6rem;
-// 	height: 5.5rem;
-// 	font-size: 2rem;
-// 	font-weight: bold;
-// 	color: #ffffff;
-// 	background-color: #eb3901;
-// 	outline: none;
-// 	border: none;
-// 	border-radius: 0.5rem;
-// 	cursor: pointer;
-// 	transition: opacity 0.3s;
-
-// 	&:hover {
-// 		opacity: 0.7;
-// 	}
-// `;
+const CancelButton = styled(StyledButton)`
+	width: 17.6rem;
+	height: 5.5rem;
+	font-size: 2rem;
+`;
+const CancelDialog = styled(CommonDialog)``;

@@ -17,7 +17,7 @@ const Main = () => {
 
 	const fetchData = async () => {
 		try {
-			const res = await axios.get("/challenges/filter", {
+			await axios.get("/challenges/filter", {
 				params: {
 					sortBy: sortBy,
 				},

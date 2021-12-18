@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { SnackbarProvider } from "notistack";
 
 import GlobalStyles from "./GlobalStyles";
 
@@ -11,13 +12,20 @@ import MyPage from "./pages/MyPage";
 const App = () => {
 	return (
 		<BrowserRouter>
-			<GlobalStyles />
-			<Routes>
-				<Route path="/" element={<Home />} />
-				<Route path="/detail/:id" element={<Detail />} />
-				<Route path="/register" element={<RegisterPage />} />
-				<Route path="/my" element={<MyPage />} />
-			</Routes>
+			<SnackbarProvider
+				anchorOrigin={{
+					vertical: "top",
+					horizontal: "right",
+				}}
+			>
+				<GlobalStyles />
+				<Routes>
+					<Route path="/" element={<Home />} />
+					<Route path="/detail/:id" element={<Detail />} />
+					<Route path="/register" element={<RegisterPage />} />
+					<Route path="/my" element={<MyPage />} />
+				</Routes>
+			</SnackbarProvider>
 		</BrowserRouter>
 	);
 };
