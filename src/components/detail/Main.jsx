@@ -48,10 +48,10 @@ const Main = () => {
 				</Row>
 				<Row>
 					<Title>챌린지 참가 장소</Title>
-					<AddressText>{challenge?.address}</AddressText>
+					<AddressText>📌 도로명 주소 : {challenge?.address}</AddressText>
 					{challenge?.address ? (
 						<MapContainer>
-							<PlaceMap />
+							<PlaceMap address={challenge.address} />
 						</MapContainer>
 					) : (
 						<OnlineText>본 챌린지는 온라인으로 진행됩니다.</OnlineText>
