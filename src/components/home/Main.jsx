@@ -4,7 +4,6 @@ import axios from "axios";
 import styled from "styled-components";
 
 import { Box } from "@mui/material";
-
 import Hero from "./Hero";
 import Contents from "./Contents";
 import SearchBar from "./SearchBar";
