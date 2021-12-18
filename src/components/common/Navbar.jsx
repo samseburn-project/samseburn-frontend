@@ -49,13 +49,9 @@ const Navbar = () => {
 				const token = response.access_token;
 				console.log(token);
 				axios
-					.post(
-						"https://api.fevertime.shop/login/kakao",
-						JSON.stringify({ token: token }),
-						{
-							headers: { "Content-Type": "application/json" },
-						}
-					)
+					.post("/login/kakao", JSON.stringify({ token: token }), {
+						headers: { "Content-Type": "application/json" },
+					})
 					.then((res) => {
 						console.log(res);
 						if (res.data.token) {
