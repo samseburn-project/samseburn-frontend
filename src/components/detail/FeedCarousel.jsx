@@ -7,7 +7,6 @@ import AuthDialog from "../common/AuthDialog";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import sample from "../../assets/sample.png";
 
 const FeedCarousel = ({ ...props }) => {
 	const [dialogOpen, setDialogOpen] = useState(false);

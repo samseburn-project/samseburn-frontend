@@ -4,7 +4,6 @@ import axios from "axios";
 import styled from "styled-components";
 
 import { Box } from "@mui/material";
-
 import Hero from "./Hero";
 import Contents from "./Contents";
 import SearchBar from "./SearchBar";
@@ -17,7 +16,7 @@ const Main = () => {
 
 	const fetchData = async () => {
 		try {
-			const res = await axios.get("/challenges/filter", {
+			await axios.get("/challenges/filter", {
 				params: {
 					sortBy: sortBy,
 				},

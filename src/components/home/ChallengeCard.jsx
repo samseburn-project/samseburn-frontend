@@ -1,12 +1,12 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
-import { Card, CardContent, CardMedia, CardActionArea } from '@mui/material';
-import Category from '../common/Category';
+import styled from "styled-components";
 
-import styled from 'styled-components';
+import { Card, CardContent, CardMedia, CardActionArea } from "@mui/material";
+import Category from "../common/Category";
 
-import calendar from '../../assets/icons/calendar.png';
+import { ReactComponent as Calendar } from "../../assets/icons/calender.svg";
 
 const ChallengeCard = ({ ...props }) => {
 	const navigate = useNavigate();
@@ -25,7 +25,7 @@ const ChallengeCard = ({ ...props }) => {
 					</Row>
 					<Row>
 						<CardIcon>
-							<img src={calendar} alt="Calendar icon" />
+							<Calendar alt="Calendar icon" />
 						</CardIcon>
 						<CardDate>
 							{props.startDate} ~ {props.endDate}
@@ -43,57 +43,57 @@ const ChallengeCard = ({ ...props }) => {
 export default ChallengeCard;
 
 const StyledCard = styled(Card)`
-  height: 36.3rem;
-  box-shadow: 0.6rem 1.1rem 2rem rgba(0, 0, 0, 0.25);
+	height: 36.3rem;
+	box-shadow: 0.6rem 1.1rem 2rem rgba(0, 0, 0, 0.25);
 
-  img {
-    height: 18.15rem;
-  }
+	img {
+		height: 18.15rem;
+	}
 
-  .css-46bh2p-MuiCardContent-root {
-    padding: 2rem;
-    cursor: pointer;
-  }
+	.css-46bh2p-MuiCardContent-root {
+		padding: 2rem;
+		cursor: pointer;
+	}
 `;
 
 const StyledCardContent = styled(CardContent)`
-  height: 18.15rem;
-  box-sizing: border-box;
+	height: 18.15rem;
+	box-sizing: border-box;
 `;
 
 const CardTitle = styled.div`
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 0.7rem;
+	font-size: 2rem;
+	font-weight: bold;
+	margin-bottom: 0.7rem;
 `;
 
 const Row = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+	display: flex;
+	gap: 0.5rem;
+	margin-bottom: 1rem;
 `;
 
 const CardCategory = styled(Category)`
-  font-size: 1.2rem;
-  padding: 0.5rem 1rem;
+	font-size: 1.2rem;
+	padding: 0.5rem 1rem;
 `;
 
 const CardDate = styled.div`
-  font-size: 1.4rem;
-  letter-spacing: 0.2px;
+	font-size: 1.4rem;
+	letter-spacing: 0.2px;
 `;
 
 const CardIcon = styled.div`
-  width: 1.6rem;
-  height: 1.6rem;
+	width: 1.6rem;
+	height: 1.6rem;
 
-  img {
-    width: 100%;
-    height: 100%;
-  }
+	img {
+		width: 100%;
+		height: 100%;
+	}
 `;
 
 const CardMember = styled.div`
-  font-size: 1.6rem;
-  margin-top: 3rem;
+	font-size: 1.6rem;
+	margin-top: 3rem;
 `;

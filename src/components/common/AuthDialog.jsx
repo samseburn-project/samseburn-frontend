@@ -5,8 +5,8 @@ import styled from "styled-components";
 import { Grid, Dialog, DialogContent, Box, TextField } from "@mui/material";
 import StyledButton from "../common/StyledButton";
 
-import close from "../../assets/icons/close.png";
-import trash from "../../assets/icons/trash.png";
+import { ReactComponent as Close } from "../../assets/icons/close.svg";
+import { ReactComponent as Delete } from "../../assets/icons/delete.svg";
 
 const AuthDialog = ({ ...props }) => {
 	const today = new Date().toLocaleString();
@@ -15,7 +15,7 @@ const AuthDialog = ({ ...props }) => {
 		<Dialog onClose={props.handleDialogClose} open={props.dialogOpen}>
 			<StyledDialogContent>
 				<CloseButton>
-					<img src={close} alt="Close icon" onClick={props.handleDialogClose} />
+					<Close alt="Close icon" onClick={props.handleDialogClose} />
 				</CloseButton>
 				<Box component="form">
 					<Grid container direction="column" rowSpacing={4}>
@@ -24,7 +24,7 @@ const AuthDialog = ({ ...props }) => {
 								{!props.certify ? (
 									<AuthThumbnail>
 										<DeleteButton>
-											<img src={trash} alt="Trash Icon" />
+											<Delete alt="Delete icon" />
 										</DeleteButton>
 									</AuthThumbnail>
 								) : (
