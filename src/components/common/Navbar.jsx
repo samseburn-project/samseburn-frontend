@@ -8,6 +8,7 @@ import styled from "styled-components";
 
 import { ReactComponent as Profile } from "../../assets/icons/profile.svg";
 import { ReactComponent as Register } from "../../assets/icons/plus.svg";
+import { ReactComponent as KakaoIcon } from "../../assets/icons/kakao.svg";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -91,7 +92,7 @@ const Navbar = () => {
 								건강한 습관을 만들어보세요!
 								<KakaoLoginButton onClick={kakaoLoginHandler}>
 									<LoginIcon>
-										<img src={kakao} alt="Kakao icon" />
+										<KakaoIcon alt="Kakao icon" />
 									</LoginIcon>
 									<LoginText>카카오 로그인</LoginText>
 								</KakaoLoginButton>
