@@ -9,7 +9,7 @@ import { ReactComponent as Close } from "../../assets/icons/close.svg";
 
 const CommonDialog = ({ ...props }) => {
 	return (
-		<Dialog onClose={props.handleDialogClose} open={props.dialogOpen}>
+		<Dialog onClose={() => props.handleDialogClose()} open={props.dialogOpen}>
 			<StyledDialogContent>
 				<CloseButton>
 					<Close alt="Close icon" onClick={props.handleDialogClose} />
@@ -20,7 +20,10 @@ const CommonDialog = ({ ...props }) => {
 						<SubText>{props.subText}</SubText>
 					</Row>
 					<Row>
-						<ConfirmButton type="button" onClick={props.handleDialogClose}>
+						<ConfirmButton
+							type="button"
+							onClick={() => props.handleDialogClose()}
+						>
 							확인
 						</ConfirmButton>
 					</Row>

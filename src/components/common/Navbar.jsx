@@ -24,7 +24,7 @@ const Navbar = () => {
 
 	useEffect(() => {
 		if (userToken) setLoggedIn(true);
-	}, []);
+	}, [userToken]);
 
 	const handleMouseOver = (e) => {
 		setAnchorEl(e.currentTarget);
