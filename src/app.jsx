@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SnackbarProvider } from "notistack";
 
 import GlobalStyles from "./GlobalStyles";
-
+import ScrollToTop from "./ScrollToTop";
 import Home from "./pages/Home";
 import Detail from "./pages/Detail";
 import RegisterPage from "./components/register/RegisterPage";
@@ -19,12 +19,14 @@ const App = () => {
 				}}
 			>
 				<GlobalStyles />
-				<Routes>
-					<Route path="/" element={<Home />} />
-					<Route path="/detail/:id" element={<Detail />} />
-					<Route path="/register" element={<RegisterPage />} />
-					<Route path="/my" element={<MyPage />} />
-				</Routes>
+				<ScrollToTop>
+					<Routes>
+						<Route path="/" element={<Home />} />
+						<Route path="/detail/:id" element={<Detail />} />
+						<Route path="/register" element={<RegisterPage />} />
+						<Route path="/my" element={<MyPage />} />
+					</Routes>
+				</ScrollToTop>
 			</SnackbarProvider>
 		</BrowserRouter>
 	);
