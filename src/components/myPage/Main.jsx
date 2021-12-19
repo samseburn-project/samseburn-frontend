@@ -1,64 +1,104 @@
-import React, { useState } from "react";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import ViewChallenge from "./ViewChallenge";
-import ModifyUser from "./ModifyUser";
-import ManageChallenge from "./ManageChallenge";
+import { Tab, Tabs } from '@mui/material';
+import { styled as muiStyled } from '@mui/material/styles';
+import ViewChallenge from './ViewChallenge';
+import ModifyUser from './ModifyUser';
+import ManageChallenge from './ManageChallenge';
 
 const Main = () => {
-	const [activeIndex, setActiveIndex] = useState(0);
+  const [selectedTab, setSelectedTab] = useState(0);
+  const [challengeList, setChallengList] = useState([]);
+  const userToken = localStorage.getItem('token');
 
-	const tabArr = [
-		{
-			tabTitle: "챌린지 정보",
-			tabContent: <ViewChallenge />,
-		},
-		{
-			tabTitle: "회원 정보 수정",
-			tabContent: <ModifyUser />,
-		},
-		{
-			tabTitle: "개설한 챌린지 관리",
-			tabContent: <ManageChallenge />,
-		},
-	];
+  const fetchUserChallenges = async () => {
+    try {
+      const response = await axios
+        .get('/user/challenges', {
+          headers: { Authorization: `Bearer ${userToken}` },
+        })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
 
-	const onTabSwitch = (index) => {
-		setActiveIndex(index);
-	};
+      // response에서 받은 데이터 state에 저장해 컴포넌트에 props로 내려주기
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
-	return (
-		<Wrapper>
-			<Row>
-				{tabArr.map((tab, i) => (
-					<Tab onClick={() => onTabSwitch(i)} key={i}>
-						{tab.tabTitle}
-					</Tab>
-				))}
-			</Row>
+  useEffect(() => {
+    fetchUserChallenges();
+  }, []);
 
-			{tabArr[activeIndex].tabContent}
-		</Wrapper>
-	);
+  const handleChange = (event, newValue) => {
+    setSelectedTab(newValue);
+  };
+
+  const StyledTabs = muiStyled((props) => (
+    <Tabs
+      {...props}
+      TabIndicatorProps={{
+        children: <span className="MuiTabs-indicatorSpan" />,
+      }}
+    />
+  ))({
+    '& .MuiTabs-indicator': {
+      display: 'flex',
+      justifyContent: 'center',
+      backgroundColor: 'transparent',
+    },
+    '& .MuiTabs-indicatorSpan': {
+      maxWidth: 50,
+      width: '100%',
+      backgroundColor: '#EB3901',
+    },
+  });
+
+  const StyledTab = muiStyled((props) => <Tab disableRipple {...props} />)({
+    fontFamily: ['Lato'],
+    fontWeight: 'bold',
+    fontSize: '2rem',
+    color: '#000000',
+    '&.Mui-selected': {
+      color: '#EB3901',
+    },
+  });
+
+  return (
+    <>
+      <Wrapper>
+        <Row>
+          <StyledTabs
+            value={selectedTab}
+            onChange={handleChange}
+            aria-label="styled tabs example"
+          >
+            <StyledTab label="챌린지 정보" />
+            <StyledTab label="회원 정보 수정" />
+            <StyledTab label="개설한 챌린지 관리" />
+          </StyledTabs>
+        </Row>
+
+        {selectedTab === 0 && <ViewChallenge />}
+        {selectedTab === 1 && <ModifyUser />}
+        {selectedTab === 2 && <ManageChallenge />}
+      </Wrapper>
+    </>
+  );
 };
 
 export default Main;
 
 const Wrapper = styled.section`
-	width: 104rem;
-	margin: 0 auto;
+  width: 104rem;
+  margin: 0 auto;
 `;
 
 const Row = styled.div``;
-
-const Tab = styled.button`
-	font-size: 2rem;
-	font-weight: bold;
-	background-color: transparent;
-	border: none;
-	cursor: pointer;
-
-	margin-right: 2rem;
-	margin-bottom: 6rem;
-`;
