@@ -12,7 +12,7 @@ import PlaceMap from "./PlaceMap";
 
 const Main = () => {
 	const params = useParams();
-	const id = Number(params.id);
+	const challengeId = Number(params.id);
 	const [challenge, setChallenge] = useState();
 	const [participants, setParticipants] = useState([]);
 	const [join, setJoin] = useState(false);
@@ -21,7 +21,7 @@ const Main = () => {
 
 	const fetchChallenge = async () => {
 		try {
-			const { data } = await axios.get(`/challenges/${id}`);
+			const { data } = await axios.get(`/challenges/${challengeId}`);
 			setChallenge(data);
 		} catch (err) {
 			console.error(err);
@@ -30,7 +30,7 @@ const Main = () => {
 
 	const fetchParticipants = async () => {
 		try {
-			const { data } = await axios.get(`/challenges/${id}/users`);
+			const { data } = await axios.get(`/challenges/${challengeId}/users`);
 			setParticipants(data);
 		} catch (err) {
 			console.log(err);
@@ -47,7 +47,7 @@ const Main = () => {
 
 	const handleChallengeJoin = async () => {
 		try {
-			const res = await axios.post(`/challenges/${id}/join`, {
+			const res = await axios.post(`/challenges/${challengeId}/join`, {
 				headers: {
 					Authorization: `Bearer ${userToken}`,
 				},
@@ -61,7 +61,7 @@ const Main = () => {
 
 	const handleChallengeCancel = async () => {
 		try {
-			const res = await axios.delete(`/challenges/${id}/cancel`, {
+			const res = await axios.delete(`/challenges/${challengeId}/cancel`, {
 				headers: {
 					Authorization: `Bearer ${userToken}`,
 				},

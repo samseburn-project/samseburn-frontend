@@ -1,15 +1,92 @@
-import React from "react";
+import React, { useState, useRef } from "react";
+import axios from "axios";
+import { useSnackbar } from "notistack";
 
 import styled from "styled-components";
 
-import { Grid, Dialog, DialogContent, Box, TextField } from "@mui/material";
+import { Grid, Dialog, DialogContent, TextField } from "@mui/material";
 import StyledButton from "../common/StyledButton";
 
 import { ReactComponent as Close } from "../../assets/icons/close.svg";
 import { ReactComponent as Delete } from "../../assets/icons/delete.svg";
 
 const AuthDialog = ({ ...props }) => {
-	const today = new Date().toLocaleString();
+	const { enqueueSnackbar } = useSnackbar();
+	const [imgFile, setImgFile] = useState(null);
+	const [previewImg, setPreviewImg] = useState(null);
+	const [contents, setContents] = useState("");
+	const userToken = props.userToken;
+	const authDate = new Date().toLocaleString();
+	const imgRef = useRef();
+
+	const handleImgChange = (e) => {
+		let file = e.target.files[0];
+		let reader = new FileReader();
+
+		reader.onloadend = () => {
+			setImgFile(file);
+			setPreviewImg(reader.result);
+		};
+		if (file) reader.readAsDataURL(file);
+	};
+
+	const handleImgDelete = () => {
+		imgRef.current.value = "";
+		setPreviewImg(null);
+	};
+
+	const handleContentsChange = (e) => {
+		setContents(e.target.value);
+	};
+
+	const handleReset = () => {
+		setImgFile();
+		setPreviewImg();
+		setContents();
+	};
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+
+		const formData = new FormData();
+
+		if (!imgFile) {
+			alert("인증 이미지를 등록해주세요.");
+			return;
+		}
+
+		formData.append("image", imgFile);
+		formData.append("contents", contents);
+
+		try {
+			const res = await axios.post(
+				`/challenges/${props.challenge.challengeId}/certi`,
+				formData,
+				{
+					headers: {
+						"Content-Type": "multipart/form-data",
+						Authorization: userToken,
+					},
+				}
+			);
+
+			if (res.status === 200) {
+				handleReset();
+				enqueueSnackbar("인증이 성공적으로 등록되었습니다.", {
+					variant: "success",
+					autoHideDuration: 2000,
+				});
+				props.handleDialogClose();
+			} else {
+				enqueueSnackbar("인증 등록에 실패했습니다.", {
+					variant: "error",
+					autoHideDuration: 2000,
+				});
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
 	return (
 		<Dialog onClose={props.handleDialogClose} open={props.dialogOpen}>
@@ -17,19 +94,30 @@ const AuthDialog = ({ ...props }) => {
 				<CloseButton>
 					<Close alt="Close icon" onClick={props.handleDialogClose} />
 				</CloseButton>
-				<Box component="form">
+				<form onSubmit={handleSubmit}>
 					<Grid container direction="column" rowSpacing={4}>
 						<Grid item container direction="column">
 							<Grid item>
-								{!props.certify ? (
+								{!previewImg ? (
 									<AuthThumbnail>
 										<DeleteButton>
-											<Delete alt="Delete icon" style={{ zIndex: 10 }} />
+											<Delete
+												alt="Delete icon"
+												style={{ zIndex: 10 }}
+												onClick={handleImgDelete}
+											/>
 										</DeleteButton>
 									</AuthThumbnail>
 								) : (
 									<AuthThumbnail>
-										<img src={props.certify.imgUrl} alt="Auth Thumbnail" />
+										<DeleteButton>
+											<Delete
+												alt="Delete icon"
+												style={{ zIndex: 10 }}
+												onClick={handleImgDelete}
+											/>
+										</DeleteButton>
+										<img src={previewImg} alt="Auth Thumbnail" />
 									</AuthThumbnail>
 								)}
 							</Grid>
@@ -38,9 +126,11 @@ const AuthDialog = ({ ...props }) => {
 									{!props.certify ? (
 										<>
 											<UploadInput
-												accept="image/*"
 												id="auth-image"
+												accept="image/*"
 												type="file"
+												ref={imgRef}
+												onChange={handleImgChange}
 											/>
 											<UploadButton type="button">이미지 업로드</UploadButton>{" "}
 										</>
@@ -56,10 +146,11 @@ const AuthDialog = ({ ...props }) => {
 								<DateInput
 									id="auth-date"
 									InputProps={{ readOnly: true }}
-									defaultValue={today}
+									defaultValue={authDate}
 								/>
 							) : (
 								<DateInput
+									label="auth-date"
 									id="auth-date"
 									InputProps={{ readOnly: true }}
 									defaultValue={props.certify.createdDate}
@@ -69,9 +160,15 @@ const AuthDialog = ({ ...props }) => {
 						<Grid item>
 							<LabelText>챌린지 인증 후기</LabelText>
 							{!props.certify ? (
-								<TextInput id="auth-text" multiline rows={8} />
+								<TextInput
+									id="auth-text"
+									multiline
+									rows={8}
+									onChange={handleContentsChange}
+								/>
 							) : (
 								<TextInput
+									label="auth-text"
 									id="auth-text"
 									multiline
 									rows={8}
@@ -82,7 +179,18 @@ const AuthDialog = ({ ...props }) => {
 						</Grid>
 						<Grid item textAlign="center">
 							{!props.certify ? (
-								<EnrollButton type="submit">등록</EnrollButton>
+								<ButtonRow>
+									<EnrollButton type="submit">등록</EnrollButton>
+									<CancelButton
+										type="button"
+										onClick={() => {
+											handleReset();
+											props.handleDialogClose();
+										}}
+									>
+										취소
+									</CancelButton>
+								</ButtonRow>
 							) : (
 								<ConfirmButton type="button" onClick={props.handleDialogClose}>
 									확인
@@ -90,7 +198,7 @@ const AuthDialog = ({ ...props }) => {
 							)}
 						</Grid>
 					</Grid>
-				</Box>
+				</form>
 			</StyledDialogContent>
 		</Dialog>
 	);
@@ -114,7 +222,7 @@ const AuthThumbnail = styled.div`
 	margin: 1rem 0;
 	width: 35rem;
 	height: 25rem;
-	background-color: gray;
+	background-color: #959595;
 	border-radius: 0.5rem;
 	position: relative;
 
@@ -193,9 +301,25 @@ const TextInput = styled(TextField)`
 	}
 `;
 
+const ButtonRow = styled.div`
+	display: flex;
+	justify-content: center;
+	gap: 4rem;
+`;
+
 const EnrollButton = styled(StyledButton)`
 	padding: 0.8rem 1.8rem;
 	font-size: 1.6rem;
+`;
+
+const CancelButton = styled(StyledButton)`
+	padding: 0.8rem 1.8rem;
+	font-size: 1.6rem;
+	background-color: #c4c4c4;
+
+	&:hover {
+		background-color: #c4c4c4;
+	}
 `;
 
 const ConfirmButton = styled(StyledButton)`

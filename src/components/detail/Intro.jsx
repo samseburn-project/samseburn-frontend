@@ -65,6 +65,8 @@ const Intro = ({ ...props }) => {
 								dialogOpen={props.dialogOpen}
 								handleDialogOpen={props.handleDialogOpen}
 								handleDialogClose={props.handleDialogClose}
+								challenge={props.challenge}
+								userToken={props.userToken}
 							/>
 							{/* <CancelButton
 								onClick={() => {
