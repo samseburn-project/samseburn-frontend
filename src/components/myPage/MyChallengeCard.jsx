@@ -1,4 +1,7 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import styled from 'styled-components';
 
 import {
   //   Card,
@@ -7,11 +10,6 @@ import {
   //   CardActionArea,
   Grid,
 } from '@mui/material';
-import styled from 'styled-components';
-
-import Category from '../common/Category';
-import StyledButton from '../common/StyledButton';
-
 import { ReactComponent as FirstMedal } from '../../assets/icons/1st-medal-icon.svg';
 import { ReactComponent as SecondMedal } from '../../assets/icons/2nd-medal-icon.svg';
 import { ReactComponent as ThirdMedal } from '../../assets/icons/3rd-medal-icon.svg';
@@ -19,9 +17,11 @@ import { ReactComponent as AbledProgress } from '../../assets/icons/progress-ico
 import { ReactComponent as DisabledProgress } from '../../assets/icons/progress-icon-disabled.svg';
 import { ReactComponent as Congrats } from '../../assets/icons/congrats-icon.svg';
 import { ReactComponent as Calender } from '../../assets/icons/calender.svg';
+import Category from '../common/Category';
+import StyledButton from '../common/StyledButton';
 
-const ChallengeCard = ({
-  key,
+const MyChallengeCard = ({
+  id,
   title,
   category,
   locationType,
@@ -32,6 +32,8 @@ const ChallengeCard = ({
   challengeStatus,
   firstWeekMission,
 }) => {
+  const navigate = useNavigate();
+
   const viewMedalIcon = (param) => {
     if (param < 5) {
       return '';
@@ -45,8 +47,8 @@ const ChallengeCard = ({
   };
 
   return (
-    <Grid key={key} item xs={6}>
-      <StyledCard>
+    <Grid item xs={6}>
+      <StyledCard onClick={() => navigate(`/detail/${id}`)}>
         <StyledCardThumbnail>
           <img alt={title} src={imgUrl} className="thumbnail"></img>
         </StyledCardThumbnail>
@@ -118,7 +120,7 @@ const ChallengeCard = ({
   );
 };
 
-export default ChallengeCard;
+export default MyChallengeCard;
 
 const StyledCard = styled.div`
   height: 20rem;
