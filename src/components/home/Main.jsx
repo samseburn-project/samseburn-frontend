@@ -12,13 +12,13 @@ import SortFilter from "./SortFilter";
 import ChallengeList from "./ChallengeList";
 
 const Main = () => {
-	const [list, setList] = useState([]);
+	const [challenges, setChallenges] = useState([]);
 	const [sortBy, setSortBy] = useState("createdAt");
 
 	const fetchChallenges = async () => {
 		try {
 			const { data } = await axios.get("/challenges?kind=All");
-			setList(data);
+			setChallenges(data);
 		} catch (e) {
 			console.error(e);
 		}
@@ -55,7 +55,7 @@ const Main = () => {
 					<SortFilter sortBy={sortBy} setSortBy={setSortBy} />
 				</FilterRow>
 				<ListContainer sx={{ width: "100%" }}>
-					<ChallengeList list={list} />
+					<ChallengeList challenges={challenges} />
 				</ListContainer>
 			</Wrapper>
 		</>
