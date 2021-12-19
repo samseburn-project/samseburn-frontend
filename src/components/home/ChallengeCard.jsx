@@ -28,7 +28,7 @@ const ChallengeCard = ({ ...props }) => {
 							<Calendar alt="Calendar icon" />
 						</CardIcon>
 						<CardDate>
-							{props.startDate} ~ {props.endDate}
+							{props.challengeStartDate} ~ {props.challengeEndDate}
 						</CardDate>
 					</Row>
 					<CardMember>

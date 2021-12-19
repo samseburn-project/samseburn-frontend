@@ -25,7 +25,8 @@ const Intro = ({ ...props }) => {
 					</CategoryRow>
 					<SubTitle>진행 기간</SubTitle>
 					<Text>
-						{props.challenge?.startDate} ~ {props.challenge?.endDate}
+						{props.challenge?.challengeStartDate} ~{" "}
+						{props.challenge?.challengeEndDate}
 					</Text>
 					<SubTitle>참가 인원</SubTitle>
 					<Text>
