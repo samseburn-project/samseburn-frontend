@@ -8,6 +8,38 @@ import StyledButton from "./StyledButton";
 import close from "../../assets/icons/close.png";
 
 const CommonDialog = ({ ...props }) => {
+	const handleButtonRender = (mainText) => {
+		if (mainText === "챌린지 참가 신청이 완료되었습니다.") {
+			return (
+				<ConfirmButton type="button" onClick={() => props.handleDialogClose()}>
+					확인
+				</ConfirmButton>
+			);
+		} else if (mainText === "챌린지 참가 신청이 취소되었습니다.") {
+			return (
+				<ButtonRow>
+					<ConfirmButton
+						type="button"
+						onClick={() => props.handleChallengeCancel()}
+					>
+						확인
+					</ConfirmButton>
+					<CancelButton type="button" onClick={() => props.handleDialogClose()}>
+						취소
+					</CancelButton>
+				</ButtonRow>
+			);
+		} else if (mainText === "챌린지 1주차 작심삼일 미션을 달성했습니다 🎉") {
+			return (
+				<ButtonRow>
+					<ContinueButton type="button">챌린지 계속 하기</ContinueButton>
+					<StopButton type="button">챌린지 그만 두기</StopButton>
+				</ButtonRow>
+			);
+		} else if (mainText === "챌린지 1주차 작심삼일 미션을 달성하지 못했어요 😔")
+			return <ConfirmButton>확인</ConfirmButton>;
+	};
+
 	return (
 		<Dialog onClose={() => props.handleDialogClose()} open={props.dialogOpen}>
 			<StyledDialogContent>
@@ -24,12 +56,30 @@ const CommonDialog = ({ ...props }) => {
 						<SubText>{props.subText}</SubText>
 					</Row>
 					<Row>
-						<ConfirmButton
-							type="button"
-							onClick={() => props.handleDialogClose()}
-						>
-							확인
-						</ConfirmButton>
+						{handleButtonRender(props.mainText)}
+						{/* {!props.handleChallengeCancel ? (
+							<ConfirmButton
+								type="button"
+								onClick={() => props.handleDialogClose()}
+							>
+								확인
+							</ConfirmButton>
+						) : (
+							<ButtonRow>
+								<ConfirmButton
+									type="button"
+									onClick={() => props.handleChallengeCancel()}
+								>
+									확인
+								</ConfirmButton>
+								<CancelButton
+									type="button"
+									onClick={() => props.handleDialogClose()}
+								>
+									취소
+								</CancelButton>
+							</ButtonRow>
+						)} */}
 					</Row>
 				</Container>
 			</StyledDialogContent>
@@ -73,7 +123,38 @@ const SubText = styled.div`
 	letter-spacing: 1px;
 `;
 
+const ButtonRow = styled.div`
+	display: flex;
+	justify-content: center;
+	gap: 4rem;
+`;
+
 const ConfirmButton = styled(StyledButton)`
 	padding: 0.8rem 1.8rem;
 	font-size: 1.6rem;
+`;
+
+const ContinueButton = styled(StyledButton)`
+	padding: 0.8rem 1.8rem;
+	font-size: 1.6rem;
+`;
+
+const CancelButton = styled(StyledButton)`
+	padding: 0.8rem 1.8rem;
+	font-size: 1.6rem;
+	background-color: #c4c4c4;
+
+	&:hover {
+		background-color: #c4c4c4;
+	}
+`;
+
+const StopButton = styled(StyledButton)`
+	padding: 0.8rem 1.8rem;
+	font-size: 1.6rem;
+	background-color: #c4c4c4;
+
+	&:hover {
+		background-color: #c4c4c4;
+	}
 `;

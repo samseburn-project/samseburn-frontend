@@ -14,7 +14,7 @@ const Main = () => {
 	const id = Number(params.id);
 	const [challenge, setChallenge] = useState();
 	const [participants, setParticipants] = useState([]);
-	const [join, setJoin] = useState(false);
+	const [challengeStatus, setChallengeStatus] = useState();
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const userToken = localStorage.getItem("token");
 
@@ -36,6 +36,17 @@ const Main = () => {
 		}
 	};
 
+	const fetchChallengeStatus = async () => {
+		try {
+			const { data } = await axios.get(`/challenges/${id}/user`, {
+				headers: { Authorization: `Bearer ${userToken}` },
+			});
+			setChallengeStatus(data.userHistories[0].challengeStatus);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
 	const handleDialogOpen = () => {
 		setDialogOpen(true);
 	};
@@ -47,12 +58,10 @@ const Main = () => {
 	const handleChallengeJoin = async () => {
 		try {
 			const res = await axios.post(`/challenges/${id}/join`, {
-				headers: {
-					Authorization: `Bearer ${userToken}`,
-				},
+				headers: { Authorization: `Bearer ${userToken}` },
 			});
 
-			if (res.status === 200) setJoin(true);
+			if (res.status === 200) setChallengeStatus("JOIN");
 		} catch (err) {
 			console.log(err);
 		}
@@ -60,13 +69,13 @@ const Main = () => {
 
 	const handleChallengeCancel = async () => {
 		try {
-			const res = await axios.delete(`/challenges/${id}/cancel`, {
+			const res = await axios.delete(`/challenges/${id}/join`, {
 				headers: {
 					Authorization: `Bearer ${userToken}`,
 				},
 			});
 
-			if (res.status === 200) setJoin(false);
+			if (res.status === 200) setChallengeStatus();
 		} catch (err) {
 			console.log(err);
 		}
@@ -75,14 +84,16 @@ const Main = () => {
 	useEffect(() => {
 		fetchChallenge();
 		fetchParticipants();
+		fetchChallengeStatus();
 	}, []);
+
+	console.log(challengeStatus);
 
 	return (
 		<>
 			<Intro
-				userToken={userToken}
 				challenge={challenge}
-				join={join}
+				challengeStatus={challengeStatus}
 				handleChallengeJoin={handleChallengeJoin}
 				handleChallengeCancel={handleChallengeCancel}
 				dialogOpen={dialogOpen}
