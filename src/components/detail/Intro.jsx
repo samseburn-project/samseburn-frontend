@@ -31,7 +31,7 @@ const Intro = ({ ...props }) => {
 					<Text>
 						{props.challenge?.participants} / {props.challenge?.limitPerson} 명
 					</Text>
-					{!props.join ? (
+					{props.join ? (
 						<>
 							<ApplyButton
 								type="button"
@@ -66,7 +66,7 @@ const Intro = ({ ...props }) => {
 								handleDialogOpen={props.handleDialogOpen}
 								handleDialogClose={props.handleDialogClose}
 							/>
-							<CancelButton
+							{/* <CancelButton
 								onClick={() => {
 									props.handleChallengeCancel();
 									props.handleDialogOpen();
@@ -79,7 +79,7 @@ const Intro = ({ ...props }) => {
 								handleDialogOpen={props.handleDialogOpen}
 								handleDialogClose={props.handleDialogClose}
 								mainText={"챌린지 참가 신청이 취소되었습니다."}
-							/>
+							/> */}
 						</ButtonRow>
 					)}
 				</ContentsContainer>

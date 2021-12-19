@@ -24,7 +24,7 @@ const AuthDialog = ({ ...props }) => {
 								{!props.certify ? (
 									<AuthThumbnail>
 										<DeleteButton>
-											<Delete alt="Delete icon" />
+											<Delete alt="Delete icon" style={{ zIndex: 10 }} />
 										</DeleteButton>
 									</AuthThumbnail>
 								) : (
@@ -130,6 +130,15 @@ const DeleteButton = styled.span`
 	right: 1rem;
 	cursor: pointer;
 	z-index: 1;
+	background-color: #ffffff;
+	border-radius: 50%;
+	padding: 0.7rem;
+	opacity: 0.6;
+	transition: opacity 0.3s;
+
+	&:hover {
+		opacity: 1;
+	}
 `;
 
 const UploadInput = styled.input`
