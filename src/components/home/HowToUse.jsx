@@ -2,8 +2,6 @@ import React from "react";
 
 import styled from "styled-components";
 
-import { Grid } from "@mui/material";
-
 import { ReactComponent as Checkbox } from "../../assets/icons/home-checkbox.svg";
 import { ReactComponent as FirstMedal } from "../../assets/icons/1st-medal-icon.svg";
 import { ReactComponent as SecondMedal } from "../../assets/icons/2nd-medal-icon.svg";
