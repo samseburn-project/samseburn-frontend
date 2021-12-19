@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 import { Box } from "@mui/material";
 import Hero from "./Hero";
-import Contents from "./Contents";
+import HowToUse from "./HowToUse";
 import SearchBar from "./SearchBar";
 import CategoryFilter from "./CategoryFilter";
 import SortFilter from "./SortFilter";
@@ -44,7 +44,7 @@ const Main = () => {
 	return (
 		<>
 			<Hero />
-			<Contents />
+			<HowToUse />
 			<Wrapper>
 				<Title>챌린지 리스트</Title>
 				<SearchBarRow>
