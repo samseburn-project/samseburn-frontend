@@ -13,18 +13,24 @@ import ChallengeList from "./ChallengeList";
 
 const Main = () => {
 	const [challenges, setChallenges] = useState([]);
+	const [page, setPage] = useState(1);
 	const [sortBy, setSortBy] = useState("createdAt");
 
 	const fetchChallenges = async () => {
 		try {
-			const { data } = await axios.get("/challenges?kind=All");
+			const { data } = await axios.get("/challenges", {
+				params: {
+					kind: "All",
+					page: page,
+				},
+			});
 			setChallenges(data);
 		} catch (e) {
 			console.error(e);
 		}
 	};
 
-	const fetchFillter = async () => {
+	const fetchFilter = async () => {
 		try {
 			await axios.get("/challenges/filter", {
 				params: {
@@ -38,8 +44,8 @@ const Main = () => {
 
 	useEffect(() => {
 		fetchChallenges();
-		fetchFillter();
-	}, [sortBy]);
+		fetchFilter();
+	}, [page, sortBy]);
 
 	return (
 		<>

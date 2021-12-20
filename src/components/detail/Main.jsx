@@ -158,6 +158,7 @@ const Main = () => {
 							<Grid item key={participant.id}>
 								<Participant
 									participant={participant}
+									challenge={challenge}
 									userChallengeId={userChallenge?.userId}
 								/>
 							</Grid>
