@@ -39,9 +39,12 @@ const Main = () => {
 
 	const fetchUserChallenge = async () => {
 		try {
-			const { status, data } = await axios.get(`/challenges/${id}/user`, {
-				headers: { Authorization: `Bearer ${userToken}` },
-			});
+			const { status, data } = await axios.get(
+				`/challenges/${challengeId}/user`,
+				{
+					headers: { Authorization: `Bearer ${userToken}` },
+				}
+			);
 
 			if (status === 200) {
 				setUserChallenge(data);
@@ -63,7 +66,7 @@ const Main = () => {
 
 	const handleChallengeJoin = async () => {
 		try {
-			await axios.post(`/challenges/${id}/join`, {
+			await axios.post(`/challenges/${challengeId}/join`, {
 				headers: { Authorization: `Bearer ${userToken}` },
 			});
 		} catch (err) {
@@ -73,7 +76,7 @@ const Main = () => {
 
 	const handleChallengeCancel = async () => {
 		try {
-			const res = await axios.delete(`/challenges/${id}/join`, {
+			const res = await axios.delete(`/challenges/${challengeId}/join`, {
 				headers: {
 					Authorization: `Bearer ${userToken}`,
 				},
@@ -87,7 +90,7 @@ const Main = () => {
 
 	const handleChallengeContinue = async () => {
 		try {
-			await axios.put(`/challenges/${id}/continue`, {
+			await axios.put(`/challenges/${challengeId}/continue`, {
 				headers: {
 					Authorization: `Bearer ${userToken}`,
 				},
@@ -99,7 +102,7 @@ const Main = () => {
 
 	const handleChallengeStop = async () => {
 		try {
-			await axios.delete(`challenges/${id}/continue`, {
+			await axios.delete(`challenges/${challengeId}/continue`, {
 				headers: {
 					Authorization: `Bearer ${userToken}`,
 				},
