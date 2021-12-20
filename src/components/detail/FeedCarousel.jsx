@@ -11,6 +11,7 @@ import "slick-carousel/slick/slick-theme.css";
 const FeedCarousel = ({ ...props }) => {
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const certifies = props?.certifies;
+	const challengeId = props?.challengeId;
 	const userChallengeId = props?.userChallengeId;
 	const placeholderImgUrl = "https://plchldr.co/i/186x130?&bg=C4C4C4&fc=ffffff";
 
@@ -50,7 +51,7 @@ const FeedCarousel = ({ ...props }) => {
 				<StyledCarousel {...settings}>
 					<Feed>
 						<FeedThumbnail
-							src={list[0].imgUrl}
+							src={list[0]?.imgUrl}
 							alt="Feed Thumbnail"
 							onClick={handleDialogOpen}
 						/>
@@ -58,6 +59,7 @@ const FeedCarousel = ({ ...props }) => {
 							dialogOpen={dialogOpen}
 							handleDialogClose={handleDialogClose}
 							certify={list[0]}
+							challengeId={challengeId}
 							userChallengeId={userChallengeId}
 						/>
 					</Feed>
@@ -74,7 +76,7 @@ const FeedCarousel = ({ ...props }) => {
 				<StyledCarousel {...settings}>
 					<Feed>
 						<FeedThumbnail
-							src={list[0].imgUrl}
+							src={list[0]?.imgUrl}
 							alt="Feed Thumbnail"
 							onClick={handleDialogOpen}
 						/>
@@ -82,12 +84,13 @@ const FeedCarousel = ({ ...props }) => {
 							dialogOpen={dialogOpen}
 							handleDialogClose={handleDialogClose}
 							certify={list[0]}
+							challengeId={challengeId}
 							userChallengeId={userChallengeId}
 						/>
 					</Feed>
 					<Feed>
 						<FeedThumbnail
-							src={list[1].imgUrl}
+							src={list[1]?.imgUrl}
 							alt="Feed Thumbnail"
 							onClick={handleDialogOpen}
 						/>
@@ -95,6 +98,7 @@ const FeedCarousel = ({ ...props }) => {
 							dialogOpen={dialogOpen}
 							handleDialogClose={handleDialogClose}
 							certify={list[1]}
+							challengeId={challengeId}
 							userChallengeId={userChallengeId}
 						/>
 					</Feed>
@@ -107,9 +111,9 @@ const FeedCarousel = ({ ...props }) => {
 			return (
 				<StyledCarousel {...settings}>
 					{list.map((item) => (
-						<Feed key={item.certificationId}>
+						<Feed key={item?.certificationId}>
 							<FeedThumbnail
-								src={item.imgUrl}
+								src={item?.imgUrl}
 								alt="Feed Thumbnail"
 								onClick={handleDialogOpen}
 							/>
@@ -117,6 +121,7 @@ const FeedCarousel = ({ ...props }) => {
 								dialogOpen={dialogOpen}
 								handleDialogClose={handleDialogClose}
 								certify={item}
+								challengeId={challengeId}
 								userChallengeId={userChallengeId}
 							/>
 						</Feed>

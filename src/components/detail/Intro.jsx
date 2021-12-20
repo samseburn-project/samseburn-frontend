@@ -9,6 +9,7 @@ import CommonDialog from "../common/CommonDialog";
 import AuthDialog from "../common/AuthDialog";
 
 const Intro = ({ ...props }) => {
+	console.log(props);
 	const userToken = localStorage.getItem("token");
 	const today = new Date().getTime();
 
@@ -45,6 +46,7 @@ const Intro = ({ ...props }) => {
 					dialogOpen={props.dialogOpen}
 					handleDialogOpen={props.handleDialogOpen}
 					handleDialogClose={props.handleDialogClose}
+					challengeId={props.challenge?.challengeId}
 				/>
 			);
 		}

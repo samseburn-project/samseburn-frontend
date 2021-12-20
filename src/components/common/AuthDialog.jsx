@@ -11,15 +11,22 @@ import { ReactComponent as Close } from "../../assets/icons/close.svg";
 import { ReactComponent as Delete } from "../../assets/icons/delete.svg";
 
 const AuthDialog = ({ ...props }) => {
+	console.log(props);
 	const certify = props?.certify;
-	const userChallengeId = props?.userChallengeId;
-	const { enqueueSnackbar } = useSnackbar();
+	const challengeId = props?.challengeId;
 	const [imgFile, setImgFile] = useState(null);
-	const [previewImg, setPreviewImg] = useState(null);
+	const [previewImg, setPreviewImg] = useState(
+		certify?.imgUrl ? certify?.imgUrl : null
+	);
 	const [contents, setContents] = useState("");
-	const userToken = props.userToken;
-	const authDate = new Date().toLocaleString();
+	const userToken = localStorage.getItem("token");
 	const imgRef = useRef();
+
+	const date = new Date(+new Date() + 3240 * 10000).toISOString().split("T")[0];
+	const time = new Date().toTimeString().split(" ")[0];
+	const authDate = `${date} ${time}`;
+
+	const { enqueueSnackbar } = useSnackbar();
 
 	const handleImgChange = (e) => {
 		let file = e.target.files[0];
@@ -62,12 +69,12 @@ const AuthDialog = ({ ...props }) => {
 
 		try {
 			const res = await axios.post(
-				`/challenges/${props.challenge.challengeId}/certi`,
+				`/challenges/${challengeId}/certi`,
 				formData,
 				{
 					headers: {
 						"Content-Type": "multipart/form-data",
-						Authorization: userToken,
+						Authorization: `Bearer ${userToken}`,
 					},
 				}
 			);
@@ -89,7 +96,7 @@ const AuthDialog = ({ ...props }) => {
 			console.log(err);
 		}
 	};
-  
+
 	return (
 		<Dialog onClose={props.handleDialogClose} open={props.dialogOpen}>
 			<StyledDialogContent>
@@ -112,15 +119,10 @@ const AuthDialog = ({ ...props }) => {
 									</AuthThumbnail>
 								) : (
 									<AuthThumbnail>
-										<img src={certify.imgUrl} alt="Auth Thumbnail" />
-										<DeleteButton>
-											<Delete
-												alt="Delete icon"
-												style={{ zIndex: 10 }}
-												onClick={handleImgDelete}
-											/>
-										</DeleteButton>
 										<img src={previewImg} alt="Auth Thumbnail" />
+										<DeleteButton style={{ cursor: "default" }}>
+											<Delete alt="Delete icon" style={{ zIndex: 10 }} />
+										</DeleteButton>
 									</AuthThumbnail>
 								)}
 							</Grid>
@@ -153,7 +155,6 @@ const AuthDialog = ({ ...props }) => {
 								/>
 							) : (
 								<DateInput
-									label="auth-date"
 									id="auth-date"
 									InputProps={{ readOnly: true }}
 									defaultValue={certify.createdDate}
@@ -225,12 +226,12 @@ const AuthThumbnail = styled.div`
 	width: 35rem;
 	height: 25rem;
 	background-color: #959595;
-	border-radius: 0.5rem;
 	position: relative;
 
 	img {
 		width: 100%;
 		height: 100%;
+		border-radius: 0.5rem;
 	}
 `;
 
