@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Grid } from '@mui/material';
 import MyChallengeCard from './MyChallengeCard';
 
-const ViewChallenge = ({ userChallengeList }) => {
+const ViewChallenge = ({ userToken, userChallengeList }) => {
   const currentChallenges = [
     {
       challengeId: 1,
@@ -176,6 +176,7 @@ const ViewChallenge = ({ userChallengeList }) => {
           <Grid container>
             {retryPossibleChallenges.map((challenge) => (
               <MyChallengeCard
+                userToken={userToken}
                 key={challenge.challengeId}
                 id={challenge.challengeId}
                 title={challenge.title}

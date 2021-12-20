@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import styled from 'styled-components';
 
@@ -21,6 +22,7 @@ import Category from '../common/Category';
 import StyledButton from '../common/StyledButton';
 
 const MyChallengeCard = ({
+  userToken,
   id,
   title,
   category,
@@ -46,9 +48,29 @@ const MyChallengeCard = ({
     }
   };
 
+  const onRetryHandler = async (e) => {
+    try {
+      const res = axios.put(`/challenges/${id}/retry`, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      });
+
+      console.log(res);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <Grid item xs={6}>
-      <StyledCard onClick={() => navigate(`/detail/${id}`)}>
+      <StyledCard
+        onClick={(e) => {
+          if (e.target.name !== 'retryButton') {
+            navigate(`/detail/${id}`);
+          }
+        }}
+      >
         <StyledCardThumbnail>
           <img alt={title} src={imgUrl} className="thumbnail"></img>
         </StyledCardThumbnail>
@@ -100,7 +122,9 @@ const MyChallengeCard = ({
               ''
             )}
             {challengeStatus === 'RETRY' ? (
-              <RetryButton>재도전하기</RetryButton>
+              <RetryButton name="retryButton" onClick={onRetryHandler}>
+                재도전하기
+              </RetryButton>
             ) : (
               ''
             )}
