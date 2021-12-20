@@ -4,7 +4,7 @@
 
 ### 개발 기간
 
-2021-11-24 ~ 2021-12-15
+2021-11-24 ~ 2021-12-23
 
 ### 개발 인원
 
@@ -18,7 +18,7 @@
 
 - Javascript ES6
 - React
-- Redux, Redux-Thunk
+- Redux, Redux-Toolkit Redux-Thunk
 - Styled-components
 - Material UI
 - Webpack, Babel

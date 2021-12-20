@@ -6,6 +6,7 @@ import { Menu, MenuItem, Dialog, DialogContent } from "@mui/material";
 
 import styled from "styled-components";
 
+import { ReactComponent as Logo } from "../../assets/logo.svg";
 import { ReactComponent as Profile } from "../../assets/icons/profile.svg";
 import { ReactComponent as Register } from "../../assets/icons/plus.svg";
 import { ReactComponent as KakaoIcon } from "../../assets/icons/kakao.svg";
@@ -81,7 +82,7 @@ const Navbar = () => {
 				<Nav>
 					<NavContainer>
 						<NavLink to="/">
-							<NavLogo>삼세번</NavLogo>
+							<Logo />
 						</NavLink>
 						<NavProfile type="button" onClick={handleModalOpen}>
 							<Profile alt="Profile icon" />
@@ -104,7 +105,7 @@ const Navbar = () => {
 				<Nav>
 					<NavContainer>
 						<NavLink to="/">
-							<NavLogo>삼세번</NavLogo>
+							<Logo />
 						</NavLink>
 						<NavIcon>
 							<NavProfile
@@ -154,12 +155,6 @@ const NavContainer = styled.div`
 
 	display: flex;
 	justify-content: space-between;
-`;
-
-const NavLogo = styled.div`
-	font-size: 2.4rem;
-	font-weight: bold;
-	color: #ff3d00;
 `;
 
 const NavIcon = styled.div`
