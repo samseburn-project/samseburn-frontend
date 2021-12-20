@@ -15,128 +15,124 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const Navbar = () => {
-  const [isLoggedIn, setLoggedIn] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const userToken = localStorage.getItem('token');
-  const navigate = useNavigate();
+	const [isLoggedIn, setLoggedIn] = useState(false);
+	const [modalOpen, setModalOpen] = useState(false);
+	const [anchorEl, setAnchorEl] = useState(null);
+	const open = Boolean(anchorEl);
+	const userToken = localStorage.getItem("token");
+	const navigate = useNavigate();
 
-  const { Kakao } = window;
+	const { Kakao } = window;
 
-  useEffect(() => {
-    if (userToken) setLoggedIn(true);
-  }, [userToken]);
+	useEffect(() => {
+		if (userToken) setLoggedIn(true);
+	}, [userToken]);
 
-  const handleMouseOver = (e) => {
-    setAnchorEl(e.currentTarget);
-  };
+	const handleMouseOver = (e) => {
+		setAnchorEl(e.currentTarget);
+	};
 
-  const handleDropDownClose = () => {
-    setAnchorEl(null);
-  };
+	const handleDropDownClose = () => {
+		setAnchorEl(null);
+	};
 
-  const handleModalOpen = () => {
-    setModalOpen(true);
-  };
+	const handleModalOpen = () => {
+		setModalOpen(true);
+	};
 
-  const handleModalClose = () => {
-    setModalOpen(false);
-  };
+	const handleModalClose = () => {
+		setModalOpen(false);
+	};
 
-  const kakaoLoginHandler = () => {
-    Kakao.Auth.login({
-      success: (response) => {
-        const token = response.access_token;
-        console.log(token);
-        axios
-          .post('/login/kakao', JSON.stringify({ token: token }), {
-            headers: { 'Content-Type': 'application/json' },
-          })
-          .then((res) => {
-            console.log(res);
-            if (res.data.token) {
-              localStorage.setItem('token', res.data.token);
-              handleModalClose();
-              navigate(0);
-            }
-          })
-          .catch((err) => console.error(err));
-      },
-      fail: (err) => {
-        console.log(err);
-      },
-    });
-  };
+	const kakaoLoginHandler = () => {
+		Kakao.Auth.login({
+			success: (response) => {
+				const token = response.access_token;
+				axios
+					.post("/login/kakao", JSON.stringify({ token: token }), {
+						headers: { "Content-Type": "application/json" },
+					})
+					.then((res) => {
+						if (res.data.token) {
+							localStorage.setItem("token", res.data.token);
+							handleModalClose();
+							navigate(0);
+						}
+					})
+					.catch((err) => console.error(err));
+			},
+			fail: (err) => {
+				console.log(err);
+			},
+		});
+	};
 
-  const kakaoLogoutHandler = () => {
-    Kakao.Auth.logout(() => {
-      localStorage.removeItem('token');
-      navigate(0);
-    });
-  };
+	const kakaoLogoutHandler = () => {
+		Kakao.Auth.logout(() => {
+			localStorage.removeItem("token");
+			navigate(0);
+		});
+	};
 
-  return (
-    <>
-      {!isLoggedIn ? (
-        <Nav>
-          <NavContainer>
-            <NavLink to="/">
-              <Logo />
-            </NavLink>
-            <NavProfile type="button" onClick={handleModalOpen}>
-              <Profile alt="Profile icon" />
-            </NavProfile>
-            <StyledDialog open={modalOpen} onClose={handleModalClose}>
-              <StyledDialogContent>
-                삼세번과 함께 <br />
-                건강한 습관을 만들어보세요!
-                <KakaoLoginButton onClick={kakaoLoginHandler}>
-                  <LoginIcon>
-                    <KakaoIcon alt="Kakao icon" />
-                  </LoginIcon>
-                  <LoginText>카카오 로그인</LoginText>
-                </KakaoLoginButton>
-              </StyledDialogContent>
-            </StyledDialog>
-          </NavContainer>
-        </Nav>
-      ) : (
-        <Nav>
-          <NavContainer>
-            <NavLink to="/">
-              <Logo />
-            </NavLink>
-            <NavIcon>
-              <NavProfile
-                type="button"
-                aria-haspopup="true"
-                aria-expanded={open ? 'true' : undefined}
-                onMouseOver={handleMouseOver}
-              >
-                <Profile alt="Profile icon" />
-              </NavProfile>
-              <StyledMenu
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleDropDownClose}
-              >
-                <NavLink to="/my">
-                  <MenuItem>My page</MenuItem>
-                </NavLink>
-                <MenuItem onClick={kakaoLogoutHandler}>Logout</MenuItem>
-              </StyledMenu>
-              <NavLink to="/register">
-                <NavRegister>
-                  <Register alt="Register icon" />
-                </NavRegister>
-              </NavLink>
-            </NavIcon>
-          </NavContainer>
-        </Nav>
-      )}
-    </>
-  );
+	return (
+		<>
+			{!isLoggedIn ? (
+				<Nav>
+					<NavContainer>
+						<NavLink to="/">
+							<NavLogo>삼세번</NavLogo>
+						</NavLink>
+						<NavProfile type="button" onClick={handleModalOpen}>
+							<img src={profile} alt="Profile icon" />
+						</NavProfile>
+						<StyledDialog open={modalOpen} onClose={handleModalClose}>
+							<StyledDialogContent>
+								삼세번과 함께 <br />
+								건강한 습관을 만들어보세요!
+								<KakaoLoginButton onClick={kakaoLoginHandler}>
+									<LoginIcon>
+										<img src={kakao} alt="Kakao icon" />
+									</LoginIcon>
+									<LoginText>카카오 로그인</LoginText>
+								</KakaoLoginButton>
+							</StyledDialogContent>
+						</StyledDialog>
+					</NavContainer>
+				</Nav>
+			) : (
+				<Nav>
+					<NavContainer>
+						<NavLink to="/">
+							<NavLogo>삼세번</NavLogo>
+						</NavLink>
+						<NavIcon>
+							<NavProfile
+								type="button"
+								aria-haspopup="true"
+								aria-expanded={open ? "true" : undefined}
+								onMouseOver={handleMouseOver}
+							>
+								<img src={profile} alt="Profile icon" />
+							</NavProfile>
+							<StyledMenu
+								anchorEl={anchorEl}
+								open={open}
+								onClose={handleDropDownClose}
+							>
+								<NavLink to="/my">
+									<MenuItem>My page</MenuItem>
+								</NavLink>
+								<MenuItem onClick={kakaoLogoutHandler}>Logout</MenuItem>
+							</StyledMenu>
+							<NavRegister>
+								<img src={register} alt="Register icon" />
+							</NavRegister>
+						</NavIcon>
+					</NavContainer>
+				</Nav>
+			)}
+		</>
+	);
 };
 
 export default Navbar;

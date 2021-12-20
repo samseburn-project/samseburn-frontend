@@ -9,7 +9,109 @@ import CommonDialog from "../common/CommonDialog";
 import AuthDialog from "../common/AuthDialog";
 
 const Intro = ({ ...props }) => {
+	const userToken = localStorage.getItem("token");
+	const today = new Date().getTime();
+
 	const { enqueueSnackbar } = useSnackbar();
+
+	const handleMissionStatus = (missionStatus, count, missonDate, retry) => {
+		if (missionStatus === "NO" && count === 3) {
+			return (
+				<CommonDialog
+					dialogOpen={props.dialogOpen}
+					handleDialogOpen={props.handleDialogOpen}
+					handleDialogClose={props.handleDialogClose}
+					handleChallengeContinue={props.handleChallengeContinue}
+					handleChallengeStop={props.handleChallengeStop}
+					mainText={"챌린지 1주차 작심삼일 미션을 달성했습니다 🎉"}
+					subText={
+						"계속 챌린지를 진행할 수도 있고, 여기서 그만 둘 수도 있어요."
+					}
+				/>
+			);
+		} else if (missionStatus === "NO" && missonDate > today) {
+			return (
+				<CommonDialog
+					dialogOpen={props.dialogOpen}
+					handleDialogOpen={props.handleDialogOpen}
+					handleDialogClose={props.handleDialogClose}
+					mainText={"챌린지 1주차 작심삼일 미션을 달성하지 못했어요 😔"}
+					subText={`총 ${3 - retry}번의 재도전 기회가 남아 있어요!`}
+				/>
+			);
+		} else {
+			return (
+				<AuthDialog
+					dialogOpen={props.dialogOpen}
+					handleDialogOpen={props.handleDialogOpen}
+					handleDialogClose={props.handleDialogClose}
+				/>
+			);
+		}
+	};
+
+	const handleButtonRender = (challengeStatus) => {
+		if (challengeStatus === "JOIN") {
+			return (
+				<ButtonRow>
+					<AuthButton onClick={props.handleDialogOpen}>챌린지 인증</AuthButton>
+					{handleMissionStatus(
+						props.userChallenge?.firstWeekMission,
+						props.userChallenge?.certiCount,
+						props.userChallenge?.userMissionDate,
+						props.userChallenge?.retryCount
+					)}
+					{/* <CancelButton
+						onClick={() => {
+							props.handleDialogOpen();
+						}}
+					>
+						참가 취소
+					</CancelButton>
+					<CancelDialog
+						dialogOpen={props.dialogOpen}
+						handleDialogOpen={props.handleDialogOpen}
+						handleDialogClose={props.handleDialogClose}
+						handleChallengeCancel={props.handleChallengeCancel}
+						mainText={"챌린지 참가 신청이 취소되었습니다."}
+						subText={"참여 취소 시 모든 챌린지 인증 기록이 삭제됩니다."}
+					/> */}
+				</ButtonRow>
+			);
+		} else if (challengeStatus === "COMPLETE") {
+			return <ClosedButton disabled>챌린지 마감</ClosedButton>;
+		} else if (
+			props.userChallenge === {} ||
+			props.userChallenge?.challengeStatus !== "JOIN"
+		) {
+			return (
+				<>
+					<ApplyButton
+						type="button"
+						onClick={() => {
+							if (userToken) {
+								props.handleChallengeJoin();
+								props.handleDialogOpen();
+							} else {
+								enqueueSnackbar("로그인이 필요한 기능입니다!", {
+									variant: "warning",
+									autoHideDuration: 2000,
+								});
+							}
+						}}
+					>
+						챌린지 참가하기
+					</ApplyButton>
+					<ApplyDialog
+						dialogOpen={props.dialogOpen}
+						handleDialogOpen={props.handleDialogOpen}
+						handleDialogClose={props.handleDialogClose}
+						mainText={"챌린지 참가 신청이 완료되었습니다."}
+					/>
+				</>
+			);
+		}
+	};
 
 	return (
 		<IntroBox>
@@ -36,59 +138,7 @@ const Intro = ({ ...props }) => {
 					<Text>
 						{props.challenge?.participants} / {props.challenge?.limitPerson} 명
 					</Text>
-					{props.join ? (
-						<>
-							<ApplyButton
-								type="button"
-								onClick={() => {
-									if (props.userToken) {
-										props.handleChallengeJoin();
-										props.handleDialogOpen();
-									} else {
-										enqueueSnackbar("로그인이 필요한 기능입니다!", {
-											variant: "warning",
-											autoHideDuration: 2000,
-										});
-									}
-								}}
-							>
-								챌린지 참가하기
-							</ApplyButton>
-							<ApplyDialog
-								dialogOpen={props.dialogOpen}
-								handleDialogOpen={props.handleDialogOpen}
-								handleDialogClose={props.handleDialogClose}
-								mainText={"챌린지 참가 신청이 완료되었습니다."}
-							/>
-						</>
-					) : (
-						<ButtonRow>
-							<AuthButton onClick={props.handleDialogOpen}>
-								챌린지 인증
-							</AuthButton>
-							<AuthDialog
-								dialogOpen={props.dialogOpen}
-								handleDialogOpen={props.handleDialogOpen}
-								handleDialogClose={props.handleDialogClose}
-								challenge={props.challenge}
-								userToken={props.userToken}
-							/>
-							{/* <CancelButton
-								onClick={() => {
-									props.handleChallengeCancel();
-									props.handleDialogOpen();
-								}}
-							>
-								참가 취소
-							</CancelButton>
-							<CancelDialog
-								dialogOpen={props.dialogOpen}
-								handleDialogOpen={props.handleDialogOpen}
-								handleDialogClose={props.handleDialogClose}
-								mainText={"챌린지 참가 신청이 취소되었습니다."}
-							/> */}
-						</ButtonRow>
-					)}
+					{handleButtonRender(props.userChallenge?.challengeStatus)}
 				</ContentsContainer>
 			</IntroContainer>
 		</IntroBox>
@@ -229,3 +279,14 @@ const CancelButton = styled(StyledButton)`
 	font-size: 2rem;
 `;
 const CancelDialog = styled(CommonDialog)``;
+
+const ClosedButton = styled(StyledButton)`
+	width: 37.7rem;
+	height: 5.5rem;
+	font-size: 2rem;
+	background-color: #c4c4c4;
+
+	&:hover {
+		background-color: #c4c4c4;
+	}
+`;

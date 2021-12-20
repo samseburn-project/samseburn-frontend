@@ -10,7 +10,8 @@ import "slick-carousel/slick/slick-theme.css";
 
 const FeedCarousel = ({ ...props }) => {
 	const [dialogOpen, setDialogOpen] = useState(false);
-	const certifies = props.certifies;
+	const certifies = props?.certifies;
+	const userChallengeId = props?.userChallengeId;
 	const placeholderImgUrl = "https://plchldr.co/i/186x130?&bg=C4C4C4&fc=ffffff";
 
 	const settings = {
@@ -45,73 +46,83 @@ const FeedCarousel = ({ ...props }) => {
 				</StyledCarousel>
 			);
 		} else if (list.length === 1) {
-			<StyledCarousel {...settings}>
-				<Feed>
-					<FeedThumbnail
-						src={list[0].imgUrl}
-						alt="Feed Thumbnail"
-						onClick={handleDialogOpen}
-					/>
-					<AuthDialog
-						dialogOpen={dialogOpen}
-						handleDialogClose={handleDialogClose}
-						certify={list[0]}
-					/>
-				</Feed>
-				<Feed>
-					<FeedThumbnail src={placeholderImgUrl} alt="Feed Thumbnail" />
-				</Feed>
-				<Feed>
-					<FeedThumbnail src={placeholderImgUrl} alt="Feed Thumbnail" />
-				</Feed>
-			</StyledCarousel>;
-		} else if (list.length === 2) {
-			<StyledCarousel {...settings}>
-				<Feed>
-					<FeedThumbnail
-						src={list[0].imgUrl}
-						alt="Feed Thumbnail"
-						onClick={handleDialogOpen}
-					/>
-					<AuthDialog
-						dialogOpen={dialogOpen}
-						handleDialogClose={handleDialogClose}
-						certify={list[0]}
-					/>
-				</Feed>
-				<Feed>
-					<FeedThumbnail
-						src={list[1].imgUrl}
-						alt="Feed Thumbnail"
-						onClick={handleDialogOpen}
-					/>
-					<AuthDialog
-						dialogOpen={dialogOpen}
-						handleDialogClose={handleDialogClose}
-						certify={list[1]}
-					/>
-				</Feed>
-				<Feed>
-					<FeedThumbnail src={placeholderImgUrl} alt="Feed Thumbnail" />
-				</Feed>
-			</StyledCarousel>;
-		} else {
-			<StyledCarousel {...settings}>
-				{list.map((item) => (
-					<Feed key={item.certificationId}>
+			return (
+				<StyledCarousel {...settings}>
+					<Feed>
 						<FeedThumbnail
-							src={item.imgUrl}
+							src={list[0].imgUrl}
 							alt="Feed Thumbnail"
 							onClick={handleDialogOpen}
 						/>
 						<AuthDialog
 							dialogOpen={dialogOpen}
 							handleDialogClose={handleDialogClose}
-							certify={item}
+							certify={list[0]}
+							userChallengeId={userChallengeId}
 						/>
 					</Feed>
-				))}
-			</StyledCarousel>;
+					<Feed>
+						<FeedThumbnail src={placeholderImgUrl} alt="Feed Thumbnail" />
+					</Feed>
+					<Feed>
+						<FeedThumbnail src={placeholderImgUrl} alt="Feed Thumbnail" />
+					</Feed>
+				</StyledCarousel>
+			);
+		} else if (list.length === 2) {
+			return (
+				<StyledCarousel {...settings}>
+					<Feed>
+						<FeedThumbnail
+							src={list[0].imgUrl}
+							alt="Feed Thumbnail"
+							onClick={handleDialogOpen}
+						/>
+						<AuthDialog
+							dialogOpen={dialogOpen}
+							handleDialogClose={handleDialogClose}
+							certify={list[0]}
+							userChallengeId={userChallengeId}
+						/>
+					</Feed>
+					<Feed>
+						<FeedThumbnail
+							src={list[1].imgUrl}
+							alt="Feed Thumbnail"
+							onClick={handleDialogOpen}
+						/>
+						<AuthDialog
+							dialogOpen={dialogOpen}
+							handleDialogClose={handleDialogClose}
+							certify={list[1]}
+							userChallengeId={userChallengeId}
+						/>
+					</Feed>
+					<Feed>
+						<FeedThumbnail src={placeholderImgUrl} alt="Feed Thumbnail" />
+					</Feed>
+				</StyledCarousel>
+			);
+		} else {
+			return (
+				<StyledCarousel {...settings}>
+					{list.map((item) => (
+						<Feed key={item.certificationId}>
+							<FeedThumbnail
+								src={item.imgUrl}
+								alt="Feed Thumbnail"
+								onClick={handleDialogOpen}
+							/>
+							<AuthDialog
+								dialogOpen={dialogOpen}
+								handleDialogClose={handleDialogClose}
+								certify={item}
+								userChallengeId={userChallengeId}
+							/>
+						</Feed>
+					))}
+				</StyledCarousel>
+			);
 		}
 	};
 

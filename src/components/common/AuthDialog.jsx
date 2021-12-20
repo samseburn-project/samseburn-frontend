@@ -11,6 +11,8 @@ import { ReactComponent as Close } from "../../assets/icons/close.svg";
 import { ReactComponent as Delete } from "../../assets/icons/delete.svg";
 
 const AuthDialog = ({ ...props }) => {
+	const certify = props?.certify;
+	const userChallengeId = props?.userChallengeId;
 	const { enqueueSnackbar } = useSnackbar();
 	const [imgFile, setImgFile] = useState(null);
 	const [previewImg, setPreviewImg] = useState(null);
@@ -87,7 +89,7 @@ const AuthDialog = ({ ...props }) => {
 			console.log(err);
 		}
 	};
-
+  
 	return (
 		<Dialog onClose={props.handleDialogClose} open={props.dialogOpen}>
 			<StyledDialogContent>
@@ -110,6 +112,7 @@ const AuthDialog = ({ ...props }) => {
 									</AuthThumbnail>
 								) : (
 									<AuthThumbnail>
+										<img src={certify.imgUrl} alt="Auth Thumbnail" />
 										<DeleteButton>
 											<Delete
 												alt="Delete icon"
@@ -123,7 +126,7 @@ const AuthDialog = ({ ...props }) => {
 							</Grid>
 							<Grid item textAlign="center">
 								<label htmlFor="auth-image">
-									{!props.certify ? (
+									{!certify ? (
 										<>
 											<UploadInput
 												id="auth-image"
@@ -142,7 +145,7 @@ const AuthDialog = ({ ...props }) => {
 						</Grid>
 						<Grid item>
 							<LabelText>챌린지 인증 날짜</LabelText>
-							{!props.certify ? (
+							{!certify ? (
 								<DateInput
 									id="auth-date"
 									InputProps={{ readOnly: true }}
@@ -153,13 +156,13 @@ const AuthDialog = ({ ...props }) => {
 									label="auth-date"
 									id="auth-date"
 									InputProps={{ readOnly: true }}
-									defaultValue={props.certify.createdDate}
+									defaultValue={certify.createdDate}
 								/>
 							)}
 						</Grid>
 						<Grid item>
 							<LabelText>챌린지 인증 후기</LabelText>
-							{!props.certify ? (
+							{!certify ? (
 								<TextInput
 									id="auth-text"
 									multiline
@@ -168,17 +171,16 @@ const AuthDialog = ({ ...props }) => {
 								/>
 							) : (
 								<TextInput
-									label="auth-text"
 									id="auth-text"
 									multiline
 									rows={8}
 									InputProps={{ readOnly: true }}
-									defaultValue={props.certify.contents}
+									defaultValue={certify.contents}
 								/>
 							)}
 						</Grid>
 						<Grid item textAlign="center">
-							{!props.certify ? (
+							{!certify ? (
 								<ButtonRow>
 									<EnrollButton type="submit">등록</EnrollButton>
 									<CancelButton
