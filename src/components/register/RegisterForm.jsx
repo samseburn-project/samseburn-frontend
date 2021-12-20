@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-
 import Modal from 'react-modal';
 import DaumPostcode from 'react-daum-postcode';
+import addDays from 'date-fns/addDays';
 
 import styled from 'styled-components';
 
@@ -10,14 +10,11 @@ import { TextField, Box } from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateRangePicker from '@mui/lab/DateRangePicker';
-import addDays from 'date-fns/addDays';
 import IconButton from '@mui/material/IconButton';
-
-import StyledButton from '../common/StyledButton';
-
 import { ReactComponent as ArrowForward } from '../../assets/icons/arrow.svg';
 import { ReactComponent as Delete } from '../../assets/icons/delete.svg';
 import { ReactComponent as Close } from '../../assets/icons/close.svg';
+import StyledButton from '../common/StyledButton';
 
 function RegisterForm(props) {
   const userToken = localStorage.getItem('token');
@@ -121,6 +118,13 @@ function RegisterForm(props) {
 
   const onModalHandler = () => {
     setIsPopupOpen(!isPopupOpen);
+  };
+
+  const onDeleteFile = () => {
+    setImage({
+      imageFile: null,
+      imageUrl: null,
+    });
   };
 
   const onSubmitFormData = async () => {
@@ -262,11 +266,9 @@ function RegisterForm(props) {
                 <DefaultThumbnail></DefaultThumbnail>
               )}
               {/* 이미지 삭제 버튼 */}
-              <StackBox>
-                <IconButton>
-                  <Delete />
-                </IconButton>
-              </StackBox>
+              <DeleteButtonContainer onClick={onDeleteFile}>
+                <Delete alt="Delete icon" style={{ zIndex: 10 }} />
+              </DeleteButtonContainer>
             </ThumbnailContainer>
 
             {/* 이미지 업로드 버튼 */}
@@ -644,5 +646,22 @@ const LocationTypeSpan = styled.span`
   &:hover {
     background-color: #ffa883;
     color: white;
+  }
+`;
+
+const DeleteButtonContainer = styled.div`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  cursor: pointer;
+  z-index: 1;
+  background-color: #ffffff;
+  border-radius: 50%;
+  padding: 0.7rem;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+
+  &:hover {
+    opacity: 1;
   }
 `;
