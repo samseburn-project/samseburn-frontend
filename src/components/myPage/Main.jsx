@@ -99,7 +99,10 @@ const Main = () => {
         </Row>
 
         {selectedTab === 0 && (
-          <ViewChallenge userChallengeList={userChallengeList} />
+          <ViewChallenge
+            userToken={userToken}
+            userChallengeList={userChallengeList}
+          />
         )}
         {selectedTab === 1 && <ModifyUser userToken={userToken} />}
         {selectedTab === 2 && (

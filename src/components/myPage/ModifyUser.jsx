@@ -95,7 +95,7 @@ const ModifyUser = ({ userToken }) => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingContainer>Loading...</LoadingContainer>;
   }
 
   if (!nickname) {
@@ -150,6 +150,11 @@ const ModifyUser = ({ userToken }) => {
 };
 
 export default ModifyUser;
+
+const LoadingContainer = styled.div`
+  text-align: center;
+  font-size: 2rem;
+`;
 
 const Row = styled.div`
   margin: 0;
