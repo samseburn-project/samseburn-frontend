@@ -32,8 +32,24 @@ const CommonDialog = ({ ...props }) => {
 		} else if (mainText === "챌린지 1주차 작심삼일 미션을 달성했습니다 🎉") {
 			return (
 				<ButtonRow>
-					<ContinueButton type="button">챌린지 계속 하기</ContinueButton>
-					<StopButton type="button">챌린지 그만 두기</StopButton>
+					<ContinueButton
+						type="button"
+						onClick={() => {
+							props.handleChallengeContinue();
+							props.handleDialogClose();
+						}}
+					>
+						챌린지 계속 하기
+					</ContinueButton>
+					<StopButton
+						type="button"
+						onClick={() => {
+							props.handleChallengeStop();
+							props.handleDialogClose();
+						}}
+					>
+						챌린지 그만 두기
+					</StopButton>
 				</ButtonRow>
 			);
 		} else if (mainText === "챌린지 1주차 작심삼일 미션을 달성하지 못했어요 😔")
@@ -55,32 +71,7 @@ const CommonDialog = ({ ...props }) => {
 						<MainText>{props.mainText}</MainText>
 						<SubText>{props.subText}</SubText>
 					</Row>
-					<Row>
-						{handleButtonRender(props.mainText)}
-						{/* {!props.handleChallengeCancel ? (
-							<ConfirmButton
-								type="button"
-								onClick={() => props.handleDialogClose()}
-							>
-								확인
-							</ConfirmButton>
-						) : (
-							<ButtonRow>
-								<ConfirmButton
-									type="button"
-									onClick={() => props.handleChallengeCancel()}
-								>
-									확인
-								</ConfirmButton>
-								<CancelButton
-									type="button"
-									onClick={() => props.handleDialogClose()}
-								>
-									취소
-								</CancelButton>
-							</ButtonRow>
-						)} */}
-					</Row>
+					<Row>{handleButtonRender(props.mainText)}</Row>
 				</Container>
 			</StyledDialogContent>
 		</Dialog>

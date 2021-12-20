@@ -20,6 +20,8 @@ const Intro = ({ ...props }) => {
 					dialogOpen={props.dialogOpen}
 					handleDialogOpen={props.handleDialogOpen}
 					handleDialogClose={props.handleDialogClose}
+					handleChallengeContinue={props.handleChallengeContinue}
+					handleChallengeStop={props.handleChallengeStop}
 					mainText={"챌린지 1주차 작심삼일 미션을 달성했습니다 🎉"}
 					subText={
 						"계속 챌린지를 진행할 수도 있고, 여기서 그만 둘 수도 있어요."

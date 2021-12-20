@@ -41,6 +41,9 @@ const Main = () => {
 			const { data } = await axios.get(`/challenges/${id}/user`, {
 				headers: { Authorization: `Bearer ${userToken}` },
 			});
+
+			console.log(data);
+
 			setChallengeStatus(data.userHistories[0].challengeStatus);
 		} catch (err) {
 			console.log(err);
@@ -81,6 +84,30 @@ const Main = () => {
 		}
 	};
 
+	const handleChallengeContinue = async () => {
+		try {
+			await axios.put(`/challenges/${id}/continue`, {
+				headers: {
+					Authorization: `Bearer ${userToken}`,
+				},
+			});
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
+	const handleChallengeStop = async () => {
+		try {
+			await axios.delete(`challenges/${id}/continue`, {
+				headers: {
+					Authorization: `Bearer ${userToken}`,
+				},
+			});
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
 	useEffect(() => {
 		fetchChallenge();
 		fetchParticipants();
@@ -96,6 +123,8 @@ const Main = () => {
 				challengeStatus={challengeStatus}
 				handleChallengeJoin={handleChallengeJoin}
 				handleChallengeCancel={handleChallengeCancel}
+				handleChallengeContinue={handleChallengeContinue}
+				handleChallengeStop={handleChallengeStop}
 				dialogOpen={dialogOpen}
 				handleDialogOpen={handleDialogOpen}
 				handleDialogClose={handleDialogClose}
