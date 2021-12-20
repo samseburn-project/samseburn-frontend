@@ -150,19 +150,20 @@ const ViewChallenge = ({ userToken, userChallengeList }) => {
         ) : (
           <Grid container>
             {joinChallenges.map((challenge) => (
-              <MyChallengeCard
-                key={challenge.challengeId}
-                id={challenge.challengeId}
-                title={challenge.title}
-                category={challenge.category}
-                locationType={challenge.locationType}
-                challengeStartDate={challenge.challengeStartDate}
-                challengeEndDate={challenge.challengeEndDate}
-                certiCount={challenge.certiCount}
-                imgUrl={challenge.imgUrl}
-                challengeStatus={challenge.challengeStatus}
-                firstWeekMission={challenge.firstWeekMission}
-              />
+              <Grid item xs={6} key={challenge.challengeId}>
+                <MyChallengeCard
+                  id={challenge.challengeId}
+                  title={challenge.title}
+                  category={challenge.category}
+                  locationType={challenge.locationType}
+                  challengeStartDate={challenge.challengeStartDate}
+                  challengeEndDate={challenge.challengeEndDate}
+                  certiCount={challenge.certiCount}
+                  imgUrl={challenge.imgUrl}
+                  challengeStatus={challenge.challengeStatus}
+                  firstWeekMission={challenge.firstWeekMission}
+                />
+              </Grid>
             ))}
           </Grid>
         )}
@@ -175,20 +176,21 @@ const ViewChallenge = ({ userToken, userChallengeList }) => {
           // 데이터양 많아지면 코드 변경
           <Grid container>
             {retryPossibleChallenges.map((challenge) => (
-              <MyChallengeCard
-                userToken={userToken}
-                key={challenge.challengeId}
-                id={challenge.challengeId}
-                title={challenge.title}
-                category={challenge.category}
-                locationType={challenge.locationType}
-                challengeStartDate={challenge.challengeStartDate}
-                challengeEndDate={challenge.challengeEndDate}
-                certiCount={challenge.certiCount}
-                imgUrl={challenge.imgUrl}
-                challengeStatus={challenge.challengeStatus}
-                firstWeekMission={challenge.firstWeekMission}
-              />
+              <Grid item xs={6} key={challenge.challengeId}>
+                <MyChallengeCard
+                  userToken={userToken}
+                  id={challenge.challengeId}
+                  title={challenge.title}
+                  category={challenge.category}
+                  locationType={challenge.locationType}
+                  challengeStartDate={challenge.challengeStartDate}
+                  challengeEndDate={challenge.challengeEndDate}
+                  certiCount={challenge.certiCount}
+                  imgUrl={challenge.imgUrl}
+                  challengeStatus={challenge.challengeStatus}
+                  firstWeekMission={challenge.firstWeekMission}
+                />
+              </Grid>
             ))}
           </Grid>
         )}
@@ -201,19 +203,20 @@ const ViewChallenge = ({ userToken, userChallengeList }) => {
           // 데이터양 많아지면 코드 변경
           <Grid container>
             {completedChallenges.map((challenge) => (
-              <MyChallengeCard
-                key={challenge.challengeId}
-                id={challenge.challengeId}
-                title={challenge.title}
-                category={challenge.category}
-                locationType={challenge.locationType}
-                challengeStartDate={challenge.challengeStartDate}
-                challengeEndDate={challenge.challengeEndDate}
-                certiCount={challenge.certiCount}
-                imgUrl={challenge.imgUrl}
-                challengeStatus={challenge.challengeStatus}
-                firstWeekMission={challenge.firstWeekMission}
-              />
+              <Grid item xs={6} key={challenge.challengeId}>
+                <MyChallengeCard
+                  id={challenge.challengeId}
+                  title={challenge.title}
+                  category={challenge.category}
+                  locationType={challenge.locationType}
+                  challengeStartDate={challenge.challengeStartDate}
+                  challengeEndDate={challenge.challengeEndDate}
+                  certiCount={challenge.certiCount}
+                  imgUrl={challenge.imgUrl}
+                  challengeStatus={challenge.challengeStatus}
+                  firstWeekMission={challenge.firstWeekMission}
+                />
+              </Grid>
             ))}
           </Grid>
         )}

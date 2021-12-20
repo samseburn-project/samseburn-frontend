@@ -67,7 +67,7 @@ const Main = () => {
       backgroundColor: 'transparent',
     },
     '& .MuiTabs-indicatorSpan': {
-      maxWidth: 50,
+      maxWidth: 100,
       width: '100%',
       backgroundColor: '#EB3901',
     },
