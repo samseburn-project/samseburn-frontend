@@ -1,7 +1,7 @@
 import React from "react";
 import { useSnackbar } from "notistack";
 
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import Category from "../common/Category";
 import StyledButton from "../common/StyledButton";
@@ -20,12 +20,17 @@ const Intro = ({ ...props }) => {
 				<ContentsContainer>
 					<Title>{props.challenge?.title}</Title>
 					<CategoryRow>
-						<IntroCategory>{props.challenge?.locationType}</IntroCategory>
-						<IntroCategory>{props.challenge?.category.name}</IntroCategory>
+						<IntroCategory locationType={props.challenge?.locationType}>
+							{props.challenge?.locationType}
+						</IntroCategory>
+						<IntroCategory category={props.challenge?.category.name}>
+							{props.challenge?.category.name}
+						</IntroCategory>
 					</CategoryRow>
 					<SubTitle>진행 기간</SubTitle>
 					<Text>
-						{props.challenge?.startDate} ~ {props.challenge?.endDate}
+						{props.challenge?.challengeStartDate} ~{" "}
+						{props.challenge?.challengeEndDate}
 					</Text>
 					<SubTitle>참가 인원</SubTitle>
 					<Text>
@@ -144,6 +149,45 @@ const IntroCategory = styled(Category)`
 	font-size: 1.4rem;
 	padding: 0.8rem 1.4rem;
 	cursor: default;
+
+	${(props) => {
+		if (props.locationType === "ONLINE") {
+			return css`
+				color: #ffffff;
+				background-color: #ff4d00;
+			`;
+		} else if (props.locationType === "OFFLINE") {
+			return css`
+				color: #ffffff;
+				background-color: #0057ff;
+			`;
+		} else if (props.category === "운동") {
+			return css`
+				color: #ffffff;
+				background-color: #04c50c;
+			`;
+		} else if (props.category === "공부") {
+			return css`
+				color: #ffffff;
+				background-color: #9900cf;
+			`;
+		} else if (props.category === "취미") {
+			return css`
+				color: #ffffff;
+				background-color: #e2cd0f;
+			`;
+		} else if (props.category === "독서") {
+			return css`
+				color: #ffffff;
+				background-color: #e71aad;
+			`;
+		} else if (props.category === "기타") {
+			return css`
+				color: #ffffff;
+				background-color: #6ae4c7;
+			`;
+		}
+	}}
 `;
 
 const SubTitle = styled.div`

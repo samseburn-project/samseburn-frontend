@@ -97,11 +97,14 @@ const Main = () => {
 				</Row>
 				<Row>
 					<Title>챌린지 참가 장소</Title>
-					<AddressText>📌 도로명 주소 : {challenge?.address}</AddressText>
+
 					{challenge?.address ? (
-						<MapContainer>
-							<PlaceMap address={challenge.address} />
-						</MapContainer>
+						<>
+							<AddressText>📌 도로명 주소 : {challenge?.address}</AddressText>
+							<MapContainer>
+								<PlaceMap address={challenge.address} />
+							</MapContainer>
+						</>
 					) : (
 						<OnlineText>본 챌린지는 온라인으로 진행됩니다.</OnlineText>
 					)}

@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React from "react";
 
 import { Grid } from "@mui/material";
 import ChallengeCard from "./ChallengeCard";
@@ -24,7 +23,7 @@ const ChallengeList = () => {
 
 	return (
 		<Grid container spacing={4}>
-			{list.map((challenge) => (
+			{props.challenges.map((challenge) => (
 				<Grid item xs={4} key={challenge.challengeId}>
 					<ChallengeCard
 						key={challenge.challengeId}

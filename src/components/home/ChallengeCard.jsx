@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import { Card, CardContent, CardMedia, CardActionArea } from "@mui/material";
 import Category from "../common/Category";
@@ -18,8 +18,10 @@ const ChallengeCard = ({ ...props }) => {
 				<StyledCardContent>
 					<CardTitle>{props.title}</CardTitle>
 					<Row>
-						<CardCategory>{props.category}</CardCategory>
-						<CardCategory>
+						<CardCategory category={props.category}>
+							{props.category}
+						</CardCategory>
+						<CardCategory locationType={props.locationType}>
 							{props.locationType === "ONLINE" ? "온라인" : "오프라인"}
 						</CardCategory>
 					</Row>
@@ -76,6 +78,45 @@ const Row = styled.div`
 const CardCategory = styled(Category)`
 	font-size: 1.2rem;
 	padding: 0.5rem 1rem;
+
+	${(props) => {
+		if (props.locationType === "ONLINE") {
+			return css`
+				color: #ffffff;
+				background-color: #ff4d00;
+			`;
+		} else if (props.locationType === "OFFLINE") {
+			return css`
+				color: #ffffff;
+				background-color: #0057ff;
+			`;
+		} else if (props.category === "운동") {
+			return css`
+				color: #ffffff;
+				background-color: #04c50c;
+			`;
+		} else if (props.category === "공부") {
+			return css`
+				color: #ffffff;
+				background-color: #9900cf;
+			`;
+		} else if (props.category === "취미") {
+			return css`
+				color: #ffffff;
+				background-color: #e2cd0f;
+			`;
+		} else if (props.category === "독서") {
+			return css`
+				color: #ffffff;
+				background-color: #e71aad;
+			`;
+		} else if (props.category === "기타") {
+			return css`
+				color: #ffffff;
+				background-color: #6ae4c7;
+			`;
+		}
+	}}
 `;
 
 const CardDate = styled.div`
