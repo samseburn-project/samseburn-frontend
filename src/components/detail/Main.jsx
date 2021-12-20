@@ -12,16 +12,16 @@ import PlaceMap from "./PlaceMap";
 
 const Main = () => {
 	const params = useParams();
-	const id = Number(params.id);
+	const challengeId = Number(params.id);
 	const [challenge, setChallenge] = useState();
 	const [participants, setParticipants] = useState([]);
-	const [join, setJoin] = useState(false);
+	const [userChallenge, setUserChallenge] = useState({});
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const userToken = localStorage.getItem("token");
 
 	const fetchChallenge = async () => {
 		try {
-			const { data } = await axios.get(`/challenges/${id}`);
+			const { data } = await axios.get(`/challenges/${challengeId}`);
 			setChallenge(data);
 		} catch (err) {
 			console.error(err);
@@ -30,8 +30,24 @@ const Main = () => {
 
 	const fetchParticipants = async () => {
 		try {
-			const { data } = await axios.get(`/challenges/${id}/users`);
+			const { data } = await axios.get(`/challenges/${challengeId}/users`);
 			setParticipants(data);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
+	const fetchUserChallenge = async () => {
+		try {
+			const { status, data } = await axios.get(`/challenges/${id}/user`, {
+				headers: { Authorization: `Bearer ${userToken}` },
+			});
+
+			if (status === 200) {
+				setUserChallenge(data);
+			} else {
+				console.log("참여중인 챌린지가 아닙니다.");
+			}
 		} catch (err) {
 			console.log(err);
 		}
@@ -47,13 +63,9 @@ const Main = () => {
 
 	const handleChallengeJoin = async () => {
 		try {
-			const res = await axios.post(`/challenges/${id}/join`, {
-				headers: {
-					Authorization: `Bearer ${userToken}`,
-				},
+			await axios.post(`/challenges/${id}/join`, {
+				headers: { Authorization: `Bearer ${userToken}` },
 			});
-
-			if (res.status === 200) setJoin(true);
 		} catch (err) {
 			console.log(err);
 		}
@@ -61,31 +73,57 @@ const Main = () => {
 
 	const handleChallengeCancel = async () => {
 		try {
-			const res = await axios.delete(`/challenges/${id}/cancel`, {
+			const res = await axios.delete(`/challenges/${id}/join`, {
 				headers: {
 					Authorization: `Bearer ${userToken}`,
 				},
 			});
 
-			if (res.status === 200) setJoin(false);
+			if (res.status === 200) setUserChallenge();
 		} catch (err) {
 			console.log(err);
+		}
+	};
+
+	const handleChallengeContinue = async () => {
+		try {
+			await axios.put(`/challenges/${id}/continue`, {
+				headers: {
+					Authorization: `Bearer ${userToken}`,
+				},
+			});
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
+	const handleChallengeStop = async () => {
+		try {
+			await axios.delete(`challenges/${id}/continue`, {
+				headers: {
+					Authorization: `Bearer ${userToken}`,
+				},
+			});
+		} catch (err) {
+			console.error(err);
 		}
 	};
 
 	useEffect(() => {
 		fetchChallenge();
 		fetchParticipants();
+		fetchUserChallenge();
 	}, []);
 
 	return (
 		<>
 			<Intro
-				userToken={userToken}
 				challenge={challenge}
-				join={join}
+				userChallenge={userChallenge}
 				handleChallengeJoin={handleChallengeJoin}
 				handleChallengeCancel={handleChallengeCancel}
+				handleChallengeContinue={handleChallengeContinue}
+				handleChallengeStop={handleChallengeStop}
 				dialogOpen={dialogOpen}
 				handleDialogOpen={handleDialogOpen}
 				handleDialogClose={handleDialogClose}
@@ -97,11 +135,14 @@ const Main = () => {
 				</Row>
 				<Row>
 					<Title>챌린지 참가 장소</Title>
-					<AddressText>📌 도로명 주소 : {challenge?.address}</AddressText>
+
 					{challenge?.address ? (
-						<MapContainer>
-							<PlaceMap address={challenge.address} />
-						</MapContainer>
+						<>
+							<AddressText>📌 도로명 주소 : {challenge?.address}</AddressText>
+							<MapContainer>
+								<PlaceMap address={challenge.address} />
+							</MapContainer>
+						</>
 					) : (
 						<OnlineText>본 챌린지는 온라인으로 진행됩니다.</OnlineText>
 					)}
@@ -112,7 +153,10 @@ const Main = () => {
 					<Grid container rowSpacing={3}>
 						{participants.map((participant) => (
 							<Grid item key={participant.id}>
-								<Participant participant={participant} />
+								<Participant
+									participant={participant}
+									userChallengeId={userChallenge?.userId}
+								/>
 							</Grid>
 						))}
 					</Grid>
