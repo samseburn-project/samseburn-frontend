@@ -65,7 +65,7 @@ const AuthDialog = ({ ...props }) => {
 				{
 					headers: {
 						"Content-Type": "multipart/form-data",
-						Authorization: userToken,
+						Authorization: `Bearer ${userToken}`,
 					},
 				}
 			);

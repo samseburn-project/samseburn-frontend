@@ -36,7 +36,7 @@ const Intro = ({ ...props }) => {
 					<Text>
 						{props.challenge?.participants} / {props.challenge?.limitPerson} 명
 					</Text>
-					{props.join ? (
+					{!props.join ? (
 						<>
 							<ApplyButton
 								type="button"
