@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-import { Menu, MenuItem, Dialog, DialogContent } from "@mui/material";
+import { Menu, MenuItem, Dialog, DialogContent } from '@mui/material';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import profile from "../../assets/icons/profile.png";
-import register from "../../assets/icons/plus.png";
-import kakao from "../../assets/icons/kakao.png";
+import { ReactComponent as Logo } from '../../assets/logo.svg';
+import { ReactComponent as Profile } from '../../assets/icons/profile.svg';
+import { ReactComponent as Register } from '../../assets/icons/plus.svg';
+import { ReactComponent as KakaoIcon } from '../../assets/icons/kakao.svg';
 
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 dotenv.config();
 
 const Navbar = () => {
@@ -137,112 +138,106 @@ const Navbar = () => {
 export default Navbar;
 
 const Nav = styled.nav`
-	width: 100%;
-	height: 8.8rem;
+  width: 100%;
+  height: 8.8rem;
 `;
 
 const NavLink = styled(Link)`
-	text-decoration: none;
+  text-decoration: none;
 `;
 
 const NavContainer = styled.div`
-	width: 104rem;
-	margin: 0 auto;
-	padding: 2.8rem 0;
+  width: 104rem;
+  margin: 0 auto;
+  padding: 2.8rem 0;
 
-	display: flex;
-	justify-content: space-between;
-`;
-
-const NavLogo = styled.div`
-	font-size: 2.4rem;
-	font-weight: bold;
-	color: #ff3d00;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const NavIcon = styled.div`
-	display: flex;
-	align-items: center;
-	gap: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 `;
 
 const NavProfile = styled.div`
-	width: 3rem;
-	height: 3rem;
-	cursor: pointer;
+  width: 3rem;
+  height: 3rem;
+  cursor: pointer;
 
-	img {
-		width: 100%;
-		height: 100%;
-	}
+  img {
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 const NavRegister = styled.div`
-	width: 2.4rem;
-	height: 2.4rem;
-	cursor: pointer;
+  width: 2.4rem;
+  height: 2.4rem;
+  cursor: pointer;
 
-	img {
-		width: 100%;
-		height: 100%;
-	}
+  img {
+    width: 100%;
+    height: 100%;
+  }
 `;
 
 const StyledMenu = styled(Menu)`
-	.css-6hp17o-MuiList-root-MuiMenu-list {
-		background-color: #ffa883;
-	}
+  .css-6hp17o-MuiList-root-MuiMenu-list {
+    background-color: #ffa883;
+  }
 
-	.css-1poimk-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper {
-		box-shadow: none;
-		border-radius: 0;
-	}
+  .css-1poimk-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper {
+    box-shadow: none;
+    border-radius: 0;
+  }
 
-	.css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root {
-		font-size: 1.4rem;
-		color: #ffffff;
-	}
+  .css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root {
+    font-size: 1.4rem;
+    color: #ffffff;
+  }
 `;
 
 const StyledDialog = styled(Dialog)`
-	display: flex;
-	justify-content: center;
+  display: flex;
+  justify-content: center;
 `;
 
 const StyledDialogContent = styled(DialogContent)`
-	padding: 6rem 8rem;
-	font-size: 2.4rem;
-	letter-spacing: 0.3rem;
-	line-height: 2.8rem;
+  padding: 6rem 8rem;
+  font-size: 2.4rem;
+  letter-spacing: 0.3rem;
+  line-height: 2.8rem;
 
-	display: flex;
-	flex-direction: column;
-	gap: 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
 `;
 
 const KakaoLoginButton = styled.button`
-	width: 31.7rem;
-	height: 4rem;
-	padding: 1rem;
-	font-size: 1.6rem;
-	font-weight: bold;
-	letter-spacing: 0.2rem;
-	background-color: #ffe812;
-	border: none;
-	border-radius: 0.5rem;
-	outline: none;
-	cursor: pointer;
-	display: flex;
-	align-items: center;
-	&:hover {
-		opacity: 0.7;
-	}
+  width: 31.7rem;
+  height: 4rem;
+  padding: 1rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+  letter-spacing: 0.2rem;
+  background-color: #ffe812;
+  border: none;
+  border-radius: 0.5rem;
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  &:hover {
+    opacity: 0.7;
+  }
 `;
 
 const LoginIcon = styled.span`
-	flex: 0.1;
+  flex: 0.1;
 `;
 
 const LoginText = styled.span`
-	flex: 0.8;
+  flex: 0.8;
 `;

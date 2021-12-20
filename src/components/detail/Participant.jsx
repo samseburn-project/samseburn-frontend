@@ -1,15 +1,15 @@
 import React from "react";
 
-import { Grid } from "@mui/material";
-
 import styled from "styled-components";
+
+import { Grid } from "@mui/material";
 
 import FeedCarousel from "./FeedCarousel";
 
-import profileImg from "../../assets/profile-sample.png";
-import { ReactComponent as FirstMedal } from "../../assets/1st-medal-icon.svg";
-import { ReactComponent as SecondMedal } from "../../assets/2nd-medal-icon.svg";
-import { ReactComponent as ThirdMedal } from "../../assets/3rd-medal-icon.svg";
+import { ReactComponent as User } from "../../assets/user.svg";
+import { ReactComponent as FirstMedal } from "../../assets/icons/1st-medal-icon.svg";
+import { ReactComponent as SecondMedal } from "../../assets/icons/2nd-medal-icon.svg";
+import { ReactComponent as ThirdMedal } from "../../assets/icons/3rd-medal-icon.svg";
 
 const Participant = ({ ...props }) => {
 	const renderMedal = (count) => {
@@ -31,7 +31,7 @@ const Participant = ({ ...props }) => {
 					<ProfileImg>
 						<img
 							src={
-								props.participant.imgUrl ? props.participant.imgUrl : profileImg
+								props.participant.imgUrl ? props.participant.imgUrl : <User />
 							}
 							alt="Profile"
 						/>

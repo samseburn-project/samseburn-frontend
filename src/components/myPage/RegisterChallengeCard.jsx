@@ -1,12 +1,15 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import styled from 'styled-components';
+
 import { Grid } from '@mui/material';
+import { ReactComponent as Calendar } from '../../assets/icons/calender.svg';
 import Category from '../common/Category';
-import calendar from '../../assets/icons/calendar.png';
 import StyledButton from '../common/StyledButton';
 
 const RegisterChallengeCard = ({
-  key,
+  id,
   title,
   imgUrl,
   category,
@@ -14,9 +17,11 @@ const RegisterChallengeCard = ({
   challengeStartDate,
   challengeEndDate,
 }) => {
+  const navigate = useNavigate();
+
   return (
-    <Grid item xs={6} key={key}>
-      <StyledCard>
+    <Grid item xs={6}>
+      <StyledCard onClick={() => navigate(`/detail/${id}`)}>
         <StyledCardTop>
           <StyledCardThumbnail>
             <img src={imgUrl} alt={title} className="thumbnail" />
@@ -31,7 +36,7 @@ const RegisterChallengeCard = ({
             </Row>
             <Row>
               <CardIcon>
-                <img src={calendar} alt="Calendar Icon" />
+                <Calendar alt="Calendar icon" />
               </CardIcon>
               <CardDate>
                 {challengeStartDate} ~ {challengeEndDate}

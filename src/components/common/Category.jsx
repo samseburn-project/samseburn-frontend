@@ -8,9 +8,6 @@ export default Category;
 
 const StyledCategory = styled.span`
 	font-weight: bold;
-	color: #8f8f8f;
-	background-color: #ffffff;
-	border: 1px solid #8f8f8f;
 	border-radius: 2rem;
 	text-align: center;
 	letter-spacing: 2px;

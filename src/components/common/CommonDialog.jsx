@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { Dialog, DialogContent } from "@mui/material";
 import StyledButton from "./StyledButton";
 
-import close from "../../assets/icons/close.png";
+import { ReactComponent as Close } from "../../assets/icons/close.svg";
 
 const CommonDialog = ({ ...props }) => {
 	const handleButtonRender = (mainText) => {
@@ -60,11 +60,7 @@ const CommonDialog = ({ ...props }) => {
 		<Dialog onClose={() => props.handleDialogClose()} open={props.dialogOpen}>
 			<StyledDialogContent>
 				<CloseButton>
-					<img
-						src={close}
-						alt="Close icon"
-						onClick={() => props.handleDialogClose()}
-					/>
+					<Close alt="Close icon" onClick={props.handleDialogClose} />
 				</CloseButton>
 				<Container>
 					<Row>

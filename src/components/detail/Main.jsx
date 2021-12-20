@@ -5,13 +5,14 @@ import axios from "axios";
 import styled from "styled-components";
 
 import { Divider, Grid } from "@mui/material";
+
 import Intro from "./Intro";
 import Participant from "./Participant";
 import PlaceMap from "./PlaceMap";
 
 const Main = () => {
 	const params = useParams();
-	const id = Number(params.id);
+	const challengeId = Number(params.id);
 	const [challenge, setChallenge] = useState();
 	const [participants, setParticipants] = useState([]);
 	const [userChallenge, setUserChallenge] = useState({});
@@ -20,7 +21,7 @@ const Main = () => {
 
 	const fetchChallenge = async () => {
 		try {
-			const { data } = await axios.get(`/challenges/${id}`);
+			const { data } = await axios.get(`/challenges/${challengeId}`);
 			setChallenge(data);
 		} catch (err) {
 			console.error(err);
@@ -29,7 +30,7 @@ const Main = () => {
 
 	const fetchParticipants = async () => {
 		try {
-			const { data } = await axios.get(`/challenges/${id}/users`);
+			const { data } = await axios.get(`/challenges/${challengeId}/users`);
 			setParticipants(data);
 		} catch (err) {
 			console.log(err);
@@ -134,11 +135,14 @@ const Main = () => {
 				</Row>
 				<Row>
 					<Title>챌린지 참가 장소</Title>
-					<AddressText>{challenge?.address}</AddressText>
+
 					{challenge?.address ? (
-						<MapContainer>
-							<PlaceMap />
-						</MapContainer>
+						<>
+							<AddressText>📌 도로명 주소 : {challenge?.address}</AddressText>
+							<MapContainer>
+								<PlaceMap address={challenge.address} />
+							</MapContainer>
+						</>
 					) : (
 						<OnlineText>본 챌린지는 온라인으로 진행됩니다.</OnlineText>
 					)}

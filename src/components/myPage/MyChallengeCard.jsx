@@ -1,4 +1,8 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+import styled from 'styled-components';
 
 import {
   //   Card,
@@ -7,21 +11,19 @@ import {
   //   CardActionArea,
   Grid,
 } from '@mui/material';
-import styled from 'styled-components';
-
-import { ReactComponent as FirstMedal } from '../../assets/1st-medal-icon.svg';
-import { ReactComponent as SecondMedal } from '../../assets/2nd-medal-icon.svg';
-import { ReactComponent as ThirdMedal } from '../../assets/3rd-medal-icon.svg';
+import { ReactComponent as FirstMedal } from '../../assets/icons/1st-medal-icon.svg';
+import { ReactComponent as SecondMedal } from '../../assets/icons/2nd-medal-icon.svg';
+import { ReactComponent as ThirdMedal } from '../../assets/icons/3rd-medal-icon.svg';
 import { ReactComponent as AbledProgress } from '../../assets/icons/progress-icon-abled.svg';
 import { ReactComponent as DisabledProgress } from '../../assets/icons/progress-icon-disabled.svg';
 import { ReactComponent as Congrats } from '../../assets/icons/congrats-icon.svg';
-
+import { ReactComponent as Calender } from '../../assets/icons/calender.svg';
 import Category from '../common/Category';
-import calendar from '../../assets/icons/calendar.png';
 import StyledButton from '../common/StyledButton';
 
-const ChallengeCard = ({
-  key,
+const MyChallengeCard = ({
+  userToken,
+  id,
   title,
   category,
   locationType,
@@ -30,8 +32,10 @@ const ChallengeCard = ({
   certiCount,
   imgUrl,
   challengeStatus,
-  missionStatus,
+  firstWeekMission,
 }) => {
+  const navigate = useNavigate();
+
   const viewMedalIcon = (param) => {
     if (param < 5) {
       return '';
@@ -44,9 +48,29 @@ const ChallengeCard = ({
     }
   };
 
+  const onRetryHandler = async (e) => {
+    try {
+      const res = axios.put(`/challenges/${id}/retry`, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      });
+
+      console.log(res);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
-    <Grid key={key} item xs={6}>
-      <StyledCard>
+    <Grid item xs={6}>
+      <StyledCard
+        onClick={(e) => {
+          if (e.target.name !== 'retryButton') {
+            navigate(`/detail/${id}`);
+          }
+        }}
+      >
         <StyledCardThumbnail>
           <img alt={title} src={imgUrl} className="thumbnail"></img>
         </StyledCardThumbnail>
@@ -67,7 +91,7 @@ const ChallengeCard = ({
           </Row>
           <Row>
             <CardIcon>
-              <img src={calendar} alt="Calendar Icon" />
+              <Calender alt="Calendar icon" />
             </CardIcon>
             <CardDate>
               {challengeStartDate} ~ {challengeEndDate}
@@ -75,7 +99,7 @@ const ChallengeCard = ({
           </Row>
           <Row>
             {challengeStatus === 'JOIN' ? (
-              missionStatus ? (
+              firstWeekMission ? (
                 <CertiCount>
                   누적 <CertiCountNumber>{certiCount}</CertiCountNumber>
                   회 달성
@@ -98,7 +122,9 @@ const ChallengeCard = ({
               ''
             )}
             {challengeStatus === 'RETRY' ? (
-              <RetryButton>재도전하기</RetryButton>
+              <RetryButton name="retryButton" onClick={onRetryHandler}>
+                재도전하기
+              </RetryButton>
             ) : (
               ''
             )}
@@ -118,7 +144,7 @@ const ChallengeCard = ({
   );
 };
 
-export default ChallengeCard;
+export default MyChallengeCard;
 
 const StyledCard = styled.div`
   height: 20rem;

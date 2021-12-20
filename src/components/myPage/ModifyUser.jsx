@@ -1,16 +1,48 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
 import styled from 'styled-components';
-import IconButton from '@mui/material/IconButton';
-// import DeleteIcon from '@mui/icons-material/Delete';
-import { ReactComponent as Delete } from '../../assets/icons/delete-icon.svg';
+
+import { ReactComponent as Delete } from '../../assets/icons/delete.svg';
 import StyledButton from '../common/StyledButton';
 
-const ModifyUser = () => {
+const ModifyUser = ({ userToken }) => {
+  const [loading, setLoading] = useState(false);
+
   const [nickname, setNickname] = useState('');
   const [image, setImage] = useState({
     imageFile: null,
     imageUrl: null,
   });
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      setLoading(true);
+      try {
+        const res = await axios.get('/user', {
+          headers: { Authorization: `Bearer ${userToken}` },
+        });
+
+        if (res.status === 200) {
+          setNickname(res.data.username);
+          setImage({
+            imageFile: null,
+            imageUrl: res.data.imgUrl,
+          });
+        }
+        console.log(res);
+      } catch (err) {
+        console.error(err);
+      }
+      setLoading(false);
+    };
+
+    fetchUser(); // 유저 정보 요청
+  }, []);
+
+  const onChangeNickname = ({ target: { value } }) => {
+    setNickname(value);
+  };
 
   const setImageFromFile = ({ file, setImageUrl }) => {
     const reader = new FileReader();
@@ -32,22 +64,58 @@ const ModifyUser = () => {
       });
     }
   };
+
+  const onDeleteFile = () => {
+    setImage({
+      imageFile: null,
+      imageUrl:
+        'https://samseburn-bucket.s3.ap-northeast-2.amazonaws.com/user/SpartaIconScale7.png',
+    });
+  };
+
+  const onSubmitHandler = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('username', nickname);
+      formData.append(
+        'image',
+        image.imageFile ? image.imageFile : image.imageUrl
+      );
+
+      const res = await axios.put('/user', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${userToken}`,
+        },
+      });
+      console.log(res);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  if (loading) {
+    return <LoadingContainer>Loading...</LoadingContainer>;
+  }
+
+  if (!nickname) {
+    return null;
+  }
+
   return (
     <ModifyUserBox>
       <FormContainer>
         <ImageContainer>
           {/* 이미지 미리보기 */}
           <ThumbnailContainer>
-            {image.imageFile ? (
-              <ImageThumbnail alt={image.imageFile.name} src={image.imageUrl} />
+            {image.imageFile || image.imageUrl ? (
+              <ImageThumbnail alt="Profile Image" src={image.imageUrl} />
             ) : (
               <DefaultThumbnail></DefaultThumbnail>
             )}
             {/* 이미지 삭제 버튼 */}
-            <DeleteButtonContainer>
-              <IconButton>
-                <Delete />
-              </IconButton>
+            <DeleteButtonContainer onClick={onDeleteFile}>
+              <Delete alt="Delete icon" style={{ zIndex: 10 }} />
             </DeleteButtonContainer>
           </ThumbnailContainer>
 
@@ -66,11 +134,15 @@ const ModifyUser = () => {
 
         <Row>
           <Label>닉네임*</Label>
-          <BasicInput value={nickname} placeholder="김피버" />
+          <BasicInput
+            value={nickname}
+            placeholder=""
+            onChange={onChangeNickname}
+          />
         </Row>
 
         <Row>
-          <SubmitButton>완료</SubmitButton>
+          <SubmitButton onClick={onSubmitHandler}>완료</SubmitButton>
         </Row>
       </FormContainer>
     </ModifyUserBox>
@@ -78,6 +150,11 @@ const ModifyUser = () => {
 };
 
 export default ModifyUser;
+
+const LoadingContainer = styled.div`
+  text-align: center;
+  font-size: 2rem;
+`;
 
 const Row = styled.div`
   margin: 0;
@@ -126,9 +203,19 @@ const ImageFileInput = styled.input`
 
 const DeleteButtonContainer = styled.div`
   position: absolute;
-  top: 0px;
-  right: 0px;
+  top: 1rem;
+  right: 1rem;
+  cursor: pointer;
   z-index: 1;
+  background-color: #ffffff;
+  border-radius: 50%;
+  padding: 0.7rem;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+
+  &:hover {
+    opacity: 1;
+  }
 `;
 
 const ImageUploadButton = styled(StyledButton)`

@@ -5,14 +5,14 @@ import { IconButton } from "@mui/material";
 
 import styled from "styled-components";
 
-import searchIcon from "../../assets/icons/search.png";
+import { ReactComponent as Search } from "../../assets/icons/search.svg";
 
 const SearchBar = () => {
 	return (
 		<SearchBarContainer>
 			<StyledInputBase placeholder="참여하고 싶은 챌린지를 검색해보세요." />
 			<IconButton type="submit">
-				<img src={searchIcon} alt="Search icon" />
+				<Search alt="Search icon" />
 			</IconButton>
 		</SearchBarContainer>
 	);

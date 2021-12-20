@@ -4,18 +4,27 @@ import axios from "axios";
 import styled from "styled-components";
 
 import { Box } from "@mui/material";
-
 import Hero from "./Hero";
-import Contents from "./Contents";
+import HowToUse from "./HowToUse";
 import SearchBar from "./SearchBar";
 import CategoryFilter from "./CategoryFilter";
 import SortFilter from "./SortFilter";
 import ChallengeList from "./ChallengeList";
 
 const Main = () => {
+	const [challenges, setChallenges] = useState([]);
 	const [sortBy, setSortBy] = useState("createdAt");
 
-	const fetchData = async () => {
+	const fetchChallenges = async () => {
+		try {
+			const { data } = await axios.get("/challenges?kind=All");
+			setChallenges(data);
+		} catch (e) {
+			console.error(e);
+		}
+	};
+
+	const fetchFillter = async () => {
 		try {
 			await axios.get("/challenges/filter", {
 				params: {
@@ -28,13 +37,14 @@ const Main = () => {
 	};
 
 	useEffect(() => {
-		fetchData();
+		fetchChallenges();
+		fetchFillter();
 	}, [sortBy]);
 
 	return (
 		<>
 			<Hero />
-			<Contents />
+			<HowToUse />
 			<Wrapper>
 				<Title>챌린지 리스트</Title>
 				<SearchBarRow>
@@ -45,7 +55,7 @@ const Main = () => {
 					<SortFilter sortBy={sortBy} setSortBy={setSortBy} />
 				</FilterRow>
 				<ListContainer sx={{ width: "100%" }}>
-					<ChallengeList />
+					<ChallengeList challenges={challenges} />
 				</ListContainer>
 			</Wrapper>
 		</>

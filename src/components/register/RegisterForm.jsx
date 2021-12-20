@@ -1,24 +1,25 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
+import Modal from 'react-modal';
+import DaumPostcode from 'react-daum-postcode';
+import addDays from 'date-fns/addDays';
+
 import styled from 'styled-components';
 
 import { TextField, Box } from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateRangePicker from '@mui/lab/DateRangePicker';
-import addDays from 'date-fns/addDays';
 import IconButton from '@mui/material/IconButton';
 import { ReactComponent as ArrowForward } from '../../assets/icons/arrow.svg';
 import { ReactComponent as Delete } from '../../assets/icons/delete.svg';
 import { ReactComponent as Close } from '../../assets/icons/close.svg';
-
 import StyledButton from '../common/StyledButton';
-import DaumPostcode from 'react-daum-postcode';
-import Modal from 'react-modal';
-import axios from 'axios';
 
-function RegisterPage(props) {
+function RegisterForm(props) {
+  const userToken = localStorage.getItem('token');
   const MAX_DATE = 99;
-  const categories = ['운동', '공부', '취미', '독서', '기타'];
+  const categories = ['운동', '생활', '공부', '취미', '독서', '기타'];
   const locationTypes = ['ONLINE', 'OFFLINE'];
 
   const [title, setTitle] = useState('');
@@ -119,35 +120,54 @@ function RegisterPage(props) {
     setIsPopupOpen(!isPopupOpen);
   };
 
-  const onSubmitFormData = () => {
-    const userToken = localStorage.getItem('token'); // 헤더에 넣기
-    console.log(typeof userToken);
-    const address =
-      locationType === 'ONLINE' ? '' : roadAddress + detailAddress;
+  const onDeleteFile = () => {
+    setImage({
+      imageFile: null,
+      imageUrl: null,
+    });
+  };
 
-    const formData = new FormData();
+  const onSubmitFormData = async () => {
+    try {
+      const address =
+        locationType === 'ONLINE' ? '' : roadAddress + detailAddress;
 
-    formData.append('image', image.imageFile);
-    formData.append('title', title);
-    formData.append('description', description);
-    formData.append('challengeStartDate', date[0].toISOString().slice(0, 10));
-    formData.append('challengeEndDate', date[1].toISOString().slice(0, 10));
-    formData.append('limitPerson', participants);
-    formData.append('category', category);
-    formData.append('locationType', locationType);
-    formData.append('address', address);
-    formData.append('challengeProgress', 'INPROGRESS');
+      const formData = new FormData();
 
-    for (let data of formData.entries()) {
-      console.log(data[0] + ', ' + data[1]);
-    }
-    return axios
-      .post('/challenge', formData, {
+      formData.append('image', image.imageFile);
+      formData.append('title', title);
+      formData.append('description', description);
+      formData.append('challengeStartDate', date[0].toISOString().slice(0, 10));
+      formData.append('challengeEndDate', date[1].toISOString().slice(0, 10));
+      formData.append('limitPerson', participants);
+      formData.append('category', category);
+      formData.append('locationType', locationType);
+      formData.append('address', address);
+      formData.append('challengeProgress', 'INPROGRESS');
+
+      // for (let data of formData.entries()) {
+      //   console.log(data[0] + ', ' + data[1]);
+      // }
+
+      const res = await axios.post('/challenge', formData, {
         headers: {
-          Authorization: userToken,
+          Authorization: `Bearer ${userToken}`,
         },
-      })
-      .then((response) => console.log);
+      });
+
+      console.log(res);
+
+      // const response = axios({
+      //   method: 'post',
+      //   url: '/challenge',
+      //   data: formData,
+      //   headers: {
+      //     Authorization: `Bearer ${userToken}`,
+      //   },
+      // });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const modalStyles = {
@@ -177,8 +197,6 @@ function RegisterPage(props) {
       zIndex: 10,
     },
   };
-
-  console.log(typeof date);
 
   return (
     <RegisterPageBox>
@@ -248,11 +266,9 @@ function RegisterPage(props) {
                 <DefaultThumbnail></DefaultThumbnail>
               )}
               {/* 이미지 삭제 버튼 */}
-              <StackBox>
-                <IconButton>
-                  <Delete />
-                </IconButton>
-              </StackBox>
+              <DeleteButtonContainer onClick={onDeleteFile}>
+                <Delete alt="Delete icon" style={{ zIndex: 10 }} />
+              </DeleteButtonContainer>
             </ThumbnailContainer>
 
             {/* 이미지 업로드 버튼 */}
@@ -370,7 +386,7 @@ function RegisterPage(props) {
   );
 }
 
-export default RegisterPage;
+export default RegisterForm;
 
 const RegisterPageBox = styled.div`
   padding: 0 17.7rem;
@@ -630,5 +646,22 @@ const LocationTypeSpan = styled.span`
   &:hover {
     background-color: #ffa883;
     color: white;
+  }
+`;
+
+const DeleteButtonContainer = styled.div`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  cursor: pointer;
+  z-index: 1;
+  background-color: #ffffff;
+  border-radius: 50%;
+  padding: 0.7rem;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+
+  &:hover {
+    opacity: 1;
   }
 `;

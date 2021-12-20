@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 
 const { kakao } = window;
 
-const PlaceMap = () => {
+const PlaceMap = ({ ...props }) => {
 	useEffect(() => {
 		const mapContainer = document.getElementById("map");
 		const mapOption = {
@@ -14,10 +14,7 @@ const PlaceMap = () => {
 
 		let geocoder = new kakao.maps.services.Geocoder();
 
-		geocoder.addressSearch("서울특별시 강남구 강남대로 지하396", function (
-			result,
-			status
-		) {
+		geocoder.addressSearch(props.address, function (result, status) {
 			if (status === kakao.maps.services.Status.OK) {
 				let coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 				let marker = new kakao.maps.Marker({
