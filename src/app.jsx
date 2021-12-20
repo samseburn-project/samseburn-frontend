@@ -1,12 +1,12 @@
-import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { SnackbarProvider } from "notistack";
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { SnackbarProvider } from 'notistack';
 
 import GlobalStyles from "./GlobalStyles";
 import ScrollToTop from "./ScrollToTop";
 import Home from "./pages/Home";
 import Detail from "./pages/Detail";
-import RegisterPage from "./components/register/RegisterPage";
+import Register from './pages/Register';
 import MyPage from "./pages/MyPage";
 
 const App = () => {
@@ -30,6 +30,7 @@ const App = () => {
 			</SnackbarProvider>
 		</BrowserRouter>
 	);
+
 };
 
 export default App;

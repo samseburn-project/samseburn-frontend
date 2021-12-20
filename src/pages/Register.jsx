@@ -4,7 +4,7 @@ import Navbar from '../components/common/Navbar';
 import Main from '../components/register/Main';
 import Footer from '../components/common/Footer';
 
-const MyPage = () => {
+const Register = () => {
   return (
     <>
       <Navbar />
@@ -14,4 +14,4 @@ const MyPage = () => {
   );
 };
 
-export default MyPage;
+export default Register;
