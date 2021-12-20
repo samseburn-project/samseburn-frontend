@@ -9,13 +9,14 @@ import CommonDialog from "../common/CommonDialog";
 import AuthDialog from "../common/AuthDialog";
 
 const Intro = ({ ...props }) => {
-	console.log(props);
 	const userToken = localStorage.getItem("token");
 	const today = new Date().getTime();
+	const missionDate = new Date(props.userChallenge?.userMissonDate).getTime();
+	console.log(missionDate < today);
 
 	const { enqueueSnackbar } = useSnackbar();
 
-	const handleMissionStatus = (missionStatus, count, missonDate, retry) => {
+	const handleMissionStatus = (missionStatus, count, missionDate, retry) => {
 		if (missionStatus === "NO" && count === 3) {
 			return (
 				<CommonDialog
@@ -30,7 +31,7 @@ const Intro = ({ ...props }) => {
 					}
 				/>
 			);
-		} else if (missionStatus === "NO" && missonDate > today) {
+		} else if (missionStatus === "NO" && missionDate < today) {
 			return (
 				<CommonDialog
 					dialogOpen={props.dialogOpen}
