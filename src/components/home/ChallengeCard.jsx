@@ -12,7 +12,7 @@ const ChallengeCard = ({ ...props }) => {
 	const navigate = useNavigate();
 
 	return (
-		<StyledCard onClick={() => navigate(`/detail/${props.id}`)}>
+		<StyledCard onClick={() => navigate(`/detail/${props.challengeId}`)}>
 			<CardActionArea>
 				<CardMedia component="img" image={props.imgUrl} />
 				<StyledCardContent>
