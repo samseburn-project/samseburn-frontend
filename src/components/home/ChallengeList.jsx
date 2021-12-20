@@ -10,7 +10,7 @@ const ChallengeList = ({ ...props }) => {
 				<Grid item xs={4} key={challenge.challengeId}>
 					<ChallengeCard
 						key={challenge.challengeId}
-						id={challenge.challengeId}
+						challengeId={challenge.challengeId}
 						title={challenge.title}
 						category={challenge.category.name}
 						locationType={challenge.locationType}

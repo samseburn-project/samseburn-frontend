@@ -1,15 +1,101 @@
-import React from "react";
+import React, { useState, useRef } from "react";
+import axios from "axios";
+import { useSnackbar } from "notistack";
 
 import styled from "styled-components";
 
-import { Grid, Dialog, DialogContent, Box, TextField } from "@mui/material";
+import { Grid, Dialog, DialogContent, TextField } from "@mui/material";
 import StyledButton from "../common/StyledButton";
 
 import { ReactComponent as Close } from "../../assets/icons/close.svg";
 import { ReactComponent as Delete } from "../../assets/icons/delete.svg";
 
 const AuthDialog = ({ ...props }) => {
-	const today = new Date().toLocaleString();
+	console.log(props);
+	const certify = props?.certify;
+	const challengeId = props?.challengeId;
+	const [imgFile, setImgFile] = useState(null);
+	const [previewImg, setPreviewImg] = useState(
+		certify?.imgUrl ? certify?.imgUrl : null
+	);
+	const [contents, setContents] = useState("");
+	const userToken = localStorage.getItem("token");
+	const imgRef = useRef();
+
+	const date = new Date(+new Date() + 3240 * 10000).toISOString().split("T")[0];
+	const time = new Date().toTimeString().split(" ")[0];
+	const authDate = `${date} ${time}`;
+
+	const { enqueueSnackbar } = useSnackbar();
+
+	const handleImgChange = (e) => {
+		let file = e.target.files[0];
+		let reader = new FileReader();
+
+		reader.onloadend = () => {
+			setImgFile(file);
+			setPreviewImg(reader.result);
+		};
+		if (file) reader.readAsDataURL(file);
+	};
+
+	const handleImgDelete = () => {
+		imgRef.current.value = "";
+		setPreviewImg(null);
+	};
+
+	const handleContentsChange = (e) => {
+		setContents(e.target.value);
+	};
+
+	const handleReset = () => {
+		setImgFile();
+		setPreviewImg();
+		setContents();
+	};
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+
+		const formData = new FormData();
+
+		if (!imgFile) {
+			alert("인증 이미지를 등록해주세요.");
+			return;
+		}
+
+		formData.append("image", imgFile);
+		formData.append("contents", contents);
+
+		try {
+			const res = await axios.post(
+				`/challenges/${challengeId}/certi`,
+				formData,
+				{
+					headers: {
+						"Content-Type": "multipart/form-data",
+						Authorization: `Bearer ${userToken}`,
+					},
+				}
+			);
+
+			if (res.status === 200) {
+				handleReset();
+				enqueueSnackbar("인증이 성공적으로 등록되었습니다.", {
+					variant: "success",
+					autoHideDuration: 2000,
+				});
+				props.handleDialogClose();
+			} else {
+				enqueueSnackbar("인증 등록에 실패했습니다.", {
+					variant: "error",
+					autoHideDuration: 2000,
+				});
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	};
 
 	return (
 		<Dialog onClose={props.handleDialogClose} open={props.dialogOpen}>
@@ -17,30 +103,39 @@ const AuthDialog = ({ ...props }) => {
 				<CloseButton>
 					<Close alt="Close icon" onClick={props.handleDialogClose} />
 				</CloseButton>
-				<Box component="form">
+				<form onSubmit={handleSubmit}>
 					<Grid container direction="column" rowSpacing={4}>
 						<Grid item container direction="column">
 							<Grid item>
-								{!props.certify ? (
+								{!previewImg ? (
 									<AuthThumbnail>
 										<DeleteButton>
-											<Delete alt="Delete icon" />
+											<Delete
+												alt="Delete icon"
+												style={{ zIndex: 10 }}
+												onClick={handleImgDelete}
+											/>
 										</DeleteButton>
 									</AuthThumbnail>
 								) : (
 									<AuthThumbnail>
-										<img src={props.certify.imgUrl} alt="Auth Thumbnail" />
+										<img src={previewImg} alt="Auth Thumbnail" />
+										<DeleteButton style={{ cursor: "default" }}>
+											<Delete alt="Delete icon" style={{ zIndex: 10 }} />
+										</DeleteButton>
 									</AuthThumbnail>
 								)}
 							</Grid>
 							<Grid item textAlign="center">
 								<label htmlFor="auth-image">
-									{!props.certify ? (
+									{!certify ? (
 										<>
 											<UploadInput
-												accept="image/*"
 												id="auth-image"
+												accept="image/*"
 												type="file"
+												ref={imgRef}
+												onChange={handleImgChange}
 											/>
 											<UploadButton type="button">이미지 업로드</UploadButton>{" "}
 										</>
@@ -52,37 +147,53 @@ const AuthDialog = ({ ...props }) => {
 						</Grid>
 						<Grid item>
 							<LabelText>챌린지 인증 날짜</LabelText>
-							{!props.certify ? (
+							{!certify ? (
 								<DateInput
 									id="auth-date"
 									InputProps={{ readOnly: true }}
-									defaultValue={today}
+									defaultValue={authDate}
 								/>
 							) : (
 								<DateInput
 									id="auth-date"
 									InputProps={{ readOnly: true }}
-									defaultValue={props.certify.createdDate}
+									defaultValue={certify.createdDate}
 								/>
 							)}
 						</Grid>
 						<Grid item>
 							<LabelText>챌린지 인증 후기</LabelText>
-							{!props.certify ? (
-								<TextInput id="auth-text" multiline rows={8} />
+							{!certify ? (
+								<TextInput
+									id="auth-text"
+									multiline
+									rows={8}
+									onChange={handleContentsChange}
+								/>
 							) : (
 								<TextInput
 									id="auth-text"
 									multiline
 									rows={8}
 									InputProps={{ readOnly: true }}
-									defaultValue={props.certify.contents}
+									defaultValue={certify.contents}
 								/>
 							)}
 						</Grid>
 						<Grid item textAlign="center">
-							{!props.certify ? (
-								<EnrollButton type="submit">등록</EnrollButton>
+							{!certify ? (
+								<ButtonRow>
+									<EnrollButton type="submit">등록</EnrollButton>
+									<CancelButton
+										type="button"
+										onClick={() => {
+											handleReset();
+											props.handleDialogClose();
+										}}
+									>
+										취소
+									</CancelButton>
+								</ButtonRow>
 							) : (
 								<ConfirmButton type="button" onClick={props.handleDialogClose}>
 									확인
@@ -90,7 +201,7 @@ const AuthDialog = ({ ...props }) => {
 							)}
 						</Grid>
 					</Grid>
-				</Box>
+				</form>
 			</StyledDialogContent>
 		</Dialog>
 	);
@@ -114,13 +225,13 @@ const AuthThumbnail = styled.div`
 	margin: 1rem 0;
 	width: 35rem;
 	height: 25rem;
-	background-color: gray;
-	border-radius: 0.5rem;
+	background-color: #959595;
 	position: relative;
 
 	img {
 		width: 100%;
 		height: 100%;
+		border-radius: 0.5rem;
 	}
 `;
 
@@ -130,6 +241,15 @@ const DeleteButton = styled.span`
 	right: 1rem;
 	cursor: pointer;
 	z-index: 1;
+	background-color: #ffffff;
+	border-radius: 50%;
+	padding: 0.7rem;
+	opacity: 0.6;
+	transition: opacity 0.3s;
+
+	&:hover {
+		opacity: 1;
+	}
 `;
 
 const UploadInput = styled.input`
@@ -184,9 +304,25 @@ const TextInput = styled(TextField)`
 	}
 `;
 
+const ButtonRow = styled.div`
+	display: flex;
+	justify-content: center;
+	gap: 4rem;
+`;
+
 const EnrollButton = styled(StyledButton)`
 	padding: 0.8rem 1.8rem;
 	font-size: 1.6rem;
+`;
+
+const CancelButton = styled(StyledButton)`
+	padding: 0.8rem 1.8rem;
+	font-size: 1.6rem;
+	background-color: #c4c4c4;
+
+	&:hover {
+		background-color: #c4c4c4;
+	}
 `;
 
 const ConfirmButton = styled(StyledButton)`

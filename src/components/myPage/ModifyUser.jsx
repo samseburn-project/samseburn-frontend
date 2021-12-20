@@ -1,163 +1,247 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import IconButton from "@mui/material/IconButton";
-import StyledButton from "../common/StyledButton";
+import { ReactComponent as Delete } from '../../assets/icons/delete.svg';
+import StyledButton from '../common/StyledButton';
 
-// import DeleteIcon from '@mui/icons-material/Delete';
-import { ReactComponent as Delete } from "../../assets/icons/delete.svg";
+const ModifyUser = ({ userToken }) => {
+  const [loading, setLoading] = useState(false);
 
-const ModifyUser = () => {
-	const [nickname, setNickname] = useState("");
-	const [image, setImage] = useState({
-		imageFile: null,
-		imageUrl: null,
-	});
+  const [nickname, setNickname] = useState('');
+  const [image, setImage] = useState({
+    imageFile: null,
+    imageUrl: null,
+  });
 
-	const setImageFromFile = ({ file, setImageUrl }) => {
-		const reader = new FileReader();
-		reader.onload = () => {
-			setImageUrl({ result: reader.result });
-		};
-		reader.readAsDataURL(file);
-	};
+  useEffect(() => {
+    const fetchUser = async () => {
+      setLoading(true);
+      try {
+        const res = await axios.get('/user', {
+          headers: { Authorization: `Bearer ${userToken}` },
+        });
 
-	const onLoadFile = ({ target: { files } }) => {
-		if (files.length) {
-			setImageFromFile({
-				file: files[0],
-				setImageUrl: ({ result }) =>
-					setImage({
-						imageFile: files[0],
-						imageUrl: result,
-					}),
-			});
-		}
-	};
-	return (
-		<ModifyUserBox>
-			<FormContainer>
-				<ImageContainer>
-					{/* 이미지 미리보기 */}
-					<ThumbnailContainer>
-						{image.imageFile ? (
-							<ImageThumbnail alt={image.imageFile.name} src={image.imageUrl} />
-						) : (
-							<DefaultThumbnail></DefaultThumbnail>
-						)}
-						{/* 이미지 삭제 버튼 */}
-						<DeleteButtonContainer>
-							<IconButton>
-								<Delete />
-							</IconButton>
-						</DeleteButtonContainer>
-					</ThumbnailContainer>
+        if (res.status === 200) {
+          setNickname(res.data.username);
+          setImage({
+            imageFile: null,
+            imageUrl: res.data.imgUrl,
+          });
+        }
+        console.log(res);
+      } catch (err) {
+        console.error(err);
+      }
+      setLoading(false);
+    };
 
-					{/* 이미지 업로드 버튼 */}
-					<label htmlFor="input-image">
-						<ImageFileInput
-							type="file"
-							accept="image/*"
-							name="file"
-							onChange={onLoadFile}
-							id="input-image"
-						/>
-						<ImageUploadButton component="span">이미지 변경</ImageUploadButton>
-					</label>
-				</ImageContainer>
+    fetchUser(); // 유저 정보 요청
+  }, []);
 
-				<Row>
-					<Label>닉네임*</Label>
-					<BasicInput value={nickname} placeholder="김피버" />
-				</Row>
+  const onChangeNickname = ({ target: { value } }) => {
+    setNickname(value);
+  };
 
-				<Row>
-					<SubmitButton>완료</SubmitButton>
-				</Row>
-			</FormContainer>
-		</ModifyUserBox>
-	);
+  const setImageFromFile = ({ file, setImageUrl }) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImageUrl({ result: reader.result });
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const onLoadFile = ({ target: { files } }) => {
+    if (files.length) {
+      setImageFromFile({
+        file: files[0],
+        setImageUrl: ({ result }) =>
+          setImage({
+            imageFile: files[0],
+            imageUrl: result,
+          }),
+      });
+    }
+  };
+
+  const onDeleteFile = () => {
+    setImage({
+      imageFile: null,
+      imageUrl:
+        'https://samseburn-bucket.s3.ap-northeast-2.amazonaws.com/user/SpartaIconScale7.png',
+    });
+  };
+
+  const onSubmitHandler = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('username', nickname);
+      formData.append(
+        'image',
+        image.imageFile ? image.imageFile : image.imageUrl
+      );
+
+      const res = await axios.put('/user', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${userToken}`,
+        },
+      });
+      console.log(res);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  if (loading) {
+    return <LoadingContainer>Loading...</LoadingContainer>;
+  }
+
+  if (!nickname) {
+    return null;
+  }
+
+  return (
+    <ModifyUserBox>
+      <FormContainer>
+        <ImageContainer>
+          {/* 이미지 미리보기 */}
+          <ThumbnailContainer>
+            {image.imageFile || image.imageUrl ? (
+              <ImageThumbnail alt="Profile Image" src={image.imageUrl} />
+            ) : (
+              <DefaultThumbnail></DefaultThumbnail>
+            )}
+            {/* 이미지 삭제 버튼 */}
+            <DeleteButtonContainer onClick={onDeleteFile}>
+              <Delete alt="Delete icon" style={{ zIndex: 10 }} />
+            </DeleteButtonContainer>
+          </ThumbnailContainer>
+
+          {/* 이미지 업로드 버튼 */}
+          <label htmlFor="input-image">
+            <ImageFileInput
+              type="file"
+              accept="image/*"
+              name="file"
+              onChange={onLoadFile}
+              id="input-image"
+            />
+            <ImageUploadButton component="span">이미지 변경</ImageUploadButton>
+          </label>
+        </ImageContainer>
+
+        <Row>
+          <Label>닉네임*</Label>
+          <BasicInput
+            value={nickname}
+            placeholder=""
+            onChange={onChangeNickname}
+          />
+        </Row>
+
+        <Row>
+          <SubmitButton onClick={onSubmitHandler}>완료</SubmitButton>
+        </Row>
+      </FormContainer>
+    </ModifyUserBox>
+  );
 };
 
 export default ModifyUser;
 
+const LoadingContainer = styled.div`
+  text-align: center;
+  font-size: 2rem;
+`;
+
 const Row = styled.div`
-	margin: 0;
+  margin: 0;
 `;
 
 const ModifyUserBox = styled.div`
-	padding-bottom: 20rem;
+  padding-bottom: 20rem;
 `;
 
 const FormContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const ImageContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const ThumbnailContainer = styled.div`
-	position: relative;
+  position: relative;
 `;
 
 const ImageThumbnail = styled.img`
-	width: 24.2rem;
-	height: 24.2rem;
-	border-radius: 0.5rem;
-	object-fit: cover;
-	margin-bottom: 2rem;
+  width: 24.2rem;
+  height: 24.2rem;
+  border-radius: 0.5rem;
+  object-fit: cover;
+  margin-bottom: 2rem;
 `;
 
 const DefaultThumbnail = styled.div`
-	width: 24.2rem;
-	height: 24.2rem;
-	border-radius: 0.5rem;
-	background-color: lightgray;
-	margin-bottom: 2rem;
+  width: 24.2rem;
+  height: 24.2rem;
+  border-radius: 0.5rem;
+  background-color: lightgray;
+  margin-bottom: 2rem;
 `;
 
 const ImageFileInput = styled.input`
-	display: none;
+  display: none;
 `;
 
 const DeleteButtonContainer = styled.div`
-	position: absolute;
-	top: 0px;
-	right: 0px;
-	z-index: 1;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  cursor: pointer;
+  z-index: 1;
+  background-color: #ffffff;
+  border-radius: 50%;
+  padding: 0.7rem;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+
+  &:hover {
+    opacity: 1;
+  }
 `;
 
 const ImageUploadButton = styled(StyledButton)`
-	font-size: 1.6rem;
+  font-size: 1.6rem;
 `;
 
 const Label = styled.div`
-	font-size: 2rem;
-	font-weight: bold;
-	margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
 `;
 
 const SubmitButton = styled(StyledButton)`
-	font-size: 2rem;
+  font-size: 2rem;
 
-	width: 33rem;
-	height: 5rem;
+  width: 33rem;
+  height: 5rem;
 `;
 
 const BasicInput = styled.input`
-	font-size: 1.6rem;
-	color: #959595;
-	background-color: white;
-	border: 1px solid #e5e5e5;
-	border-radius: 0.5rem;
-	width: 33rem;
-	height: 3.2rem;
-	margin-bottom: ${(props) => (props.isNext ? "1rem" : "3rem")};
+  font-size: 1.6rem;
+  color: #959595;
+  background-color: white;
+  border: 1px solid #e5e5e5;
+  border-radius: 0.5rem;
+  width: 33rem;
+  height: 3.2rem;
+  margin-bottom: ${(props) => (props.isNext ? '1rem' : '3rem')};
 `;

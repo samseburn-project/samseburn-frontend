@@ -3,16 +3,7 @@ import styled, { css } from "styled-components";
 import Category from "../common/Category";
 
 const CategoryFilter = () => {
-	const categories = [
-		"전체",
-		"온라인",
-		"오프라인",
-		"운동",
-		"공부",
-		"취미",
-		"독서",
-		"기타",
-	];
+	const categories = ["전체", "운동", "공부", "취미", "독서", "기타"];
 
 	return (
 		<CategoryContainer>
@@ -46,26 +37,6 @@ const MainCategory = styled(Category)`
 					&:hover {
 						color: #ffffff;
 						background-color: #8f8f8f;
-					}
-				`;
-			case "온라인":
-				return css`
-					color: #ff4d00;
-					border: 1.5px solid #ff4d00;
-
-					&:hover {
-						color: #ffffff;
-						background-color: #ff4d00;
-					}
-				`;
-			case "오프라인":
-				return css`
-					color: #0057ff;
-					border: 1.5px solid #0057ff;
-
-					&:hover {
-						color: #ffffff;
-						background-color: #0057ff;
 					}
 				`;
 			case "운동":

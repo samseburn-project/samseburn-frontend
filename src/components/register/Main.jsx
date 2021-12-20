@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import RegisterPage from './RegisterPage';
+import RegisterForm from './RegisterForm';
 
 const Main = () => {
   return (
     <Wrapper>
-      <RegisterPage />
+      <RegisterForm />
       <Row></Row>
     </Wrapper>
   );
