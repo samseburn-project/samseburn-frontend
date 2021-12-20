@@ -9,9 +9,10 @@ import CommonDialog from "../common/CommonDialog";
 import AuthDialog from "../common/AuthDialog";
 
 const Intro = ({ ...props }) => {
-	const { enqueueSnackbar } = useSnackbar();
 	const userToken = localStorage.getItem("token");
 	const today = new Date().getTime();
+
+	const { enqueueSnackbar } = useSnackbar();
 
 	const handleMissionStatus = (missionStatus, count, missonDate, retry) => {
 		if (missionStatus === "NO" && count === 3) {
@@ -54,8 +55,13 @@ const Intro = ({ ...props }) => {
 			return (
 				<ButtonRow>
 					<AuthButton onClick={props.handleDialogOpen}>챌린지 인증</AuthButton>
-					{handleMissionStatus()}
-					<CancelButton
+					{handleMissionStatus(
+						props.userChallenge?.firstWeekMission,
+						props.userChallenge?.certiCount,
+						props.userChallenge?.userMissionDate,
+						props.userChallenge?.retryCount
+					)}
+					{/* <CancelButton
 						onClick={() => {
 							props.handleDialogOpen();
 						}}
@@ -69,12 +75,15 @@ const Intro = ({ ...props }) => {
 						handleChallengeCancel={props.handleChallengeCancel}
 						mainText={"챌린지 참가 신청이 취소되었습니다."}
 						subText={"참여 취소 시 모든 챌린지 인증 기록이 삭제됩니다."}
-					/>
+					/> */}
 				</ButtonRow>
 			);
 		} else if (challengeStatus === "COMPLETE") {
 			return <ClosedButton disabled>챌린지 마감</ClosedButton>;
-		} else {
+		} else if (
+			props.userChallenge === {} ||
+			props.userChallenge?.challengeStatus !== "JOIN"
+		) {
 			return (
 				<>
 					<ApplyButton
@@ -118,13 +127,14 @@ const Intro = ({ ...props }) => {
 					</CategoryRow>
 					<SubTitle>진행 기간</SubTitle>
 					<Text>
-						{props.challenge?.startDate} ~ {props.challenge?.endDate}
+						{props.challenge?.challengeStartDate} ~{" "}
+						{props.challenge?.challengeEndDate}
 					</Text>
 					<SubTitle>참가 인원</SubTitle>
 					<Text>
 						{props.challenge?.participants} / {props.challenge?.limitPerson} 명
 					</Text>
-					{handleButtonRender(props.challengeStatus)}
+					{handleButtonRender(props.userChallenge?.challengeStatus)}
 				</ContentsContainer>
 			</IntroContainer>
 		</IntroBox>

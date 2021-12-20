@@ -10,6 +10,9 @@ import trash from "../../assets/icons/trash.png";
 
 const AuthDialog = ({ ...props }) => {
 	const today = new Date().toLocaleString();
+	const certify = props?.certify;
+	const userChallengeId = props?.userChallengeId;
+	console.log(userChallengeId);
 
 	return (
 		<Dialog onClose={props.handleDialogClose} open={props.dialogOpen}>
@@ -21,7 +24,7 @@ const AuthDialog = ({ ...props }) => {
 					<Grid container direction="column" rowSpacing={4}>
 						<Grid item container direction="column">
 							<Grid item>
-								{!props.certify ? (
+								{!certify ? (
 									<AuthThumbnail>
 										<DeleteButton>
 											<img src={trash} alt="Trash Icon" />
@@ -29,13 +32,13 @@ const AuthDialog = ({ ...props }) => {
 									</AuthThumbnail>
 								) : (
 									<AuthThumbnail>
-										<img src={props.certify.imgUrl} alt="Auth Thumbnail" />
+										<img src={certify.imgUrl} alt="Auth Thumbnail" />
 									</AuthThumbnail>
 								)}
 							</Grid>
 							<Grid item textAlign="center">
 								<label htmlFor="auth-image">
-									{!props.certify ? (
+									{!certify ? (
 										<>
 											<UploadInput
 												accept="image/*"
@@ -52,7 +55,7 @@ const AuthDialog = ({ ...props }) => {
 						</Grid>
 						<Grid item>
 							<LabelText>챌린지 인증 날짜</LabelText>
-							{!props.certify ? (
+							{!certify ? (
 								<DateInput
 									id="auth-date"
 									InputProps={{ readOnly: true }}
@@ -62,13 +65,13 @@ const AuthDialog = ({ ...props }) => {
 								<DateInput
 									id="auth-date"
 									InputProps={{ readOnly: true }}
-									defaultValue={props.certify.createdDate}
+									defaultValue={certify.createdDate}
 								/>
 							)}
 						</Grid>
 						<Grid item>
 							<LabelText>챌린지 인증 후기</LabelText>
-							{!props.certify ? (
+							{!certify ? (
 								<TextInput id="auth-text" multiline rows={8} />
 							) : (
 								<TextInput
@@ -76,12 +79,12 @@ const AuthDialog = ({ ...props }) => {
 									multiline
 									rows={8}
 									InputProps={{ readOnly: true }}
-									defaultValue={props.certify.contents}
+									defaultValue={certify.contents}
 								/>
 							)}
 						</Grid>
 						<Grid item textAlign="center">
-							{!props.certify ? (
+							{!certify ? (
 								<EnrollButton type="submit">등록</EnrollButton>
 							) : (
 								<ConfirmButton type="button" onClick={props.handleDialogClose}>

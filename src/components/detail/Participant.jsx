@@ -49,7 +49,10 @@ const Participant = ({ ...props }) => {
 				</ProfileBox>
 			</Grid>
 			<Grid item>
-				<FeedCarousel certifies={props.participant.certifies} />
+				<FeedCarousel
+					certifies={props.participant.certifies}
+					userChallengeId={props?.userChallengeId}
+				/>
 			</Grid>
 		</Grid>
 	);

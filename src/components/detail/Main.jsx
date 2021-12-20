@@ -14,7 +14,7 @@ const Main = () => {
 	const id = Number(params.id);
 	const [challenge, setChallenge] = useState();
 	const [participants, setParticipants] = useState([]);
-	const [challengeStatus, setChallengeStatus] = useState();
+	const [userChallenge, setUserChallenge] = useState({});
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const userToken = localStorage.getItem("token");
 
@@ -36,15 +36,17 @@ const Main = () => {
 		}
 	};
 
-	const fetchChallengeStatus = async () => {
+	const fetchUserChallenge = async () => {
 		try {
-			const { data } = await axios.get(`/challenges/${id}/user`, {
+			const { status, data } = await axios.get(`/challenges/${id}/user`, {
 				headers: { Authorization: `Bearer ${userToken}` },
 			});
 
-			console.log(data);
-
-			setChallengeStatus(data.userHistories[0].challengeStatus);
+			if (status === 200) {
+				setUserChallenge(data);
+			} else {
+				console.log("참여중인 챌린지가 아닙니다.");
+			}
 		} catch (err) {
 			console.log(err);
 		}
@@ -60,11 +62,9 @@ const Main = () => {
 
 	const handleChallengeJoin = async () => {
 		try {
-			const res = await axios.post(`/challenges/${id}/join`, {
+			await axios.post(`/challenges/${id}/join`, {
 				headers: { Authorization: `Bearer ${userToken}` },
 			});
-
-			if (res.status === 200) setChallengeStatus("JOIN");
 		} catch (err) {
 			console.log(err);
 		}
@@ -78,7 +78,7 @@ const Main = () => {
 				},
 			});
 
-			if (res.status === 200) setChallengeStatus();
+			if (res.status === 200) setUserChallenge();
 		} catch (err) {
 			console.log(err);
 		}
@@ -111,16 +111,14 @@ const Main = () => {
 	useEffect(() => {
 		fetchChallenge();
 		fetchParticipants();
-		fetchChallengeStatus();
+		fetchUserChallenge();
 	}, []);
-
-	console.log(challengeStatus);
 
 	return (
 		<>
 			<Intro
 				challenge={challenge}
-				challengeStatus={challengeStatus}
+				userChallenge={userChallenge}
 				handleChallengeJoin={handleChallengeJoin}
 				handleChallengeCancel={handleChallengeCancel}
 				handleChallengeContinue={handleChallengeContinue}
@@ -151,7 +149,10 @@ const Main = () => {
 					<Grid container rowSpacing={3}>
 						{participants.map((participant) => (
 							<Grid item key={participant.id}>
-								<Participant participant={participant} />
+								<Participant
+									participant={participant}
+									userChallengeId={userChallenge?.userId}
+								/>
 							</Grid>
 						))}
 					</Grid>
