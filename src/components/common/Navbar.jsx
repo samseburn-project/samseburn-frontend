@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useEffect, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import { Menu, MenuItem, Dialog, DialogContent } from '@mui/material';
 
-import styled from 'styled-components';
+import styled, { css } from "styled-components";
 
 import { ReactComponent as Logo } from '../../assets/logo.svg';
 import { ReactComponent as Profile } from '../../assets/icons/profile.svg';
@@ -18,15 +18,13 @@ const Navbar = () => {
 	const [isLoggedIn, setLoggedIn] = useState(false);
 	const [modalOpen, setModalOpen] = useState(false);
 	const [anchorEl, setAnchorEl] = useState(null);
+	const [scrollTop, setScrollTop] = useState(0);
+	const [isSticky, setIsSticky] = useState(false);
 	const open = Boolean(anchorEl);
 	const userToken = localStorage.getItem("token");
 	const navigate = useNavigate();
 
 	const { Kakao } = window;
-
-	useEffect(() => {
-		if (userToken) setLoggedIn(true);
-	}, [userToken]);
 
 	const handleMouseOver = (e) => {
 		setAnchorEl(e.currentTarget);
@@ -42,6 +40,14 @@ const Navbar = () => {
 
 	const handleModalClose = () => {
 		setModalOpen(false);
+	};
+
+	const handleScroll = () => {
+		window.addEventListener("scroll", () => {
+			setScrollTop(window.scrollY);
+		});
+		if (scrollTop >= 88) setIsSticky(true);
+		else setIsSticky(false);
 	};
 
 	const kakaoLoginHandler = () => {
@@ -74,10 +80,15 @@ const Navbar = () => {
 		});
 	};
 
+	useEffect(() => {
+		if (userToken) setLoggedIn(true);
+		handleScroll();
+	}, [userToken, scrollTop]);
+
 	return (
 		<>
 			{!isLoggedIn ? (
-				<Nav>
+				<Nav isSticky={isSticky}>
 					<NavContainer>
 						<NavLink to="/">
 							<NavLogo>삼세번</NavLogo>
@@ -100,7 +111,7 @@ const Navbar = () => {
 					</NavContainer>
 				</Nav>
 			) : (
-				<Nav>
+				<Nav isSticky={isSticky}>
 					<NavContainer>
 						<NavLink to="/">
 							<NavLogo>삼세번</NavLogo>
@@ -138,8 +149,18 @@ const Navbar = () => {
 export default Navbar;
 
 const Nav = styled.nav`
-  width: 100%;
-  height: 8.8rem;
+	width: 100%;
+	height: 8.8rem;
+
+	${(props) =>
+		props.isSticky &&
+		css`
+			position: fixed;
+			top: 0;
+			background-color: #ffffff;
+			z-index: 1;
+			box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.2);
+		`}
 `;
 
 const NavLink = styled(Link)`
