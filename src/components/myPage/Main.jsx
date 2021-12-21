@@ -67,7 +67,7 @@ const Main = () => {
       backgroundColor: 'transparent',
     },
     '& .MuiTabs-indicatorSpan': {
-      maxWidth: 50,
+      maxWidth: 100,
       width: '100%',
       backgroundColor: '#EB3901',
     },
@@ -98,16 +98,20 @@ const Main = () => {
           </StyledTabs>
         </Row>
 
-        {selectedTab === 0 && (
-          <ViewChallenge
-            userToken={userToken}
-            userChallengeList={userChallengeList}
-          />
-        )}
-        {selectedTab === 1 && <ModifyUser userToken={userToken} />}
-        {selectedTab === 2 && (
-          <ManageChallenge userCreateChallengeList={userCreateChallengeList} />
-        )}
+        <Row>
+          {selectedTab === 0 && (
+            <ViewChallenge
+              userToken={userToken}
+              userChallengeList={userChallengeList}
+            />
+          )}
+          {selectedTab === 1 && <ModifyUser userToken={userToken} />}
+          {selectedTab === 2 && (
+            <ManageChallenge
+              userCreateChallengeList={userCreateChallengeList}
+            />
+          )}
+        </Row>
       </Wrapper>
     </>
   );

@@ -5,15 +5,23 @@ import styled from 'styled-components';
 
 import { ReactComponent as Delete } from '../../assets/icons/delete.svg';
 import StyledButton from '../common/StyledButton';
+import CommonDialog from '../common/CommonDialog';
 
 const ModifyUser = ({ userToken }) => {
   const [loading, setLoading] = useState(false);
-
   const [nickname, setNickname] = useState('');
   const [image, setImage] = useState({
     imageFile: null,
     imageUrl: null,
   });
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const handleDialogOpen = () => {
+    setDialogOpen(true);
+  };
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -73,8 +81,9 @@ const ModifyUser = ({ userToken }) => {
     });
   };
 
-  const onSubmitHandler = async () => {
+  const onSubmitHandler = async (e) => {
     try {
+      e.preventDefault();
       const formData = new FormData();
       formData.append('username', nickname);
       formData.append(
@@ -89,13 +98,21 @@ const ModifyUser = ({ userToken }) => {
         },
       });
       console.log(res);
+
+      if (res.status === 200) {
+        handleDialogOpen();
+      }
     } catch (e) {
       console.error(e);
     }
   };
 
   if (loading) {
-    return <LoadingContainer>Loading...</LoadingContainer>;
+    return (
+      <ModifyUserBox>
+        <LoadingContainer>Loading...</LoadingContainer>
+      </ModifyUserBox>
+    );
   }
 
   if (!nickname) {
@@ -143,6 +160,13 @@ const ModifyUser = ({ userToken }) => {
 
         <Row>
           <SubmitButton onClick={onSubmitHandler}>완료</SubmitButton>
+          <CommonDialog
+            dialogOpen={dialogOpen}
+            handleDialogOpen={handleDialogOpen}
+            handleDialogClose={handleDialogClose}
+            mainText={'회원 정보 변경이 완료되었습니다'}
+            subText={''}
+          />
         </Row>
       </FormContainer>
     </ModifyUserBox>
@@ -154,6 +178,7 @@ export default ModifyUser;
 const LoadingContainer = styled.div`
   text-align: center;
   font-size: 2rem;
+  margin: 8rem 0;
 `;
 
 const Row = styled.div`

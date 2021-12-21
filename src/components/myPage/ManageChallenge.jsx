@@ -95,4 +95,5 @@ const EmptyContainer = styled.div`
   width: 100%;
   text-align: center;
   font-size: 2rem;
+  margin: 8rem 0;
 `;
