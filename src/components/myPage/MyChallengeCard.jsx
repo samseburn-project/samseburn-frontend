@@ -9,12 +9,9 @@ import {
 	CardContent,
 	CardMedia,
 	CardActionArea,
-	Grid,
-	Typography,
 	Box,
 } from "@mui/material";
-// import Card from '@mui/material/Card';
-import { useTheme } from "@mui/material/styles";
+// import { useTheme } from "@mui/material/styles";
 import { ReactComponent as FirstMedal } from "../../assets/icons/1st-medal-icon.svg";
 import { ReactComponent as SecondMedal } from "../../assets/icons/2nd-medal-icon.svg";
 import { ReactComponent as ThirdMedal } from "../../assets/icons/3rd-medal-icon.svg";
@@ -331,19 +328,19 @@ const ProgressIcons = styled.div`
 	z-index: 1;
 `;
 
-const ProgressLineContainer = styled.div`
-	height: 1.8rem;
-	z-index: 2;
-`;
+// const ProgressLineContainer = styled.div`
+// 	height: 1.8rem;
+// 	z-index: 2;
+// `;
 
-const ProgressLine = styled.div`
-	left: 0;
-	right: 0;
-	width: 70%;
-	height: 0.2rem;
-	background-color: #ffa883;
-	margin: 0 auto;
-`;
+// const ProgressLine = styled.div`
+// 	left: 0;
+// 	right: 0;
+// 	width: 70%;
+// 	height: 0.2rem;
+// 	background-color: #ffa883;
+// 	margin: 0 auto;
+// `;
 
 const CertiCount = styled.div`
 	font-size: 2rem;

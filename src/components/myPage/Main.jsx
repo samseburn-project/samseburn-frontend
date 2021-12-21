@@ -11,9 +11,9 @@ import ManageChallenge from "./ManageChallenge";
 
 const Main = () => {
 	const [selectedTab, setSelectedTab] = useState(0);
-
 	const [userChallengeList, setUserChallengList] = useState([]);
 	const [userCreateChallengeList, setUserCreateChallengList] = useState([]);
+	const [dialogOpen, setDialogOpen] = useState(false);
 	const userToken = localStorage.getItem("token");
 
 	const fetchUserChallenges = async () => {
@@ -44,14 +44,22 @@ const Main = () => {
 		}
 	};
 
+	const handleChange = (event, newValue) => {
+		setSelectedTab(newValue);
+	};
+
+	const handleDialogOpen = () => {
+		setDialogOpen(true);
+	};
+
+	const handleDialogClose = () => {
+		setDialogOpen(false);
+	};
+
 	useEffect(() => {
 		fetchUserChallenges(); // 유저와 연관된 챌린지 정보 요청
 		fetchUserCreateChallenge(); // 유저가 생성한 챌린지 정보 요청
 	}, []);
-
-	const handleChange = (event, newValue) => {
-		setSelectedTab(newValue);
-	};
 
 	const StyledTabs = muiStyled((props) => (
 		<Tabs
@@ -109,6 +117,9 @@ const Main = () => {
 					{selectedTab === 2 && (
 						<ManageChallenge
 							userCreateChallengeList={userCreateChallengeList}
+							dialogOpen={dialogOpen}
+							handleDialogOpen={handleDialogOpen}
+							handleDialogClose={handleDialogClose}
 						/>
 					)}
 				</Row>
