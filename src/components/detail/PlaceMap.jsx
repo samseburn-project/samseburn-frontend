@@ -3,6 +3,8 @@ import React, { useEffect } from "react";
 const { kakao } = window;
 
 const PlaceMap = ({ ...props }) => {
+	const address = props?.address;
+
 	useEffect(() => {
 		const mapContainer = document.getElementById("map");
 		const mapOption = {
@@ -14,7 +16,7 @@ const PlaceMap = ({ ...props }) => {
 
 		let geocoder = new kakao.maps.services.Geocoder();
 
-		geocoder.addressSearch(props.address, function (result, status) {
+		geocoder.addressSearch(address, function (result, status) {
 			if (status === kakao.maps.services.Status.OK) {
 				let coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 				let marker = new kakao.maps.Marker({
@@ -25,7 +27,7 @@ const PlaceMap = ({ ...props }) => {
 				marker.setMap(map);
 			}
 		});
-	}, []);
+	}, [address]);
 
 	return <div id="map" style={{ width: "100%", height: "100%" }}></div>;
 };
