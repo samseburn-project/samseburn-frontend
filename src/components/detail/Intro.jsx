@@ -12,7 +12,6 @@ const Intro = ({ ...props }) => {
 	const userToken = localStorage.getItem("token");
 	const today = new Date().getTime();
 	const missionDate = new Date(props.userChallenge?.userMissonDate).getTime();
-	console.log(missionDate < today);
 
 	const { enqueueSnackbar } = useSnackbar();
 
@@ -128,8 +127,8 @@ const Intro = ({ ...props }) => {
 						<IntroCategory locationType={props.challenge?.locationType}>
 							{props.challenge?.locationType}
 						</IntroCategory>
-						<IntroCategory category={props.challenge?.category.name}>
-							{props.challenge?.category.name}
+						<IntroCategory category={props.challenge?.category}>
+							{props.challenge?.category}
 						</IntroCategory>
 					</CategoryRow>
 					<SubTitle>진행 기간</SubTitle>
@@ -141,63 +140,7 @@ const Intro = ({ ...props }) => {
 					<Text>
 						{props.challenge?.participants} / {props.challenge?.limitPerson} 명
 					</Text>
-<<<<<<< HEAD
-					{!props.join ? (
-						<>
-							<ApplyButton
-								type="button"
-								onClick={() => {
-									if (props.userToken) {
-										props.handleChallengeJoin();
-										props.handleDialogOpen();
-									} else {
-										enqueueSnackbar("로그인이 필요한 기능입니다!", {
-											variant: "warning",
-											autoHideDuration: 2000,
-										});
-									}
-								}}
-							>
-								챌린지 참가하기
-							</ApplyButton>
-							<ApplyDialog
-								dialogOpen={props.dialogOpen}
-								handleDialogOpen={props.handleDialogOpen}
-								handleDialogClose={props.handleDialogClose}
-								mainText={"챌린지 참가 신청이 완료되었습니다."}
-							/>
-						</>
-					) : (
-						<ButtonRow>
-							<AuthButton onClick={props.handleDialogOpen}>
-								챌린지 인증
-							</AuthButton>
-							<AuthDialog
-								dialogOpen={props.dialogOpen}
-								handleDialogOpen={props.handleDialogOpen}
-								handleDialogClose={props.handleDialogClose}
-								challenge={props.challenge}
-								userToken={props.userToken}
-							/>
-							{/* <CancelButton
-								onClick={() => {
-									props.handleChallengeCancel();
-									props.handleDialogOpen();
-								}}
-							>
-								참가 취소
-							</CancelButton>
-							<CancelDialog
-								dialogOpen={props.dialogOpen}
-								handleDialogOpen={props.handleDialogOpen}
-								handleDialogClose={props.handleDialogClose}
-								mainText={"챌린지 참가 신청이 취소되었습니다."}
-							/> */}
-						</ButtonRow>
-					)}
-=======
 					{handleButtonRender(props.userChallenge?.challengeStatus)}
->>>>>>> 90e31c11c31d66a53f50c5f6f89c6c2315fd43ce
 				</ContentsContainer>
 			</IntroContainer>
 		</IntroBox>
@@ -260,12 +203,12 @@ const IntroCategory = styled(Category)`
 	cursor: default;
 
 	${(props) => {
-		if (props.locationType === "ONLINE") {
+		if (props.locationType === "온라인") {
 			return css`
 				color: #ffffff;
-				background-color: #ff4d00;
+				background-color: #ff7539;
 			`;
-		} else if (props.locationType === "OFFLINE") {
+		} else if (props.locationType === "오프라인") {
 			return css`
 				color: #ffffff;
 				background-color: #0057ff;
@@ -332,20 +275,20 @@ const AuthButton = styled(StyledButton)`
 	font-size: 2rem;
 `;
 
-const CancelButton = styled(StyledButton)`
-	width: 17.6rem;
-	height: 5.5rem;
-	font-size: 2rem;
-`;
-const CancelDialog = styled(CommonDialog)``;
+// const CancelButton = styled(StyledButton)`
+// 	width: 17.6rem;
+// 	height: 5.5rem;
+// 	font-size: 2rem;
+// `;
+// const CancelDialog = styled(CommonDialog)``;
 
 const ClosedButton = styled(StyledButton)`
 	width: 37.7rem;
 	height: 5.5rem;
 	font-size: 2rem;
-	background-color: #c4c4c4;
+	background-color: #e5e5e5;
 
 	&:hover {
-		background-color: #c4c4c4;
+		background-color: #e5e5e5;
 	}
 `;
