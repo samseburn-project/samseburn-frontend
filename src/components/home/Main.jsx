@@ -1,31 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 import styled from 'styled-components';
 
-import { Box } from '@mui/material';
+import { Box, Grid, CircularProgress } from '@mui/material';
 import Hero from './Hero';
 import HowToUse from './HowToUse';
 import SearchBar from './SearchBar';
 import CategoryFilter from './CategoryFilter';
 import SortFilter from './SortFilter';
-import ChallengeList from './ChallengeList';
+import ChallengeCard from './ChallengeCard';
 
 const Main = () => {
   const [challenges, setChallenges] = useState([]);
+  const [sortBy, setSortBy] = useState('createdAt');
+  const [hasMore, setHasMore] = useState(false);
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState('createdAt');
   const [category, setCategory] = useState('All');
 
-  const fetchChallenges = async () => {
+  const fetchChallenges = async (pageNum) => {
     try {
       const { data } = await axios.get('/challenges', {
         params: {
           kind: 'All',
-          page: page,
+          page: pageNum,
         },
       });
-      setChallenges(data);
+      setChallenges((prev) => [...prev, ...data]);
+      setHasMore(true);
     } catch (e) {
       console.error(e);
     }
@@ -43,9 +47,17 @@ const Main = () => {
     }
   };
 
+  const fetchMoreData = () => {
+    setPage((prev) => prev + 1);
+  };
+
   useEffect(() => {
-    fetchChallenges();
+    fetchChallenges(page);
     fetchFilter();
+
+    return () => {
+      setHasMore(false);
+    };
   }, [page, sortBy]);
 
   const onCategory = (categoryName) => {
@@ -67,7 +79,35 @@ const Main = () => {
           <SortFilter sortBy={sortBy} setSortBy={setSortBy} />
         </FilterRow>
         <ListContainer sx={{ width: '100%' }}>
-          <ChallengeList challenges={challenges} />
+          <InfiniteScroll
+            dataLength={challenges.length}
+            next={fetchMoreData}
+            hasMore={hasMore}
+            loader={
+              <Loading>
+                <CircularProgress />
+              </Loading>
+            }
+          >
+            <Grid container spacing={4}>
+              {challenges.map((challenge) => (
+                <Grid item xs={4} key={challenge.challengeId}>
+                  <ChallengeCard
+                    key={challenge.challengeId}
+                    challengeId={challenge.challengeId}
+                    title={challenge.title}
+                    category={challenge.category.name}
+                    locationType={challenge.locationType}
+                    challengeStartDate={challenge.challengeStartDate}
+                    challengeEndDate={challenge.challengeEndDate}
+                    imgUrl={challenge.imgUrl}
+                    limitPerson={challenge.limitPerson}
+                    participants={challenge.participants}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </InfiniteScroll>
         </ListContainer>
       </Wrapper>
     </>
@@ -101,4 +141,10 @@ const SearchBarRow = styled.div`
 const ListContainer = styled(Box)`
   margin-top: 6rem;
   margin-bottom: 18rem;
+`;
+
+const Loading = styled.div`
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
 `;
