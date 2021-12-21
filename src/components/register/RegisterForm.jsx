@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-
+import { useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
 import DaumPostcode from 'react-daum-postcode';
+import addDays from 'date-fns/addDays';
 
 import styled from 'styled-components';
 
@@ -10,16 +11,14 @@ import { TextField, Box } from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateRangePicker from '@mui/lab/DateRangePicker';
-import addDays from 'date-fns/addDays';
 import IconButton from '@mui/material/IconButton';
-
-import StyledButton from '../common/StyledButton';
-
 import { ReactComponent as ArrowForward } from '../../assets/icons/arrow.svg';
 import { ReactComponent as Delete } from '../../assets/icons/delete.svg';
 import { ReactComponent as Close } from '../../assets/icons/close.svg';
+import StyledButton from '../common/StyledButton';
 
 function RegisterForm(props) {
+  const navigate = useNavigate();
   const userToken = localStorage.getItem('token');
   const MAX_DATE = 99;
   const categories = ['운동', '생활', '공부', '취미', '독서', '기타'];
@@ -123,12 +122,24 @@ function RegisterForm(props) {
     setIsPopupOpen(!isPopupOpen);
   };
 
+  const onDeleteFile = () => {
+    setImage({
+      imageFile: null,
+      imageUrl: null,
+    });
+  };
+
   const onSubmitFormData = async () => {
     try {
       const address =
         locationType === 'ONLINE' ? '' : roadAddress + detailAddress;
 
       const formData = new FormData();
+
+      if (participants < 0) {
+        alert('참여인원은 숫자 0 이상부터 입력할 수 있습니다.');
+        return;
+      }
 
       formData.append('image', image.imageFile);
       formData.append('title', title);
@@ -153,6 +164,10 @@ function RegisterForm(props) {
 
       console.log(res);
 
+      if (res.status === 200) {
+        navigate('/');
+      }
+
       // const response = axios({
       //   method: 'post',
       //   url: '/challenge',
@@ -164,6 +179,10 @@ function RegisterForm(props) {
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const onCancleHandler = () => {
+    navigate('/');
   };
 
   const modalStyles = {
@@ -219,20 +238,26 @@ function RegisterForm(props) {
                 inputFormat={'yyyy-MM-dd'}
                 mask={'____-__-__'}
                 maxDate={addDays(date[0], MAX_DATE)}
-                size="small"
-                startText="시작 일자"
-                endText="종료 일자"
+                // size="small"
+                // startText="시작 일자"
+                // endText="종료 일자"
                 value={date}
                 onChange={(newValue) => {
                   setDate(newValue);
                 }}
                 renderInput={(startProps, endProps) => (
                   <>
-                    <DateInput {...startProps} size="small" />
+                    <DateInput
+                      ref={startProps.inputRef}
+                      {...startProps.inputProps}
+                    />
                     <Box sx={{ mx: 2 }}>
                       <ArrowForward />
                     </Box>
-                    <DateInput {...endProps} size="small" />
+                    <DateInput
+                      ref={endProps.inputRef}
+                      {...endProps.inputProps}
+                    />
                   </>
                 )}
               />
@@ -240,9 +265,9 @@ function RegisterForm(props) {
 
             {/* 챌린지 인원 */}
             <LabelText>챌린지 인원*</LabelText>
-            <BasicInput
-              placeholder="챌린지 인원"
-              size="small"
+            <NumInput
+              type="number"
+              placeholder="0"
               name="participants"
               value={participants}
               onChange={onChange}
@@ -262,11 +287,9 @@ function RegisterForm(props) {
                 <DefaultThumbnail></DefaultThumbnail>
               )}
               {/* 이미지 삭제 버튼 */}
-              <StackBox>
-                <IconButton>
-                  <Delete />
-                </IconButton>
-              </StackBox>
+              <DeleteButtonContainer onClick={onDeleteFile}>
+                <Delete alt="Delete icon" style={{ zIndex: 10 }} />
+              </DeleteButtonContainer>
             </ThumbnailContainer>
 
             {/* 이미지 업로드 버튼 */}
@@ -368,16 +391,18 @@ function RegisterForm(props) {
         {/* 챌린지 설명 */}
         <Row>
           <LabelText>챌린지 설명*</LabelText>
-          <BasicTextarea
+          <TextInput
             name="description"
+            multiline
+            rows={8}
             value={description}
             onChange={onChange}
-          ></BasicTextarea>
+          ></TextInput>
         </Row>
 
         <ButtonContainer>
           <RedBigButton onClick={onSubmitFormData}>등록</RedBigButton>
-          <BlackBigButton>취소</BlackBigButton>
+          <BlackBigButton onClick={onCancleHandler}>취소</BlackBigButton>
         </ButtonContainer>
       </FormContainer>
     </RegisterPageBox>
@@ -431,28 +456,34 @@ const SmallLabelText = styled.div`
 `;
 
 const BasicInput = styled.input`
+  width: 100%;
+  padding: 1rem;
   font-size: 1.6rem;
-  color: #959595;
-  background-color: white;
   border: 1px solid #e5e5e5;
   border-radius: 0.5rem;
-  width: 33.1rem;
-  height: 3.2rem;
+  box-sizing: border-box;
 
   margin-bottom: ${(props) => (props.isNext ? '1rem' : '3rem')};
 `;
 
-const DateInput = styled(TextField)`
-  margin-bottom: 3rem;
+const DateInput = styled(BasicInput)`
+  width: 16.5rem;
 `;
 
-const BasicTextarea = styled.textarea`
-  font-size: 1.6rem;
-  border: 0.1rem solid #e5e5e5;
-  background-color: white;
+const NumInput = styled(BasicInput)`
+  width: 6.5rem;
+`;
+
+const TextInput = styled(TextField)`
+  width: 100%;
+  border: 1px solid #e5e5e5;
   border-radius: 0.5rem;
-  width: 33.1rem;
-  height: 20rem;
+
+  .css-dpjnhs-MuiInputBase-root-MuiOutlinedInput-root {
+    font-size: 1.6rem;
+    padding: 1.2rem;
+  }
+
   margin-bottom: 3rem;
 `;
 
@@ -562,13 +593,6 @@ const ThumbnailContainer = styled.div`
   position: relative;
 `;
 
-const StackBox = styled.div`
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  z-index: 1;
-`;
-
 const CloseIconButton = styled(IconButton)`
   margin-left: auto;
 `;
@@ -644,5 +668,22 @@ const LocationTypeSpan = styled.span`
   &:hover {
     background-color: #ffa883;
     color: white;
+  }
+`;
+
+const DeleteButtonContainer = styled.div`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  cursor: pointer;
+  z-index: 1;
+  background-color: #ffffff;
+  border-radius: 50%;
+  padding: 0.7rem;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+
+  &:hover {
+    opacity: 1;
   }
 `;

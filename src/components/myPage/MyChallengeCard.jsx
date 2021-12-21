@@ -1,13 +1,20 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import styled from "styled-components";
 
-import //   Card,
-//   CardContent,
-//   CardMedia,
-//   CardActionArea,
-"@mui/material";
+import {
+	Card,
+	CardContent,
+	CardMedia,
+	CardActionArea,
+	Grid,
+	Typography,
+	Box,
+} from "@mui/material";
+// import Card from '@mui/material/Card';
+import { useTheme } from "@mui/material/styles";
 import { ReactComponent as FirstMedal } from "../../assets/icons/1st-medal-icon.svg";
 import { ReactComponent as SecondMedal } from "../../assets/icons/2nd-medal-icon.svg";
 import { ReactComponent as ThirdMedal } from "../../assets/icons/3rd-medal-icon.svg";
@@ -19,6 +26,7 @@ import Category from "../common/Category";
 import StyledButton from "../common/StyledButton";
 
 const MyChallengeCard = ({
+	userToken,
 	id,
 	title,
 	category,
@@ -44,110 +52,231 @@ const MyChallengeCard = ({
 		}
 	};
 
+	const onRetryHandler = async (e) => {
+		try {
+			const res = axios.put(`/challenges/${id}/retry`, {
+				headers: {
+					Authorization: `Bearer ${userToken}`,
+				},
+			});
+
+			console.log("retry button click!");
+			console.log(res);
+			navigate(`/detail/${id}`);
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
 	return (
-		<StyledCard onClick={() => navigate(`/detail/${id}`)}>
-			<StyledCardThumbnail>
-				<img alt={title} src={imgUrl} className="thumbnail"></img>
-			</StyledCardThumbnail>
-			<StyledCardContent>
-				<Row>
-					<CardTitle>{title}</CardTitle>
-					{challengeStatus === "RETRY" ? (
-						""
-					) : (
-						<CardMedal>{viewMedalIcon(certiCount)}</CardMedal>
-					)}
-				</Row>
-				<Row>
-					<CardCategory>{category}</CardCategory>
-					<CardCategory>
-						{locationType === "ONLINE" ? "온라인" : "오프라인"}
-					</CardCategory>
-				</Row>
-				<Row>
-					<CardIcon>
-						<Calender alt="Calendar icon" />
-					</CardIcon>
-					<CardDate>
-						{challengeStartDate} ~ {challengeEndDate}
-					</CardDate>
-				</Row>
-				<Row>
-					{challengeStatus === "JOIN" ? (
-						firstWeekMission === "YES" ? (
-							<CertiCount>
-								누적 <CertiCountNumber>{certiCount}</CertiCountNumber>
-								회 달성
-								<Congrats />
-							</CertiCount>
-						) : (
-							<Progress>
-								<ProgressTitle>달성률</ProgressTitle>
-								<ProgressLineContainer>
-									<ProgressLine />
-								</ProgressLineContainer>
-								<ProgressIcons>
-									{certiCount >= 1 ? <AbledProgress /> : <DisabledProgress />}
-									{certiCount >= 2 ? <AbledProgress /> : <DisabledProgress />}
-									{certiCount >= 3 ? <AbledProgress /> : <DisabledProgress />}
-								</ProgressIcons>
-							</Progress>
-						)
-					) : (
-						""
-					)}
-					{challengeStatus === "RETRY" ? (
-						<RetryButton>재도전하기</RetryButton>
-					) : (
-						""
-					)}
-					{challengeStatus === "COMPLETE" ? (
-						<CertiCount>
-							총 <CertiCountNumber>{certiCount}</CertiCountNumber>
-							회 달성
-							<Congrats />
-						</CertiCount>
-					) : (
-						""
-					)}
-				</Row>
-			</StyledCardContent>
-		</StyledCard>
+		<CardContainer>
+			<CardActionArea>
+				<StyledCard
+					sx={{
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "space-between",
+					}}
+					onClick={(e) => {
+						if (e.target.name !== "retryButton") {
+							navigate(`/detail/${id}`);
+						}
+					}}
+				>
+					<StyledCardMedia component="img" image={imgUrl} />
+
+					<StyledBox sx={{ display: "flex", flexDirection: "column" }}>
+						<StyledCardContent>
+							<Row>
+								<CardTitle>{title}</CardTitle>
+								{challengeStatus === "RETRY" ? (
+									""
+								) : (
+									<CardMedal>{viewMedalIcon(certiCount)}</CardMedal>
+								)}
+							</Row>
+							<Row>
+								<CardCategory>{category}</CardCategory>
+								<CardCategory>
+									{locationType === "ONLINE" ? "온라인" : "오프라인"}
+								</CardCategory>
+							</Row>
+							<Row>
+								<CardIcon>
+									<Calender alt="Calendar icon" />
+								</CardIcon>
+								<CardDate>
+									{challengeStartDate} ~ {challengeEndDate}
+								</CardDate>
+							</Row>
+							<Row>
+								{challengeStatus === "JOIN" ? (
+									firstWeekMission ? (
+										<CertiCount>
+											누적 <CertiCountNumber>{certiCount}</CertiCountNumber>
+											회 달성
+											<Congrats />
+										</CertiCount>
+									) : (
+										<Progress>
+											<ProgressTitle>달성률</ProgressTitle>
+											{/* <ProgressLineContainer>
+                 <ProgressLine />
+               </ProgressLineContainer> */}
+											<ProgressIcons>
+												{certiCount >= 1 ? (
+													<AbledProgress />
+												) : (
+													<DisabledProgress />
+												)}
+												{certiCount >= 2 ? (
+													<AbledProgress />
+												) : (
+													<DisabledProgress />
+												)}
+												{certiCount >= 3 ? (
+													<AbledProgress />
+												) : (
+													<DisabledProgress />
+												)}
+											</ProgressIcons>
+										</Progress>
+									)
+								) : (
+									""
+								)}
+								{challengeStatus === "RETRY" ? (
+									<RetryButton name="retryButton" onClick={onRetryHandler}>
+										재도전하기
+									</RetryButton>
+								) : (
+									""
+								)}
+								{challengeStatus === "COMPLETE" ? (
+									<CertiCount>
+										총 <CertiCountNumber>{certiCount}</CertiCountNumber>
+										회 달성
+										<Congrats />
+									</CertiCount>
+								) : (
+									""
+								)}
+							</Row>
+						</StyledCardContent>
+					</StyledBox>
+				</StyledCard>
+			</CardActionArea>
+		</CardContainer>
 	);
+
+	// return (
+	//   <Grid item xs={6}>
+	//     <StyledCard
+	//       onClick={(e) => {
+	//         if (e.target.name !== 'retryButton') {
+	//           navigate(`/detail/${id}`);
+	//         }
+	//       }}
+	//     >
+	//       <StyledCardThumbnail>
+	//         <img alt={title} src={imgUrl} className="thumbnail"></img>
+	//       </StyledCardThumbnail>
+	//       <StyledCardContent>
+	//         <Row>
+	//           <CardTitle>{title}</CardTitle>
+	//           {challengeStatus === 'RETRY' ? (
+	//             ''
+	//           ) : (
+	//             <CardMedal>{viewMedalIcon(certiCount)}</CardMedal>
+	//           )}
+	//         </Row>
+	//         <Row>
+	//           <CardCategory>{category}</CardCategory>
+	//           <CardCategory>
+	//             {locationType === 'ONLINE' ? '온라인' : '오프라인'}
+	//           </CardCategory>
+	//         </Row>
+	//         <Row>
+	//           <CardIcon>
+	//             <Calender alt="Calendar icon" />
+	//           </CardIcon>
+	//           <CardDate>
+	//             {challengeStartDate} ~ {challengeEndDate}
+	//           </CardDate>
+	//         </Row>
+	//         <Row>
+	//           {challengeStatus === 'JOIN' ? (
+	//             firstWeekMission ? (
+	//               <CertiCount>
+	//                 누적 <CertiCountNumber>{certiCount}</CertiCountNumber>
+	//                 회 달성
+	//                 <Congrats />
+	//               </CertiCount>
+	//             ) : (
+	//               <Progress>
+	//                 <ProgressTitle>달성률</ProgressTitle>
+	//                 {/* <ProgressLineContainer>
+	//                 <ProgressLine />
+	//               </ProgressLineContainer> */}
+	//                 <ProgressIcons>
+	//                   {certiCount >= 1 ? <AbledProgress /> : <DisabledProgress />}
+	//                   {certiCount >= 2 ? <AbledProgress /> : <DisabledProgress />}
+	//                   {certiCount >= 3 ? <AbledProgress /> : <DisabledProgress />}
+	//                 </ProgressIcons>
+	//               </Progress>
+	//             )
+	//           ) : (
+	//             ''
+	//           )}
+	//           {challengeStatus === 'RETRY' ? (
+	//             <RetryButton name="retryButton" onClick={onRetryHandler}>
+	//               재도전하기
+	//             </RetryButton>
+	//           ) : (
+	//             ''
+	//           )}
+	//           {challengeStatus === 'COMPLETE' ? (
+	//             <CertiCount>
+	//               총 <CertiCountNumber>{certiCount}</CertiCountNumber>
+	//               회 달성
+	//               <Congrats />
+	//             </CertiCount>
+	//           ) : (
+	//             ''
+	//           )}
+	//         </Row>
+	//       </StyledCardContent>
+	//     </StyledCard>
+	//   </Grid>
+	// );
 };
 
 export default MyChallengeCard;
 
-const StyledCard = styled.div`
+const CardContainer = styled.div`
+	margin: 2rem;
+`;
+
+const StyledCard = styled(Card)`
 	height: 20rem;
 	box-shadow: 0.6rem 1.1rem 2rem rgba(0, 0, 0, 0.25);
 	border-radius: 0.5rem;
-
-	display: flex;
-	align-items: center;
-	cursor: pointer;
+	padding: 0 3rem;
 	word-break: break-all;
-	margin: 2rem;
-
-	.thumbnail {
-		width: 15rem;
-		height: 15rem;
-		object-fit: cover;
-		margin: 2.5rem;
-		border-radius: 0.5rem;
-	}
-
-	&:hover {
-		background-color: #f6f6f6;
-	}
 `;
 
-const StyledCardThumbnail = styled.div`
-	width: 40%;
+const StyledCardMedia = styled(CardMedia)`
+	width: 15rem;
+	height: 15rem;
+	border-radius: 0.5rem;
+	object-fit: cover;
 `;
-const StyledCardContent = styled.div`
-	width: 60%;
+
+const StyledCardContent = styled(CardContent)`
+	height: 15rem;
 `;
+
+const StyledBox = styled(Box)``;
 
 const CardTitle = styled.div`
 	font-size: 2rem;
@@ -192,7 +321,6 @@ const ProgressTitle = styled.div`
 	font-size: 1.6rem;
 	font-weight: bold;
 	color: #eb3901;
-	margin-bottom: 1rem;
 `;
 
 const ProgressIcons = styled.div`
@@ -220,10 +348,9 @@ const ProgressLine = styled.div`
 const CertiCount = styled.div`
 	font-size: 2rem;
 	font-weight: bold;
-	letter-spacing: 1px;
+	letter-spacing: 2px;
 	width: 100%;
 	display: flex;
-	justify-content: center;
 	align-items: center;
 `;
 
@@ -236,14 +363,47 @@ const CertiCountNumber = styled.span`
 const Row = styled.div`
 	display: flex;
 	gap: 0.5rem;
-	margin-bottom: 1rem;
+	margin-bottom: 1.5rem;
 	flex-wrap: wrap;
 `;
 
 const RetryButton = styled(StyledButton)`
 	font-size: 1.6rem;
-	width: 80%;
+	width: 100%;
 
 	padding: 0.2rem;
-	margin: 0 auto;
+	/* margin: 0 auto; */
 `;
+
+// ====================================
+
+// const StyledCard = styled.div`
+//   height: 20rem;
+//   box-shadow: 0.6rem 1.1rem 2rem rgba(0, 0, 0, 0.25);
+//   border-radius: 0.5rem;
+
+//   display: flex;
+//   align-items: center;
+//   cursor: pointer;
+//   word-break: break-all;
+//   margin: 2rem;
+
+//   .thumbnail {
+//     width: 15rem;
+//     height: 15rem;
+//     object-fit: cover;
+//     margin: 2.5rem;
+//     border-radius: 0.5rem;
+//   }
+
+//   &:hover {
+//     background-color: #f6f6f6;
+//   }
+// `;
+
+// const StyledCardThumbnail = styled.div`
+//   width: 40%;
+// `;
+// const StyledCardContent = styled.div`
+//   width: 60%;
+// `;

@@ -31,17 +31,17 @@ const Participant = ({ ...props }) => {
 					<ProfileImg>
 						<img
 							src={
-								props.participant.imgUrl ? props.participant.imgUrl : <User />
+								props.participant?.imgUrl ? props.participant?.imgUrl : <User />
 							}
 							alt="Profile"
 						/>
 					</ProfileImg>
 					<ProfileContainer>
-						<ProfileId>{props.participant.username}</ProfileId>
+						<ProfileId>{props.participant?.username}</ProfileId>
 						<ProfileText>
-							{props.firstWeekMission === "YES"
-								? `${props.participant.certiCount}회 인증 ${renderMedal(
-										props.participant.certiCount
+							{props?.firstWeekMission === "YES"
+								? `${props.participant?.certiCount}회 인증 ${renderMedal(
+										props.participant?.certiCount
 								  )}`
 								: "1주차 진행중"}
 						</ProfileText>
@@ -49,7 +49,11 @@ const Participant = ({ ...props }) => {
 				</ProfileBox>
 			</Grid>
 			<Grid item>
-				<FeedCarousel certifies={props.participant.certifies} />
+				<FeedCarousel
+					certifies={props.participant?.certifies}
+					challengeId={props.challenge?.challengeId}
+					userChallengeId={props?.userChallengeId}
+				/>
 			</Grid>
 		</Grid>
 	);

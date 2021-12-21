@@ -11,13 +11,22 @@ import { ReactComponent as Close } from "../../assets/icons/close.svg";
 import { ReactComponent as Delete } from "../../assets/icons/delete.svg";
 
 const AuthDialog = ({ ...props }) => {
-	const { enqueueSnackbar } = useSnackbar();
+	console.log(props);
+	const certify = props?.certify;
+	const challengeId = props?.challengeId;
 	const [imgFile, setImgFile] = useState(null);
-	const [previewImg, setPreviewImg] = useState(null);
+	const [previewImg, setPreviewImg] = useState(
+		certify?.imgUrl ? certify?.imgUrl : null
+	);
 	const [contents, setContents] = useState("");
-	const userToken = props.userToken;
-	const authDate = new Date().toLocaleString();
+	const userToken = localStorage.getItem("token");
 	const imgRef = useRef();
+
+	const date = new Date(+new Date() + 3240 * 10000).toISOString().split("T")[0];
+	const time = new Date().toTimeString().split(" ")[0];
+	const authDate = `${date} ${time}`;
+
+	const { enqueueSnackbar } = useSnackbar();
 
 	const handleImgChange = (e) => {
 		let file = e.target.files[0];
@@ -60,7 +69,7 @@ const AuthDialog = ({ ...props }) => {
 
 		try {
 			const res = await axios.post(
-				`/challenges/${props.challenge.challengeId}/certi`,
+				`/challenges/${challengeId}/certi`,
 				formData,
 				{
 					headers: {
@@ -110,20 +119,16 @@ const AuthDialog = ({ ...props }) => {
 									</AuthThumbnail>
 								) : (
 									<AuthThumbnail>
-										<DeleteButton>
-											<Delete
-												alt="Delete icon"
-												style={{ zIndex: 10 }}
-												onClick={handleImgDelete}
-											/>
-										</DeleteButton>
 										<img src={previewImg} alt="Auth Thumbnail" />
+										<DeleteButton style={{ cursor: "default" }}>
+											<Delete alt="Delete icon" style={{ zIndex: 10 }} />
+										</DeleteButton>
 									</AuthThumbnail>
 								)}
 							</Grid>
 							<Grid item textAlign="center">
 								<label htmlFor="auth-image">
-									{!props.certify ? (
+									{!certify ? (
 										<>
 											<UploadInput
 												id="auth-image"
@@ -142,7 +147,7 @@ const AuthDialog = ({ ...props }) => {
 						</Grid>
 						<Grid item>
 							<LabelText>챌린지 인증 날짜</LabelText>
-							{!props.certify ? (
+							{!certify ? (
 								<DateInput
 									id="auth-date"
 									InputProps={{ readOnly: true }}
@@ -150,16 +155,15 @@ const AuthDialog = ({ ...props }) => {
 								/>
 							) : (
 								<DateInput
-									label="auth-date"
 									id="auth-date"
 									InputProps={{ readOnly: true }}
-									defaultValue={props.certify.createdDate}
+									defaultValue={certify.createdDate}
 								/>
 							)}
 						</Grid>
 						<Grid item>
 							<LabelText>챌린지 인증 후기</LabelText>
-							{!props.certify ? (
+							{!certify ? (
 								<TextInput
 									id="auth-text"
 									multiline
@@ -168,17 +172,16 @@ const AuthDialog = ({ ...props }) => {
 								/>
 							) : (
 								<TextInput
-									label="auth-text"
 									id="auth-text"
 									multiline
 									rows={8}
 									InputProps={{ readOnly: true }}
-									defaultValue={props.certify.contents}
+									defaultValue={certify.contents}
 								/>
 							)}
 						</Grid>
 						<Grid item textAlign="center">
-							{!props.certify ? (
+							{!certify ? (
 								<ButtonRow>
 									<EnrollButton type="submit">등록</EnrollButton>
 									<CancelButton
@@ -223,12 +226,12 @@ const AuthThumbnail = styled.div`
 	width: 35rem;
 	height: 25rem;
 	background-color: #959595;
-	border-radius: 0.5rem;
 	position: relative;
 
 	img {
 		width: 100%;
 		height: 100%;
+		border-radius: 0.5rem;
 	}
 `;
 

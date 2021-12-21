@@ -15,7 +15,7 @@ const Main = () => {
 	const challengeId = Number(params.id);
 	const [challenge, setChallenge] = useState();
 	const [participants, setParticipants] = useState([]);
-	const [join, setJoin] = useState(false);
+	const [userChallenge, setUserChallenge] = useState({});
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const userToken = localStorage.getItem("token");
 
@@ -37,6 +37,25 @@ const Main = () => {
 		}
 	};
 
+	const fetchUserChallenge = async () => {
+		try {
+			const { status, data } = await axios.get(
+				`/challenges/${challengeId}/user`,
+				{
+					headers: { Authorization: `Bearer ${userToken}` },
+				}
+			);
+
+			if (status === 200) {
+				setUserChallenge(data);
+			} else {
+				console.log("참여중인 챌린지가 아닙니다.");
+			}
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
 	const handleDialogOpen = () => {
 		setDialogOpen(true);
 	};
@@ -47,13 +66,9 @@ const Main = () => {
 
 	const handleChallengeJoin = async () => {
 		try {
-			const res = await axios.post(`/challenges/${challengeId}/join`, {
-				headers: {
-					Authorization: `Bearer ${userToken}`,
-				},
+			await axios.post(`/challenges/${challengeId}/join`, {
+				headers: { Authorization: `Bearer ${userToken}` },
 			});
-
-			if (res.status === 200) setJoin(true);
 		} catch (err) {
 			console.log(err);
 		}
@@ -61,31 +76,57 @@ const Main = () => {
 
 	const handleChallengeCancel = async () => {
 		try {
-			const res = await axios.delete(`/challenges/${challengeId}/cancel`, {
+			const res = await axios.delete(`/challenges/${challengeId}/join`, {
 				headers: {
 					Authorization: `Bearer ${userToken}`,
 				},
 			});
 
-			if (res.status === 200) setJoin(false);
+			if (res.status === 200) setUserChallenge();
 		} catch (err) {
 			console.log(err);
+		}
+	};
+
+	const handleChallengeContinue = async () => {
+		try {
+			await axios.put(`/challenges/${challengeId}/continue`, {
+				headers: {
+					Authorization: `Bearer ${userToken}`,
+				},
+			});
+		} catch (err) {
+			console.error(err);
+		}
+	};
+
+	const handleChallengeStop = async () => {
+		try {
+			await axios.delete(`challenges/${challengeId}/continue`, {
+				headers: {
+					Authorization: `Bearer ${userToken}`,
+				},
+			});
+		} catch (err) {
+			console.error(err);
 		}
 	};
 
 	useEffect(() => {
 		fetchChallenge();
 		fetchParticipants();
+		fetchUserChallenge();
 	}, []);
 
 	return (
 		<>
 			<Intro
-				userToken={userToken}
 				challenge={challenge}
-				join={join}
+				userChallenge={userChallenge}
 				handleChallengeJoin={handleChallengeJoin}
 				handleChallengeCancel={handleChallengeCancel}
+				handleChallengeContinue={handleChallengeContinue}
+				handleChallengeStop={handleChallengeStop}
 				dialogOpen={dialogOpen}
 				handleDialogOpen={handleDialogOpen}
 				handleDialogClose={handleDialogClose}
@@ -115,7 +156,11 @@ const Main = () => {
 					<Grid container rowSpacing={3}>
 						{participants.map((participant) => (
 							<Grid item key={participant.id}>
-								<Participant participant={participant} />
+								<Participant
+									participant={participant}
+									challenge={challenge}
+									userChallengeId={userChallenge?.userId}
+								/>
 							</Grid>
 						))}
 					</Grid>

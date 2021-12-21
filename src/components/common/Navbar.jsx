@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { Menu, MenuItem, Dialog, DialogContent } from "@mui/material";
 
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import { ReactComponent as Logo } from "../../assets/logo.svg";
 import { ReactComponent as Profile } from "../../assets/icons/profile.svg";
@@ -14,7 +14,7 @@ import { ReactComponent as KakaoIcon } from "../../assets/icons/kakao.svg";
 import dotenv from "dotenv";
 dotenv.config();
 
-const Navbar = () => {
+const Navbar = ({ ...props }) => {
 	const [isLoggedIn, setLoggedIn] = useState(false);
 	const [modalOpen, setModalOpen] = useState(false);
 	const [anchorEl, setAnchorEl] = useState(null);
@@ -23,10 +23,6 @@ const Navbar = () => {
 	const navigate = useNavigate();
 
 	const { Kakao } = window;
-
-	useEffect(() => {
-		if (userToken) setLoggedIn(true);
-	}, [userToken]);
 
 	const handleMouseOver = (e) => {
 		setAnchorEl(e.currentTarget);
@@ -48,13 +44,11 @@ const Navbar = () => {
 		Kakao.Auth.login({
 			success: (response) => {
 				const token = response.access_token;
-				console.log(token);
 				axios
 					.post("/login/kakao", JSON.stringify({ token: token }), {
 						headers: { "Content-Type": "application/json" },
 					})
 					.then((res) => {
-						console.log(res);
 						if (res.data.token) {
 							localStorage.setItem("token", res.data.token);
 							handleModalClose();
@@ -76,13 +70,17 @@ const Navbar = () => {
 		});
 	};
 
+	useEffect(() => {
+		if (userToken) setLoggedIn(true);
+	}, [userToken]);
+
 	return (
 		<>
 			{!isLoggedIn ? (
-				<Nav>
+				<Nav isSticky={props?.isSticky}>
 					<NavContainer>
 						<NavLink to="/">
-							<Logo />
+							<Logo alt="Logo" />
 						</NavLink>
 						<NavProfile type="button" onClick={handleModalOpen}>
 							<Profile alt="Profile icon" />
@@ -102,10 +100,10 @@ const Navbar = () => {
 					</NavContainer>
 				</Nav>
 			) : (
-				<Nav>
+				<Nav isSticky={props?.isSticky}>
 					<NavContainer>
 						<NavLink to="/">
-							<Logo />
+							<Logo alt="Logo" />
 						</NavLink>
 						<NavIcon>
 							<NavProfile
@@ -142,6 +140,16 @@ export default Navbar;
 const Nav = styled.nav`
 	width: 100%;
 	height: 8.8rem;
+
+	${(props) =>
+		props.isSticky &&
+		css`
+			position: fixed;
+			top: 0;
+			background-color: #ffffff;
+			z-index: 1;
+			box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.2);
+		`}
 `;
 
 const NavLink = styled(Link)`
