@@ -68,7 +68,7 @@ const AuthDialog = ({ ...props }) => {
 		formData.append("contents", contents);
 
 		try {
-			const res = await axios.post(
+			const { status } = await axios.post(
 				`/challenges/${challengeId}/certi`,
 				formData,
 				{
@@ -79,7 +79,7 @@ const AuthDialog = ({ ...props }) => {
 				}
 			);
 
-			if (res.status === 200) {
+			if (status === 200) {
 				handleReset();
 				enqueueSnackbar("인증이 성공적으로 등록되었습니다.", {
 					variant: "success",
@@ -195,7 +195,12 @@ const AuthDialog = ({ ...props }) => {
 									</CancelButton>
 								</ButtonRow>
 							) : (
-								<ConfirmButton type="button" onClick={props.handleDialogClose}>
+								<ConfirmButton
+									type="button"
+									onClick={() => {
+										props.handleDialogClose();
+									}}
+								>
 									확인
 								</ConfirmButton>
 							)}
@@ -277,7 +282,7 @@ const UploadButton = styled.span`
 const LabelText = styled.div`
 	font-size: 1.4rem;
 	font-weight: bold;
-	letter-spacing: 0.1rem;
+	letter-spacing: 1px;
 	line-height: 3.2rem;
 `;
 
