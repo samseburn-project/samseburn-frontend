@@ -98,16 +98,20 @@ const Main = () => {
           </StyledTabs>
         </Row>
 
-        {selectedTab === 0 && (
-          <ViewChallenge
-            userToken={userToken}
-            userChallengeList={userChallengeList}
-          />
-        )}
-        {selectedTab === 1 && <ModifyUser userToken={userToken} />}
-        {selectedTab === 2 && (
-          <ManageChallenge userCreateChallengeList={userCreateChallengeList} />
-        )}
+        <Row>
+          {selectedTab === 0 && (
+            <ViewChallenge
+              userToken={userToken}
+              userChallengeList={userChallengeList}
+            />
+          )}
+          {selectedTab === 1 && <ModifyUser userToken={userToken} />}
+          {selectedTab === 2 && (
+            <ManageChallenge
+              userCreateChallengeList={userCreateChallengeList}
+            />
+          )}
+        </Row>
       </Wrapper>
     </>
   );
