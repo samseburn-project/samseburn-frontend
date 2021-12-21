@@ -14,12 +14,10 @@ import { ReactComponent as KakaoIcon } from "../../assets/icons/kakao.svg";
 import dotenv from "dotenv";
 dotenv.config();
 
-const Navbar = () => {
+const Navbar = ({ ...props }) => {
 	const [isLoggedIn, setLoggedIn] = useState(false);
 	const [modalOpen, setModalOpen] = useState(false);
 	const [anchorEl, setAnchorEl] = useState(null);
-	const [scrollTop, setScrollTop] = useState(0);
-	const [isSticky, setIsSticky] = useState(false);
 	const open = Boolean(anchorEl);
 	const userToken = localStorage.getItem("token");
 	const navigate = useNavigate();
@@ -40,14 +38,6 @@ const Navbar = () => {
 
 	const handleModalClose = () => {
 		setModalOpen(false);
-	};
-
-	const handleScroll = () => {
-		window.addEventListener("scroll", () => {
-			setScrollTop(window.scrollY);
-		});
-		if (scrollTop >= 88) setIsSticky(true);
-		else setIsSticky(false);
 	};
 
 	const kakaoLoginHandler = () => {
@@ -82,13 +72,12 @@ const Navbar = () => {
 
 	useEffect(() => {
 		if (userToken) setLoggedIn(true);
-		handleScroll();
-	}, [userToken, scrollTop]);
+	}, [userToken]);
 
 	return (
 		<>
 			{!isLoggedIn ? (
-				<Nav isSticky={isSticky}>
+				<Nav isSticky={props?.isSticky}>
 					<NavContainer>
 						<NavLink to="/">
 							<Logo alt="Logo" />
@@ -111,7 +100,7 @@ const Navbar = () => {
 					</NavContainer>
 				</Nav>
 			) : (
-				<Nav isSticky={isSticky}>
+				<Nav isSticky={props?.isSticky}>
 					<NavContainer>
 						<NavLink to="/">
 							<Logo alt="Logo" />
