@@ -15,24 +15,25 @@ import ChallengeCard from "./ChallengeCard";
 const Main = () => {
 	const [challenges, setChallenges] = useState([]);
 	const [sortBy, setSortBy] = useState("createdAt");
+	const [hasMore, setHasMore] = useState(false);
 	const [page, setPage] = useState(1);
 
-	const fetchChallenges = async () => {
+	const fetchChallenges = async (pageNum) => {
 		try {
 			const { data } = await axios.get("/challenges", {
 				params: {
 					kind: "All",
-					page: page,
+					page: pageNum,
 				},
 			});
 			setChallenges((prev) => [...prev, ...data]);
-			setPage((prev) => prev + 1);
+			setHasMore(true);
 		} catch (e) {
 			console.error(e);
 		}
 	};
 
-	const fetchFilter = async (sortBy) => {
+	const fetchFilter = async () => {
 		try {
 			await axios.get("/challenges/filter", {
 				params: {
@@ -45,13 +46,16 @@ const Main = () => {
 	};
 
 	const fetchMoreData = () => {
-		setPage((page) => page + 1);
-		fetchChallenges();
+		setPage((prev) => prev + 1);
 	};
 
 	useEffect(() => {
-		fetchChallenges();
+		fetchChallenges(page);
 		fetchFilter();
+
+		return () => {
+			setHasMore(false);
+		};
 	}, [page, sortBy]);
 
 	return (
@@ -71,8 +75,12 @@ const Main = () => {
 					<InfiniteScroll
 						dataLength={challenges.length}
 						next={fetchMoreData}
-						hasMore={false}
-						loader={<CircularProgress />}
+						hasMore={hasMore}
+						loader={
+							<Loading>
+								<CircularProgress />
+							</Loading>
+						}
 					>
 						<Grid container spacing={4}>
 							{challenges.map((challenge) => (
