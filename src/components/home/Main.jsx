@@ -17,14 +17,13 @@ const Main = () => {
   const [sortBy, setSortBy] = useState('createdAt');
   const [hasMore, setHasMore] = useState(false);
   const [page, setPage] = useState(1);
-  const [sortBy, setSortBy] = useState('createdAt');
   const [category, setCategory] = useState('All');
 
   const fetchChallenges = async (pageNum) => {
     try {
       const { data } = await axios.get('/challenges', {
         params: {
-          kind: 'All',
+          kind: category,
           page: pageNum,
         },
       });
@@ -58,11 +57,12 @@ const Main = () => {
     return () => {
       setHasMore(false);
     };
-  }, [page, sortBy]);
+  }, [page, sortBy, category]);
 
   const onCategory = (categoryName) => {
-    setCategory(categoryName);
-    console.log('state에 저장할 카테고리명' + categoryName);
+    setCategory(categoryName === '전체' ? 'All' : categoryName);
+    setPage(1);
+    setChallenges([]);
   };
 
   return (
