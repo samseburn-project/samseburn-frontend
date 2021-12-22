@@ -11,7 +11,6 @@ import { ReactComponent as Close } from "../../assets/icons/close.svg";
 import { ReactComponent as Delete } from "../../assets/icons/delete.svg";
 
 const AuthDialog = ({ ...props }) => {
-	console.log(props);
 	const certify = props?.certify;
 	const challengeId = props?.challengeId;
 	const [imgFile, setImgFile] = useState(null);

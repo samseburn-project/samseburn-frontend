@@ -18,52 +18,54 @@ const Main = () => {
 	const [hasMore, setHasMore] = useState(false);
 	const [page, setPage] = useState(1);
 	const [categoryName, setCategoryName] = useState("All");
+	const [totalCount, setTotalCount] = useState();
 
-	const fetchChallenges = async (pageNum) => {
+	const fetchChallenges = async (page) => {
 		try {
-			const { data } = await axios.get("/challenges", {
+			const res = await axios.get("/challenges", {
 				params: {
 					kind: categoryName,
-					page: pageNum,
+					page: page,
+					sortBy: sortBy,
 				},
 			});
-			setChallenges((prev) => [...prev, ...data]);
+
+			const { challengeList, totalCount } = res.data;
+
+			setChallenges([...challenges, ...challengeList]);
+			setTotalCount(totalCount);
 			setHasMore(true);
 		} catch (e) {
 			console.error(e);
 		}
 	};
 
-	const fetchFilter = async () => {
-		try {
-			await axios.get("/challenges/filter", {
-				params: {
-					sortBy: sortBy,
-				},
-			});
-		} catch (err) {
-			console.error(err);
-		}
-	};
-
 	const fetchMoreData = () => {
-		setPage((prev) => prev + 1);
+		setPage(page + 1);
 	};
-
-	useEffect(() => {
-		fetchChallenges(page);
-		fetchFilter();
-
-		return () => {
-			setHasMore(false);
-		};
-	}, []);
 
 	const onCategory = (name) => {
 		setCategoryName(name === "전체" ? "All" : name);
-		setPage(1);
+		// setPage(1);
 		setChallenges([]);
 	};
+
+	const refresh = () => {
+		setChallenges([]);
+		setPage(1);
+	};
+
+	useEffect(() => {
+		if (totalCount === challenges.length) {
+			setHasMore(false);
+			console.log("api end");
+			return;
+		}
+		fetchChallenges(page);
+	}, [page]);
+
+	console.log(challenges);
+	console.log(hasMore);
 
 	return (
 		<>
@@ -78,17 +80,18 @@ const Main = () => {
 					<CategoryFilter onCategory={onCategory} />
 					<SortFilter sortBy={sortBy} setSortBy={setSortBy} />
 				</FilterRow>
-				<ListContainer sx={{ width: "100%" }}>
-					<InfiniteScroll
-						dataLength={challenges.length}
-						next={fetchMoreData}
-						hasMore={hasMore}
-						loader={
-							<Loading>
-								<CircularProgress />
-							</Loading>
-						}
-					>
+				<InfiniteScroll
+					dataLength={challenges.length}
+					next={fetchMoreData}
+					hasMore={hasMore}
+					loader={
+						<Loading>
+							<CircularProgress />
+						</Loading>
+					}
+					refreshFunction={refresh}
+				>
+					<ListContainer sx={{ width: "100%" }}>
 						<Grid container spacing={4}>
 							{challenges.map((challenge) => (
 								<Grid item xs={4} key={challenge.challengeId}>
@@ -107,8 +110,8 @@ const Main = () => {
 								</Grid>
 							))}
 						</Grid>
-					</InfiniteScroll>
-				</ListContainer>
+					</ListContainer>
+				</InfiniteScroll>
 			</Wrapper>
 		</>
 	);
