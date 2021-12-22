@@ -12,7 +12,6 @@ const Intro = ({ ...props }) => {
 	const userToken = localStorage.getItem("token");
 	const today = new Date().getTime();
 	const missionDate = new Date(props.userChallenge?.userMissonDate).getTime();
-	console.log(missionDate < today);
 
 	const { enqueueSnackbar } = useSnackbar();
 
@@ -128,8 +127,8 @@ const Intro = ({ ...props }) => {
 						<IntroCategory locationType={props.challenge?.locationType}>
 							{props.challenge?.locationType}
 						</IntroCategory>
-						<IntroCategory category={props.challenge?.category.name}>
-							{props.challenge?.category.name}
+						<IntroCategory category={props.challenge?.category}>
+							{props.challenge?.category}
 						</IntroCategory>
 					</CategoryRow>
 					<SubTitle>진행 기간</SubTitle>
@@ -204,12 +203,12 @@ const IntroCategory = styled(Category)`
 	cursor: default;
 
 	${(props) => {
-		if (props.locationType === "ONLINE") {
+		if (props.locationType === "온라인") {
 			return css`
 				color: #ffffff;
-				background-color: #ff4d00;
+				background-color: #ff7539;
 			`;
-		} else if (props.locationType === "OFFLINE") {
+		} else if (props.locationType === "오프라인") {
 			return css`
 				color: #ffffff;
 				background-color: #0057ff;
@@ -276,20 +275,20 @@ const AuthButton = styled(StyledButton)`
 	font-size: 2rem;
 `;
 
-const CancelButton = styled(StyledButton)`
-	width: 17.6rem;
-	height: 5.5rem;
-	font-size: 2rem;
-`;
-const CancelDialog = styled(CommonDialog)``;
+// const CancelButton = styled(StyledButton)`
+// 	width: 17.6rem;
+// 	height: 5.5rem;
+// 	font-size: 2rem;
+// `;
+// const CancelDialog = styled(CommonDialog)``;
 
 const ClosedButton = styled(StyledButton)`
 	width: 37.7rem;
 	height: 5.5rem;
 	font-size: 2rem;
-	background-color: #c4c4c4;
+	background-color: #e5e5e5;
 
 	&:hover {
-		background-color: #c4c4c4;
+		background-color: #e5e5e5;
 	}
 `;

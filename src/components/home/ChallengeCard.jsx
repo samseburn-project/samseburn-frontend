@@ -18,11 +18,11 @@ const ChallengeCard = ({ ...props }) => {
 				<StyledCardContent>
 					<CardTitle>{props.title}</CardTitle>
 					<Row>
+						<CardCategory locationType={props.locationType}>
+							{props.locationType}
+						</CardCategory>
 						<CardCategory category={props.category}>
 							{props.category}
-						</CardCategory>
-						<CardCategory locationType={props.locationType}>
-							{props.locationType === "ONLINE" ? "온라인" : "오프라인"}
 						</CardCategory>
 					</Row>
 					<Row>
@@ -80,12 +80,12 @@ const CardCategory = styled(Category)`
 	padding: 0.5rem 1rem;
 
 	${(props) => {
-		if (props.locationType === "ONLINE") {
+		if (props.locationType === "온라인") {
 			return css`
 				color: #ffffff;
-				background-color: #ff4d00;
+				background-color: #ff7539;
 			`;
-		} else if (props.locationType === "OFFLINE") {
+		} else if (props.locationType === "오프라인") {
 			return css`
 				color: #ffffff;
 				background-color: #0057ff;
