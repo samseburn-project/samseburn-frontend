@@ -176,6 +176,7 @@ const Wrapper = styled.section`
 	width: 104rem;
 	margin: 0 auto;
 	padding-bottom: 20rem;
+	flex: 1;
 `;
 
 const Row = styled.div`

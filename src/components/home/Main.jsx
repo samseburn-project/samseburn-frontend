@@ -14,13 +14,13 @@ import ChallengeCard from "./ChallengeCard";
 
 const Main = () => {
 	const [challenges, setChallenges] = useState([]);
-	const [sortBy, setSortBy] = useState("createdAt");
 	const [hasMore, setHasMore] = useState(false);
 	const [page, setPage] = useState(1);
+	const [sortBy, setSortBy] = useState("createdAt");
 	const [categoryName, setCategoryName] = useState("All");
 	const [totalCount, setTotalCount] = useState();
 
-	const fetchChallenges = async (page) => {
+	const fetchChallenges = async () => {
 		try {
 			const res = await axios.get("/challenges", {
 				params: {
@@ -46,7 +46,13 @@ const Main = () => {
 
 	const onCategory = (name) => {
 		setCategoryName(name === "전체" ? "All" : name);
-		// setPage(1);
+		setPage(1);
+		setChallenges([]);
+	};
+
+	const onSortBy = (option) => {
+		setSortBy(option);
+		setPage(1);
 		setChallenges([]);
 	};
 
@@ -56,16 +62,17 @@ const Main = () => {
 	};
 
 	useEffect(() => {
-		if (totalCount === challenges.length) {
+		if (totalCount === challenges.length || challenges === []) {
 			setHasMore(false);
 			console.log("api end");
 			return;
 		}
-		fetchChallenges(page);
-	}, [page]);
+		fetchChallenges();
 
-	console.log(challenges);
-	console.log(hasMore);
+		return () => setHasMore(false);
+	}, [page, sortBy, categoryName]);
+
+	console.log(sortBy);
 
 	return (
 		<>
@@ -78,7 +85,7 @@ const Main = () => {
 				</SearchBarRow>
 				<FilterRow>
 					<CategoryFilter onCategory={onCategory} />
-					<SortFilter sortBy={sortBy} setSortBy={setSortBy} />
+					<SortFilter setSortBy={setSortBy} onSortBy={onSortBy} />
 				</FilterRow>
 				<InfiniteScroll
 					dataLength={challenges.length}
@@ -122,6 +129,7 @@ export default Main;
 const Wrapper = styled.section`
 	width: 104rem;
 	margin: 10rem auto;
+	flex: 1;
 `;
 
 const Title = styled.div`
