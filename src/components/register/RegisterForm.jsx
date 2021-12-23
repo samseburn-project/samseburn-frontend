@@ -1,677 +1,771 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useSnackbar } from "notistack";
-import DaumPostcode from "react-daum-postcode";
-import Modal from "react-modal";
-import addDays from "date-fns/addDays";
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
+import DaumPostcode from 'react-daum-postcode';
+import Modal from 'react-modal';
+import addDays from 'date-fns/addDays';
+import koLocale from 'date-fns/locale/ko';
 
-import styled from "styled-components";
+import styled, { css } from 'styled-components';
 
-import { TextField, Box, IconButton } from "@mui/material";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DateRangePicker from "@mui/lab/DateRangePicker";
-
-import StyledButton from "../common/StyledButton";
-
-import { ReactComponent as ArrowForward } from "../../assets/icons/arrow.svg";
-import { ReactComponent as Delete } from "../../assets/icons/delete.svg";
-import { ReactComponent as Close } from "../../assets/icons/close.svg";
+import { TextField, Box, IconButton } from '@mui/material';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import DateRangePicker from '@mui/lab/DateRangePicker';
+import { ReactComponent as ArrowForward } from '../../assets/icons/arrow.svg';
+import { ReactComponent as Delete } from '../../assets/icons/delete.svg';
+import { ReactComponent as Close } from '../../assets/icons/close.svg';
+import StyledButton from '../common/StyledButton';
+import Category from '../common/Category';
 
 function RegisterForm(props) {
-	const [title, setTitle] = useState("");
-	const [description, setDescription] = useState("");
-	const [participants, setParticipants] = useState(0);
-	const [roadAddress, setRoadAddress] = useState("");
-	const [detailAddress, setDetailAddress] = useState("");
-	const [category, setCategory] = useState("");
-	const [locationType, setLocationType] = useState("");
-	const [date, setDate] = useState([null, null]);
-	const [image, setImage] = useState({
-		imageFile: null,
-		imageUrl: null,
-	});
-	const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [participants, setParticipants] = useState(1);
+  const [roadAddress, setRoadAddress] = useState('');
+  const [detailAddress, setDetailAddress] = useState('');
+  const [category, setCategory] = useState('');
+  const [locationType, setLocationType] = useState('');
+  const [date, setDate] = useState([null, null]);
+  const [image, setImage] = useState({
+    imageFile: null,
+    imageUrl: null,
+  });
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-	const navigate = useNavigate();
-	const userToken = localStorage.getItem("token");
-	const MAX_DATE = 99;
-	const categories = ["운동", "생활", "공부", "취미", "독서", "기타"];
-	const locationTypes = ["온라인", "오프라인"];
+  const navigate = useNavigate();
+  const userToken = localStorage.getItem('token');
+  const MAX_DATE = 99;
+  const categories = ['운동', '공부', '취미', '독서', '기타'];
+  const locationTypes = ['온라인', '오프라인'];
 
-	const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar();
 
-	const onChange = (event) => {
-		event.preventDefault();
-		const {
-			target: { name, value },
-		} = event;
-		if (name === "title") {
-			setTitle(value);
-		} else if (name === "participants") {
-			setParticipants(value);
-		} else if (name === "roadAddress") {
-			setRoadAddress(value);
-		} else if (name === "detailAddress") {
-			setDetailAddress(value);
-		} else if (name === "description") {
-			setDescription(value);
-		}
-	};
+  const onChange = (event) => {
+    event.preventDefault();
+    const {
+      target: { name, value },
+    } = event;
+    if (name === 'title') {
+      setTitle(value);
+    } else if (name === 'participants') {
+      setParticipants(value.replace(/[^0-9]/gi, ''));
+    } else if (name === 'roadAddress') {
+      setRoadAddress(value);
+    } else if (name === 'detailAddress') {
+      setDetailAddress(value);
+    } else if (name === 'description') {
+      setDescription(value);
+    }
+  };
 
-	const onCategory = (event) => {
-		const {
-			target: { value },
-		} = event;
-		setCategory(value);
-	};
+  const onClickCategoryButton = ({ target: { innerText } }) => {
+    setCategory(innerText);
+  };
 
-	const onLocationType = (event) => {
-		const {
-			target: { value },
-		} = event;
-		setLocationType(value);
-		if (value === "온라인") {
-			setRoadAddress("");
-			setDetailAddress("");
-		}
-	};
+  const onClickLocationTypeButton = ({ target: { innerText } }) => {
+    setLocationType(innerText);
+    if (innerText === '온라인') {
+      setRoadAddress('');
+      setDetailAddress('');
+    }
+  };
 
-	const setImageFromFile = ({ file, setImageUrl }) => {
-		const reader = new FileReader();
-		reader.onload = () => {
-			setImageUrl({ result: reader.result });
-		};
-		reader.readAsDataURL(file);
-	};
+  const setImageFromFile = ({ file, setImageUrl }) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImageUrl({ result: reader.result });
+    };
+    reader.readAsDataURL(file);
+  };
 
-	const onLoadFile = ({ target: { files } }) => {
-		if (files.length) {
-			setImageFromFile({
-				file: files[0],
-				setImageUrl: ({ result }) =>
-					setImage({
-						imageFile: files[0],
-						imageUrl: result,
-					}),
-			});
-		}
-	};
+  const onLoadFile = ({ target: { files } }) => {
+    if (files.length) {
+      setImageFromFile({
+        file: files[0],
+        setImageUrl: ({ result }) =>
+          setImage({
+            imageFile: files[0],
+            imageUrl: result,
+          }),
+      });
+    }
+  };
 
-	const handleComplete = (data) => {
-		let fullAddress = data.address;
-		let extraAddress = "";
+  const handleComplete = (data) => {
+    let fullAddress = data.address;
+    let extraAddress = '';
 
-		if (data.addressType === "R") {
-			if (data.bname !== "") {
-				extraAddress += data.bname;
-			}
-			if (data.buildingName !== "") {
-				extraAddress +=
-					extraAddress !== "" ? `, ${data.buildingName}` : data.buildingName;
-			}
-			fullAddress += extraAddress !== "" ? ` (${extraAddress})` : "";
-		}
+    if (data.addressType === 'R') {
+      if (data.bname !== '') {
+        extraAddress += data.bname;
+      }
+      if (data.buildingName !== '') {
+        extraAddress +=
+          extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
+      }
+      fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
+    }
 
-		setRoadAddress(fullAddress);
-		setIsPopupOpen(false);
-	};
+    setRoadAddress(fullAddress);
+    setIsPopupOpen(false);
+  };
 
-	const onClickPopupHandler = () => {
-		setIsPopupOpen(true);
-	};
+  const onClickPopupHandler = () => {
+    setIsPopupOpen(true);
+  };
 
-	const onModalHandler = () => {
-		setIsPopupOpen(!isPopupOpen);
-	};
+  const onModalHandler = () => {
+    setIsPopupOpen(!isPopupOpen);
+  };
 
-	const onDeleteFile = () => {
-		setImage({
-			imageFile: null,
-			imageUrl: null,
-		});
-	};
+  const onDeleteFile = () => {
+    setImage({
+      imageFile: null,
+      imageUrl: null,
+    });
+  };
 
-	const onSubmitFormData = async () => {
-		try {
-			const address =
-				locationType === "온라인" ? "" : roadAddress + detailAddress;
+  const dateToString = (date) => {
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
 
-			const formData = new FormData();
+    month = month >= 10 ? month : '0' + month;
+    day = day >= 10 ? day : '0' + day;
 
-			if (participants < 0) {
-				alert("참여인원은 숫자 0 이상부터 입력할 수 있습니다.");
-				return;
-			}
+    return date.getFullYear() + '-' + month + '-' + day;
+  };
 
-			formData.append("image", image.imageFile);
-			formData.append("title", title);
-			formData.append("description", description);
-			formData.append("challengeStartDate", date[0].toISOString().slice(0, 10));
-			formData.append("challengeEndDate", date[1].toISOString().slice(0, 10));
-			formData.append("limitPerson", participants);
-			formData.append("category", category);
-			formData.append("locationType", locationType);
-			formData.append("address", address);
-			formData.append("challengeProgress", "INPROGRESS");
+  const onSubmitFormData = async () => {
+    try {
+      const address =
+        locationType === '온라인' ? '' : roadAddress + detailAddress;
 
-			// for (let data of formData.entries()) {
-			//   console.log(data[0] + ', ' + data[1]);
-			// }
+      if (participants < 1 || participants > 33) {
+        enqueueSnackbar('챌린지 인원은 최소 1명, 최대 33명까지 가능합니다', {
+          variant: 'warning',
+          autoHideDuration: 2000,
+        });
+        return false;
+      }
 
-			const res = await axios.post("/challenge", formData, {
-				headers: {
-					Authorization: `Bearer ${userToken}`,
-				},
-			});
+      if (
+        !title ||
+        !date[0] ||
+        !date[1] ||
+        !participants ||
+        !category ||
+        !locationType ||
+        (locationType === '오프라인' && !address) ||
+        !description
+      ) {
+        enqueueSnackbar('필수 항목을 입력해주세요', {
+          variant: 'warning',
+          autoHideDuration: 2000,
+        });
+        return false;
+      }
 
-			console.log(res);
+      const formData = new FormData();
 
-			if (res.status === 200) {
-				enqueueSnackbar("챌린지가 생성되었습니다.", {
-					variant: "success",
-					autoHideDuration: 2000,
-				});
-				navigate("/");
-			} else {
-				enqueueSnackbar("챌린지 생성에 실패했습니다.", {
-					variant: "error",
-					autoHideDuration: 2000,
-				});
-			}
+      formData.append('image', image.imageFile);
+      formData.append('title', title);
+      formData.append('description', description);
+      formData.append('challengeStartDate', dateToString(date[0]));
+      formData.append('challengeEndDate', dateToString(date[1]));
+      formData.append('limitPerson', participants);
+      formData.append('category', category);
+      formData.append('locationType', locationType);
+      formData.append('address', address);
+      formData.append('challengeProgress', 'INPROGRESS');
 
-			// const response = axios({
-			//   method: 'post',
-			//   url: '/challenge',
-			//   data: formData,
-			//   headers: {
-			//     Authorization: `Bearer ${userToken}`,
-			//   },
-			// });
-		} catch (err) {
-			console.error(err);
-		}
-	};
+      // for (let data of formData.entries()) {
+      //   console.log(data[0] + ', ' + data[1]);
+      // }
 
-	const onCancelHandler = () => {
-		navigate("/");
-	};
+      const res = await axios.post('/challenge', formData, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      });
 
-	const modalStyles = {
-		overlay: {
-			position: "fixed",
-			top: 0,
-			left: 0,
-			right: 0,
-			bottom: 0,
-			backgroundColor: "rgba(0, 0, 0, 0.25)",
-			zIndex: 10,
-		},
-		content: {
-			display: "flex",
-			flexDirection: "column",
-			justifyContent: "center",
-			alignItems: "center",
-			background: "white",
-			overflow: "auto",
-			top: "22vh",
-			left: "18vw",
-			right: "18vw",
-			bottom: "30vh",
-			WebkitOverflowScrolling: "touch",
-			borderRadius: "14px",
-			outline: "none",
-			zIndex: 10,
-		},
-	};
+      if (res.status === 200) {
+        enqueueSnackbar('챌린지가 생성되었습니다.', {
+          variant: 'success',
+          autoHideDuration: 2000,
+        });
+        navigate('/');
+      } else {
+        enqueueSnackbar('챌린지 생성에 실패했습니다.', {
+          variant: 'error',
+          autoHideDuration: 2000,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-	return (
-		<RegisterPageBox>
-			<Title>챌린지 생성</Title>
-			<FormContainer>
-				<CustomContainer>
-					<div>
-						{/* 챌린지명 */}
-						<LabelText>챌린지명*</LabelText>
-						<BasicInput
-							placeholder="챌린지명"
-							size="small"
-							value={title}
-							name="title"
-							onChange={onChange}
-							required
-						/>
+  const onCancelHandler = () => {
+    navigate('/');
+  };
 
-						{/* 챌린지 기간 */}
-						<LabelText>챌린지 기간*</LabelText>
-						<LocalizationProvider dateAdapter={AdapterDateFns}>
-							<DateRangePicker
-								disablePast
-								inputFormat={"yyyy-MM-dd"}
-								mask={"____-__-__"}
-								maxDate={addDays(date[0], MAX_DATE)}
-								value={date}
-								onChange={(newValue) => {
-									setDate(newValue);
-								}}
-								renderInput={(startProps, endProps) => (
-									<>
-										<DateInput
-											ref={startProps.inputRef}
-											{...startProps.inputProps}
-										/>
-										<Box sx={{ mx: 2 }}>
-											<ArrowForward />
-										</Box>
-										<DateInput
-											ref={endProps.inputRef}
-											{...endProps.inputProps}
-										/>
-									</>
-								)}
-							/>
-						</LocalizationProvider>
+  const modalStyles = {
+    overlay: {
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(0, 0, 0, 0.25)',
+      zIndex: 10,
+    },
+    content: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      background: 'white',
+      overflow: 'auto',
+      top: '22vh',
+      left: '18vw',
+      right: '18vw',
+      bottom: '30vh',
+      WebkitOverflowScrolling: 'touch',
+      borderRadius: '14px',
+      outline: 'none',
+      zIndex: 10,
+    },
+  };
 
-						{/* 챌린지 인원 */}
-						<LabelText>챌린지 인원*</LabelText>
-						<NumInput
-							type="number"
-							placeholder="0"
-							name="participants"
-							value={participants}
-							onChange={onChange}
-						/>
-					</div>
+  return (
+    <RegisterPageBox>
+      <Title>챌린지 생성</Title>
+      <FormContainer>
+        <CustomContainer>
+          <LeftContentContainer>
+            {/* 챌린지명 */}
 
-					{/* 챌린지 이미지 */}
-					<ImageContainer>
-						{/* 이미지 미리보기 */}
-						<ThumbnailContainer>
-							{image.imageFile ? (
-								<ImageThumbnail
-									alt={image.imageFile.name}
-									src={image.imageUrl}
-								/>
-							) : (
-								<DefaultThumbnail></DefaultThumbnail>
-							)}
-							{/* 이미지 삭제 버튼 */}
-							<DeleteButtonContainer onClick={onDeleteFile}>
-								<Delete alt="Delete icon" style={{ zIndex: 10 }} />
-							</DeleteButtonContainer>
-						</ThumbnailContainer>
+            <LabelText>
+              챌린지명
+              <RequiredMark>*</RequiredMark>
+            </LabelText>
 
-						{/* 이미지 업로드 버튼 */}
-						<label htmlFor="input-image">
-							<ImageFileInput
-								type="file"
-								accept="image/*"
-								name="file"
-								onChange={onLoadFile}
-								id="input-image"
-							/>
-							<UploadButton component="span">이미지 업로드</UploadButton>
-						</label>
-					</ImageContainer>
-				</CustomContainer>
+            <BasicInput
+              placeholder="챌린지명"
+              size="small"
+              value={title}
+              name="title"
+              onChange={onChange}
+              required
+            />
 
-				{/* 카테고리 */}
-				<Row>
-					<LabelText>카테고리*</LabelText>
+            {/* 챌린지 기간 */}
+            <LabelText>
+              챌린지 기간
+              <RequiredMark>*</RequiredMark>
+            </LabelText>
+            <LocalizationProvider
+              dateAdapter={AdapterDateFns}
+              locale={koLocale}
+            >
+              <DateRangePicker
+                disablePast
+                inputFormat={'yyyy-MM-dd'}
+                mask={'____-__-__'}
+                maxDate={addDays(date[0], MAX_DATE)}
+                value={date}
+                onChange={(newValue) => {
+                  setDate(newValue);
+                }}
+                renderInput={(startProps, endProps) => (
+                  <>
+                    <DateInput
+                      ref={startProps.inputRef}
+                      {...startProps.inputProps}
+                    />
+                    <Box sx={{ mx: 2 }}>
+                      <ArrowForward />
+                    </Box>
+                    <DateInput
+                      ref={endProps.inputRef}
+                      {...endProps.inputProps}
+                    />
+                  </>
+                )}
+              />
+            </LocalizationProvider>
 
-					{/* 카테고리-챌린지주제 */}
-					<SmallLabelText>챌린지 주제*</SmallLabelText>
-					<CategoryContainer>
-						{categories.map((item, i) => (
-							<CategoryLabel className="categoryGroup" key={i}>
-								<CategoryRadio
-									type="radio"
-									name="category"
-									value={item}
-									onChange={onCategory}
-									checked={category === item}
-								></CategoryRadio>
-								<CategorySpan>{item}</CategorySpan>
-							</CategoryLabel>
-						))}
-					</CategoryContainer>
+            {/* 챌린지 인원 */}
+            <LabelText>
+              챌린지 인원
+              <RequiredMark>*</RequiredMark>
+            </LabelText>
+            <NumInput
+              type="number"
+              min="1"
+              max="33"
+              placeholder="1"
+              name="participants"
+              value={participants}
+              onChange={onChange}
+            />
+            <ValidationText>
+              최소 1명, 최대 33명까지 설정할 수 있습니다
+            </ValidationText>
+          </LeftContentContainer>
 
-					{/* 카테고리-챌린지유형 */}
-					<SmallLabelText>챌린지 유형*</SmallLabelText>
-					<CategoryContainer>
-						{locationTypes.map((item, i) => (
-							<LocationTypeLabel className="locationTypeGroup" key={i}>
-								<LocationTypeRadio
-									type="radio"
-									name="locationType"
-									value={item}
-									onChange={onLocationType}
-									checked={locationType === item}
-								></LocationTypeRadio>
-								<LocationTypeSpan>{item}</LocationTypeSpan>
-							</LocationTypeLabel>
-						))}
-					</CategoryContainer>
+          {/* 챌린지 이미지 */}
+          <ImageContainer>
+            {/* 이미지 미리보기 */}
+            <ThumbnailContainer>
+              {image.imageFile ? (
+                <ImageThumbnail
+                  alt={image.imageFile.name}
+                  src={image.imageUrl}
+                />
+              ) : (
+                <DefaultThumbnail></DefaultThumbnail>
+              )}
+              {/* 이미지 삭제 버튼 */}
+              <DeleteButtonContainer onClick={onDeleteFile}>
+                <Delete alt="Delete icon" style={{ zIndex: 10 }} />
+              </DeleteButtonContainer>
+            </ThumbnailContainer>
 
-					{locationType === "오프라인" ? (
-						<>
-							<SmallLabelText>오프라인 장소</SmallLabelText>
-							<AddressRow>
-								<AddressInput
-									name="roadAddress"
-									placeholder="도로명 주소"
-									value={roadAddress}
-									onChange={onChange}
-									InputProps={{
-										readOnly: true,
-									}}
-								/>
-								<AddressButton onClick={onClickPopupHandler}>
-									주소 검색
-								</AddressButton>
-								<Modal
-									isOpen={isPopupOpen}
-									ariaHideApp={false}
-									onRequestClose={onModalHandler}
-									style={modalStyles}
-								>
-									<CloseIconButton onClick={onModalHandler}>
-										<Close alt="Close icon" />
-									</CloseIconButton>
-									<DaumPostcode onComplete={handleComplete} {...props} />;
-								</Modal>
-							</AddressRow>
-							<AddressInput
-								name="detailAddress"
-								placeholder="상세 주소"
-								value={detailAddress}
-								onChange={onChange}
-							/>
-						</>
-					) : (
-						""
-					)}
-					{/* 카테고리-오프라인주소입력 */}
-				</Row>
+            {/* 이미지 업로드 버튼 */}
+            <label htmlFor="input-image">
+              <ImageFileInput
+                type="file"
+                accept="image/*"
+                name="file"
+                onChange={onLoadFile}
+                id="input-image"
+              />
+              <UploadButton component="span">이미지 업로드</UploadButton>
+            </label>
+          </ImageContainer>
+        </CustomContainer>
 
-				{/* 챌린지 설명 */}
-				<Row>
-					<LabelText>챌린지 설명*</LabelText>
-					<TextInput
-						name="description"
-						multiline
-						rows={8}
-						value={description}
-						onChange={onChange}
-					></TextInput>
-				</Row>
-				<ButtonContainer>
-					<EnrollButton onClick={onSubmitFormData}>등록</EnrollButton>
-					<CancelButton onClick={onCancelHandler}>취소</CancelButton>
-				</ButtonContainer>
-			</FormContainer>
-		</RegisterPageBox>
-	);
+        {/* 카테고리 */}
+        <Row>
+          <LabelText>
+            카테고리
+            <RequiredMark>*</RequiredMark>
+          </LabelText>
+
+          {/* 카테고리-챌린지주제 */}
+          <SmallLabelText>
+            챌린지 주제
+            <RequiredMark>*</RequiredMark>
+          </SmallLabelText>
+          <CategoryContainer>
+            {categories.map((item, i) => (
+              <CategoryButton
+                key={i}
+                category={item}
+                className={`${category === item ? 'active' : ''}`}
+                onClick={onClickCategoryButton}
+              >
+                {item}
+              </CategoryButton>
+            ))}
+          </CategoryContainer>
+
+          {/* 카테고리-챌린지유형 */}
+          <SmallLabelText>
+            챌린지 유형
+            <RequiredMark>*</RequiredMark>
+          </SmallLabelText>
+          <CategoryContainer>
+            {locationTypes.map((item, i) => (
+              <CategoryButton
+                key={i}
+                locationType={item}
+                className={`${locationType === item ? 'active' : ''}`}
+                onClick={onClickLocationTypeButton}
+              >
+                {item}
+              </CategoryButton>
+            ))}
+          </CategoryContainer>
+
+          {locationType === '오프라인' ? (
+            <>
+              <SmallLabelText>오프라인 장소</SmallLabelText>
+              <AddressRow>
+                <AddressInput
+                  name="roadAddress"
+                  placeholder="도로명 주소"
+                  value={roadAddress}
+                  onChange={onChange}
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                />
+                <AddressButton onClick={onClickPopupHandler}>
+                  주소 검색
+                </AddressButton>
+                <Modal
+                  isOpen={isPopupOpen}
+                  ariaHideApp={false}
+                  onRequestClose={onModalHandler}
+                  style={modalStyles}
+                >
+                  <CloseIconButton onClick={onModalHandler}>
+                    <Close alt="Close icon" />
+                  </CloseIconButton>
+                  <DaumPostcode onComplete={handleComplete} {...props} />;
+                </Modal>
+              </AddressRow>
+              <AddressInput
+                name="detailAddress"
+                placeholder="상세 주소"
+                value={detailAddress}
+                onChange={onChange}
+              />
+            </>
+          ) : (
+            ''
+          )}
+          {/* 카테고리-오프라인주소입력 */}
+        </Row>
+
+        {/* 챌린지 설명 */}
+        <Row>
+          <LabelText>
+            챌린지 설명
+            <RequiredMark>*</RequiredMark>
+          </LabelText>
+          <TextInput
+            name="description"
+            multiline
+            rows={8}
+            value={description}
+            onChange={onChange}
+          ></TextInput>
+        </Row>
+        <ButtonContainer>
+          <EnrollButton onClick={onSubmitFormData}>등록</EnrollButton>
+          <CancelButton onClick={onCancelHandler}>취소</CancelButton>
+        </ButtonContainer>
+      </FormContainer>
+    </RegisterPageBox>
+  );
 }
 
 export default RegisterForm;
 
 const RegisterPageBox = styled.div`
-	padding: 0 17.7rem;
+  padding: 0 17.7rem;
 `;
 
 const Title = styled.div`
-	font-size: 2.4rem;
-	font-weight: bold;
+  font-size: 2.4rem;
+  font-weight: bold;
 
-	margin-bottom: 5rem;
+  margin-bottom: 5rem;
 `;
 
 const FormContainer = styled.div`
-	&:checked {
-		background-color: #000000;
-	}
+  &:checked {
+    background-color: #000000;
+  }
 `;
 
-const Row = styled.div``;
+const LeftContentContainer = styled.div`
+  margin-bottom: 3rem;
+`;
+
+const Row = styled.div`
+  margin-bottom: 3rem;
+`;
 
 const CustomContainer = styled.div`
-	display: flex;
-	justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const LabelText = styled.div`
-	font-size: 2rem;
-	font-weight: bold;
-	margin: 2rem 0;
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 2rem 0;
+`;
+
+const RequiredMark = styled.span`
+  color: #eb3901;
 `;
 
 const SmallLabelText = styled.div`
-	font-size: 1.6rem;
-	font-weight: bold;
-
-	margin-bottom: 1.5rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
 `;
 
 const BasicInput = styled.input`
-	width: 100%;
-	padding: 1rem;
-	font-size: 1.6rem;
-	border: 1px solid #e5e5e5;
-	border-radius: 0.5rem;
-	box-sizing: border-box;
-	margin-bottom: 2rem;
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.6rem;
+  border: 1px solid #e5e5e5;
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+  margin-bottom: 2rem;
 `;
 
 const DateInput = styled(BasicInput)`
-	width: 16.5rem;
+  width: 16.5rem;
 `;
 
 const NumInput = styled(BasicInput)`
-	width: 6.5rem;
+  width: 6.5rem;
 `;
 
 const AddressRow = styled.div`
-	display: flex;
-	gap: 0.5rem;
-	margin-bottom: 0.5rem;
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
 `;
 
 const AddressInput = styled(TextField)`
-	width: 33rem;
-	border: 1px solid #c4c4c4;
-	border-radius: 0.5rem;
+  width: 33rem;
+  border: 1px solid #c4c4c4;
+  border-radius: 0.5rem;
 
-	.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
-		font-size: 1.4rem;
-		padding: 1.2rem;
-	}
+  .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+    font-size: 1.4rem;
+    padding: 1.2rem;
+  }
 `;
 
 const TextInput = styled(TextField)`
-	width: 100%;
-	border: 1px solid #e5e5e5;
-	border-radius: 0.5rem;
+  width: 100%;
+  border: 1px solid #e5e5e5;
+  border-radius: 0.5rem;
 
-	.css-dpjnhs-MuiInputBase-root-MuiOutlinedInput-root {
-		font-size: 1.6rem;
-		padding: 1.2rem;
-	}
+  .css-dpjnhs-MuiInputBase-root-MuiOutlinedInput-root {
+    font-size: 1.6rem;
+    padding: 1.2rem;
+  }
 
-	margin-bottom: 3rem;
+  margin-bottom: 3rem;
 `;
 
 const ImageContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const ImageThumbnail = styled.img`
-	width: 24.2rem;
-	height: 24.2rem;
-	border-radius: 0.5rem;
-	object-fit: cover;
-	margin-bottom: 2rem;
+  width: 24.2rem;
+  height: 24.2rem;
+  border-radius: 0.5rem;
+  object-fit: cover;
+  margin-bottom: 2rem;
 `;
 
 const DefaultThumbnail = styled.div`
-	width: 24.2rem;
-	height: 24.2rem;
-	border-radius: 0.5rem;
-	background-color: lightgray;
-	margin-bottom: 2rem;
+  width: 24.2rem;
+  height: 24.2rem;
+  border-radius: 0.5rem;
+  background-color: lightgray;
+  margin-bottom: 2rem;
 `;
 
 const ImageFileInput = styled.input`
-	display: none;
+  display: none;
 `;
 
 const ButtonContainer = styled.div`
-	display: flex;
-	justify-content: center;
-	gap: 8rem;
+  display: flex;
+  justify-content: center;
+  gap: 8rem;
 `;
 
 const AddressButton = styled(StyledButton)`
-	background-color: #c4c4c4;
-	color: white;
+  background-color: #c4c4c4;
+  color: white;
 
-	font-size: 1.6rem;
-	font-weight: bold;
+  font-size: 1.6rem;
+  font-weight: bold;
 
-	transition: opacity 0.3s;
+  transition: opacity 0.3s;
 
-	&:hover {
-		opacity: 0.6;
-	}
+  &:hover {
+    opacity: 0.6;
+  }
 `;
 
 const CancelButton = styled(StyledButton)`
-	font-size: 2rem;
-	font-weight: bold;
-	background-color: #e5e5e5;
+  font-size: 2rem;
+  font-weight: bold;
+  background-color: #e5e5e5;
 
-	&:hover {
-		background-color: #e5e5e5;
-	}
+  &:hover {
+    background-color: #e5e5e5;
+  }
 `;
 
 const UploadButton = styled(StyledButton)`
-	font-size: 1.6rem;
-	font-weight: bold;
+  font-size: 1.6rem;
+  font-weight: bold;
 
-	margin-bottom: 2rem;
+  margin-bottom: 2rem;
 `;
 
 const EnrollButton = styled(StyledButton)`
-	font-size: 2rem;
-	font-weight: bold;
+  font-size: 2rem;
+  font-weight: bold;
 `;
 
 const CategoryContainer = styled.div`
-	display: flex;
-	gap: 1rem;
-	margin-bottom: 2rem;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
 `;
 
 const ThumbnailContainer = styled.div`
-	position: relative;
+  position: relative;
 `;
 
 const CloseIconButton = styled(IconButton)`
-	margin-left: auto;
-`;
-
-const CategoryLabel = styled.label`
-	width: 6.5rem;
-	height: 3.2rem;
-
-	font-size: 1.6rem;
-	font-weight: bold;
-	text-align: center;
-	letter-spacing: 2px;
-	cursor: pointer;
-	line-height: 3.2rem;
-
-	input:checked + span {
-		background-color: #ffa883;
-		color: white;
-	}
-`;
-
-const CategoryRadio = styled.input`
-	display: none;
-`;
-
-const CategorySpan = styled.span`
-	display: inline-block;
-	width: 6.5rem;
-	height: 3.2rem;
-
-	color: #ffa883;
-	background-color: #ffffff;
-	border: 1px solid #ffa883;
-	border-radius: 2rem;
-
-	&:hover {
-		background-color: #ffa883;
-		color: white;
-	}
-`;
-
-const LocationTypeLabel = styled.label`
-	width: 8.9rem;
-	height: 3.2rem;
-
-	font-size: 1.6rem;
-	font-weight: bold;
-	text-align: center;
-	letter-spacing: 2px;
-	cursor: pointer;
-	line-height: 3.2rem;
-
-	input:checked + span {
-		background-color: #ffa883;
-		color: white;
-	}
-`;
-
-const LocationTypeRadio = styled.input`
-	display: none;
-`;
-
-const LocationTypeSpan = styled.span`
-	display: inline-block;
-	width: 8.9rem;
-	height: 3.2rem;
-
-	color: #ffa883;
-	background-color: #ffffff;
-	border: 1px solid #ffa883;
-	border-radius: 2rem;
-
-	&:hover {
-		background-color: #ffa883;
-		color: white;
-	}
+  margin-left: auto;
 `;
 
 const DeleteButtonContainer = styled.div`
-	position: absolute;
-	top: 1rem;
-	right: 1rem;
-	cursor: pointer;
-	z-index: 1;
-	background-color: #ffffff;
-	border-radius: 50%;
-	padding: 0.7rem;
-	opacity: 0.6;
-	transition: opacity 0.3s;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  cursor: pointer;
+  z-index: 1;
+  background-color: #ffffff;
+  border-radius: 50%;
+  padding: 0.7rem;
+  opacity: 0.6;
+  transition: opacity 0.3s;
 
-	&:hover {
-		opacity: 1;
-	}
+  &:hover {
+    opacity: 1;
+  }
+`;
+
+const ValidationText = styled.span`
+  font-size: 1.4rem;
+  color: #c4c4c4;
+  display: block;
+`;
+
+const CategoryButton = styled(Category)`
+  width: 6.5rem;
+  height: auto;
+  padding: 0.6rem 1.4rem;
+  font-size: 1.4rem;
+  display: inline-block;
+  text-align: center;
+
+  ${(props) => {
+    if (props.locationType === '온라인') {
+      return css`
+        background-color: #ffffff;
+        color: #ff7539;
+        border: 1px solid #ff7539;
+
+        &:hover {
+          background-color: #ff7539;
+          color: white;
+        }
+        &.active {
+          background-color: #ff7539;
+          color: #ffffff;
+        }
+      `;
+    } else if (props.locationType === '오프라인') {
+      return css`
+        background-color: #ffffff;
+        color: #0057ff;
+        border: 1px solid #0057ff;
+        &:hover {
+          background-color: #0057ff;
+          color: #ffffff;
+        }
+        &.active {
+          background-color: #0057ff;
+          color: #ffffff;
+        }
+      `;
+    } else if (props.category === '운동') {
+      return css`
+        background-color: #ffffff;
+        color: #04c50c;
+        border: 1px solid #04c50c;
+        &:hover {
+          background-color: #04c50c;
+          color: #ffffff;
+        }
+        &.active {
+          background-color: #04c50c;
+          color: #ffffff;
+        }
+      `;
+    } else if (props.category === '공부') {
+      return css`
+        background-color: #ffffff;
+        color: #9900cf;
+        border: 1px solid #9900cf;
+        &:hover {
+          background-color: #9900cf;
+          color: #ffffff;
+        }
+        &.active {
+          background-color: #9900cf;
+          color: #ffffff;
+        }
+      `;
+    } else if (props.category === '취미') {
+      return css`
+        background-color: #ffffff;
+        color: #e2cd0f;
+        border: 1px solid #e2cd0f;
+        &:hover {
+          background-color: #e2cd0f;
+          color: #ffffff;
+        }
+        &.active {
+          background-color: #e2cd0f;
+          color: #ffffff;
+        }
+      `;
+    } else if (props.category === '독서') {
+      return css`
+        background-color: #ffffff;
+        color: #e71aad;
+        border: 1px solid #e71aad;
+        &:hover {
+          background-color: #e71aad;
+          color: #ffffff;
+        }
+        &.active {
+          background-color: #e71aad;
+          color: #ffffff;
+        }
+      `;
+    } else if (props.category === '기타') {
+      return css`
+        background-color: #ffffff;
+        color: #6ae4c7;
+        border: 1px solid #6ae4c7;
+        &:hover {
+          background-color: #6ae4c7;
+          color: #ffffff;
+        }
+        &.active {
+          background-color: #6ae4c7;
+          color: #ffffff;
+        }
+      `;
+    }
+  }}
 `;
