@@ -93,10 +93,10 @@ const MyChallengeCard = ({
 								)}
 							</Row>
 							<Row>
-								<CardCategory category={category}>{category}</CardCategory>
 								<CardCategory locationType={locationType}>
 									{locationType}
 								</CardCategory>
+								<CardCategory category={category}>{category}</CardCategory>
 							</Row>
 							<Row>
 								<CardIcon>
@@ -212,13 +212,7 @@ const CardMedal = styled.div``;
 const CardCategory = styled(Category)`
 	font-size: 1.2rem;
 	padding: 0.5rem 1rem;
-	color: #8f8f8f;
-	background-color: #e5e5e5;
 	border: none;
-	&:hover {
-		color: #8f8f8f;
-		background-color: #e5e5e5;
-	}
 
 	${(props) => {
 		if (props.locationType === "온라인") {
@@ -230,7 +224,6 @@ const CardCategory = styled(Category)`
 			return css`
 				background-color: #0057ff;
 				color: #ffffff;
-				border: 1px solid #0057ff;
 			`;
 		} else if (props.category === "운동") {
 			return css`
