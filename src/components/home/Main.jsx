@@ -81,6 +81,10 @@ const Main = () => {
     }
   };
 
+  const onSearchBar = (bool) => {
+    setIsSearch(bool);
+  };
+
   useEffect(() => {
     if (totalCount === challenges.length || challenges === []) {
       setHasMore(false);
@@ -98,7 +102,10 @@ const Main = () => {
       <Wrapper>
         <Title>챌린지 리스트</Title>
         <SearchBarRow>
-          <SearchBar onSearchSubmit={onSearchSubmit} />
+          <SearchBar
+            onSearchSubmit={onSearchSubmit}
+            onSearchBar={onSearchBar}
+          />
         </SearchBarRow>
         {isSearch && (
           <SearchListContainer sx={{ width: '100%' }}>
