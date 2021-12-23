@@ -1,13 +1,30 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+
 import styled from "styled-components";
+import { CircularProgress } from "@mui/material";
+
 import RegisterForm from "./RegisterForm";
 
 const Main = () => {
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		setLoading(false);
+	}, []);
+
 	return (
-		<Wrapper>
-			<RegisterForm />
-			<Row></Row>
-		</Wrapper>
+		<>
+			{loading ? (
+				<SpinnerContainer>
+					<CircularProgress size={70} color="warning" />
+				</SpinnerContainer>
+			) : (
+				<Wrapper>
+					<RegisterForm />
+					<Row></Row>
+				</Wrapper>
+			)}
+		</>
 	);
 };
 
@@ -20,3 +37,11 @@ const Wrapper = styled.section`
 `;
 
 const Row = styled.div``;
+
+const SpinnerContainer = styled.div`
+	width: 100%;
+	height: 80vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;

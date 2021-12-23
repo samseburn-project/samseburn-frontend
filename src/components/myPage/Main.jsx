@@ -1,15 +1,16 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import axios from "axios";
 
-import styled from 'styled-components';
+import styled from "styled-components";
 
-import { Tab, Tabs } from '@mui/material';
-import { styled as muiStyled } from '@mui/material/styles';
-import ViewChallenge from './ViewChallenge';
-import ModifyUser from './ModifyUser';
-import ManageChallenge from './ManageChallenge';
+import { Tab, Tabs, CircularProgress } from "@mui/material";
+import { styled as muiStyled } from "@mui/material/styles";
+import ViewChallenge from "./ViewChallenge";
+import ModifyUser from "./ModifyUser";
+import ManageChallenge from "./ManageChallenge";
 
 const Main = () => {
+	const [loading, setLoading] = useState(true);
 	const [selectedTab, setSelectedTab] = useState(0);
 	const [userChallengeList, setUserChallengList] = useState([]);
 	const [userCreateChallengeList, setUserCreateChallengList] = useState([]);
@@ -46,6 +47,7 @@ const Main = () => {
 	useEffect(() => {
 		fetchUserChallenges();
 		fetchUserCreateChallenge();
+		setLoading(false);
 	}, []);
 
 	const StyledTabs = muiStyled((props) => (
@@ -80,34 +82,40 @@ const Main = () => {
 
 	return (
 		<>
-			<Wrapper>
-				<Row>
-					<StyledTabs
-						value={selectedTab}
-						onChange={handleChange}
-						aria-label="styled tabs example"
-					>
-						<StyledTab label="챌린지 정보" />
-						<StyledTab label="회원 정보 수정" />
-						<StyledTab label="개설한 챌린지 관리" />
-					</StyledTabs>
-				</Row>
+			{loading ? (
+				<SpinnerContainer>
+					<CircularProgress size={70} color="warning" />
+				</SpinnerContainer>
+			) : (
+				<Wrapper>
+					<Row>
+						<StyledTabs
+							value={selectedTab}
+							onChange={handleChange}
+							aria-label="styled tabs example"
+						>
+							<StyledTab label="챌린지 정보" />
+							<StyledTab label="회원 정보 수정" />
+							<StyledTab label="개설한 챌린지 관리" />
+						</StyledTabs>
+					</Row>
 
-				<Row>
-					{selectedTab === 0 && (
-						<ViewChallenge
-							userToken={userToken}
-							userChallengeList={userChallengeList}
-						/>
-					)}
-					{selectedTab === 1 && <ModifyUser userToken={userToken} />}
-					{selectedTab === 2 && (
-						<ManageChallenge
-							userCreateChallengeList={userCreateChallengeList}
-						/>
-					)}
-				</Row>
-			</Wrapper>
+					<Row>
+						{selectedTab === 0 && (
+							<ViewChallenge
+								userToken={userToken}
+								userChallengeList={userChallengeList}
+							/>
+						)}
+						{selectedTab === 1 && <ModifyUser userToken={userToken} />}
+						{selectedTab === 2 && (
+							<ManageChallenge
+								userCreateChallengeList={userCreateChallengeList}
+							/>
+						)}
+					</Row>
+				</Wrapper>
+			)}
 		</>
 	);
 };
@@ -115,9 +123,17 @@ const Main = () => {
 export default Main;
 
 const Wrapper = styled.section`
-  width: 104rem;
-  margin: 0 auto;
-  flex: 1;
+	width: 104rem;
+	margin: 0 auto;
+	flex: 1;
 `;
 
 const Row = styled.div``;
+
+const SpinnerContainer = styled.div`
+	width: 100%;
+	height: 80vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;
