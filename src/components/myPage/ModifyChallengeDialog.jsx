@@ -93,7 +93,7 @@ const ModifyChallengeDialog = ({ ...props }) => {
 
 		try {
 			const { status } = await axios.put(
-				`/challanges/${challengeId}`,
+				`/challenges/${challengeId}`,
 				formData,
 				{
 					headers: {
