@@ -9,20 +9,56 @@ import Category from "../common/Category";
 import { ReactComponent as Calendar } from "../../assets/icons/calender.svg";
 
 const ChallengeCard = ({ ...props }) => {
+	const challengeId = props.challenge?.challengeId;
 	const navigate = useNavigate();
 
-	return (
-		<StyledCard onClick={() => navigate(`/detail/${props.challengeId}`)}>
+	return props.challenge?.challengeProgress === "STOP" ? (
+		<>
+			<StyledCard onClick={() => navigate(`/detail/${challengeId}`)}>
+				<EndOverlay>
+					<Text>챌린지 마감</Text>
+				</EndOverlay>
+				<CardActionArea>
+					<CardMedia component="img" image={props.challenge?.imgUrl} />
+					<StyledCardContent>
+						<CardTitle>{props.challenge?.title}</CardTitle>
+						<Row>
+							<CardCategory locationType={props.challenge?.locationType}>
+								{props.challenge?.locationType}
+							</CardCategory>
+							<CardCategory category={props.challenge?.category}>
+								{props.challenge?.category})
+							</CardCategory>
+						</Row>
+						<Row>
+							<CardIcon>
+								<Calendar alt="Calendar icon" />
+							</CardIcon>
+							<CardDate>
+								{props.challenge?.challengeStartDate} ~{" "}
+								{props.challenge?.challengeEndDate}
+							</CardDate>
+						</Row>
+						<CardMember>
+							현재 {props.challenge?.participants}/
+							{props.challenge?.limitPerson} 명이 참여중입니다.
+						</CardMember>
+					</StyledCardContent>
+				</CardActionArea>
+			</StyledCard>
+		</>
+	) : (
+		<StyledCard onClick={() => navigate(`/detail/${challengeId}`)}>
 			<CardActionArea>
-				<CardMedia component="img" image={props.imgUrl} />
+				<CardMedia component="img" image={props.challenge?.imgUrl} />
 				<StyledCardContent>
-					<CardTitle>{props.title}</CardTitle>
+					<CardTitle>{props.challenge?.title}</CardTitle>
 					<Row>
-						<CardCategory locationType={props.locationType}>
-							{props.locationType}
+						<CardCategory locationType={props.challenge?.locationType}>
+							{props.challenge?.locationType}
 						</CardCategory>
-						<CardCategory category={props.category}>
-							{props.category}
+						<CardCategory category={props.challenge?.category}>
+							{props.challenge?.category}
 						</CardCategory>
 					</Row>
 					<Row>
@@ -30,11 +66,13 @@ const ChallengeCard = ({ ...props }) => {
 							<Calendar alt="Calendar icon" />
 						</CardIcon>
 						<CardDate>
-							{props.challengeStartDate} ~ {props.challengeEndDate}
+							{props.challenge?.challengeStartDate} ~{" "}
+							{props.challenge?.challengeEndDate}
 						</CardDate>
 					</Row>
 					<CardMember>
-						현재 {props.participants}/{props.limitPerson} 명이 참여중입니다.
+						현재 {props.challenge?.participants}/{props.challenge?.limitPerson}{" "}
+						명이 참여중입니다.
 					</CardMember>
 				</StyledCardContent>
 			</CardActionArea>
@@ -47,6 +85,7 @@ export default ChallengeCard;
 const StyledCard = styled(Card)`
 	height: 36.3rem;
 	box-shadow: 0.6rem 1.1rem 2rem rgba(0, 0, 0, 0.25);
+	position: relative;
 
 	img {
 		height: 18.15rem;
@@ -137,4 +176,26 @@ const CardIcon = styled.div`
 const CardMember = styled.div`
 	font-size: 1.6rem;
 	margin-top: 3rem;
+`;
+
+const EndOverlay = styled.div`
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.6);
+	border-radius: 0.5rem;
+	z-index: 2;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;
+
+const Text = styled.div`
+	font-size: 3rem;
+	font-weight: bold;
+	color: #ffffff;
 `;

@@ -57,22 +57,19 @@ const Main = () => {
 	};
 
 	const refresh = () => {
-		setChallenges([]);
 		setPage(1);
+		setChallenges([]);
 	};
 
 	useEffect(() => {
 		if (totalCount === challenges.length || challenges === []) {
 			setHasMore(false);
-			console.log("api end");
 			return;
 		}
 		fetchChallenges();
 
 		return () => setHasMore(false);
 	}, [page, sortBy, categoryName]);
-
-	console.log(sortBy);
 
 	return (
 		<>
@@ -85,7 +82,7 @@ const Main = () => {
 				</SearchBarRow>
 				<FilterRow>
 					<CategoryFilter onCategory={onCategory} />
-					<SortFilter setSortBy={setSortBy} onSortBy={onSortBy} />
+					<SortFilter sortBy={sortBy} onSortBy={onSortBy} />
 				</FilterRow>
 				<InfiniteScroll
 					dataLength={challenges.length}
@@ -104,15 +101,7 @@ const Main = () => {
 								<Grid item xs={4} key={challenge.challengeId}>
 									<ChallengeCard
 										key={challenge.challengeId}
-										challengeId={challenge.challengeId}
-										title={challenge.title}
-										category={challenge.category}
-										locationType={challenge.locationType}
-										challengeStartDate={challenge.challengeStartDate}
-										challengeEndDate={challenge.challengeEndDate}
-										imgUrl={challenge.imgUrl}
-										limitPerson={challenge.limitPerson}
-										participants={challenge.participants}
+										challenge={challenge}
 									/>
 								</Grid>
 							))}

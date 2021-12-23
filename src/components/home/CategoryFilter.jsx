@@ -6,7 +6,7 @@ const CategoryFilter = ({ ...props }) => {
 	const categories = ["전체", "운동", "공부", "취미", "독서", "기타"];
 	const [selectedCategory, setSelectedCategory] = useState("전체");
 
-	const onClickCategory = (category) => {
+	const handleCategoryChange = (category) => {
 		setSelectedCategory(category);
 		props.onCategory(category);
 	};
@@ -17,7 +17,7 @@ const CategoryFilter = ({ ...props }) => {
 				<MainCategory
 					key={i}
 					category={category}
-					onClick={() => onClickCategory(category)}
+					onClick={() => handleCategoryChange(category)}
 					className={category === selectedCategory ? "selected" : ""}
 				>
 					{category}
