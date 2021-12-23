@@ -156,10 +156,6 @@ function RegisterForm(props) {
 			formData.append("address", address);
 			formData.append("challengeProgress", "INPROGRESS");
 
-			// for (let data of formData.entries()) {
-			//   console.log(data[0] + ', ' + data[1]);
-			// }
-
 			const res = await axios.post("/challenge", formData, {
 				headers: {
 					Authorization: `Bearer ${userToken}`,
@@ -180,15 +176,6 @@ function RegisterForm(props) {
 					autoHideDuration: 2000,
 				});
 			}
-
-			// const response = axios({
-			//   method: 'post',
-			//   url: '/challenge',
-			//   data: formData,
-			//   headers: {
-			//     Authorization: `Bearer ${userToken}`,
-			//   },
-			// });
 		} catch (err) {
 			console.error(err);
 		}
@@ -232,7 +219,6 @@ function RegisterForm(props) {
 			<FormContainer>
 				<CustomContainer>
 					<div>
-						{/* 챌린지명 */}
 						<LabelText>챌린지명*</LabelText>
 						<BasicInput
 							placeholder="챌린지명"
@@ -242,8 +228,6 @@ function RegisterForm(props) {
 							onChange={onChange}
 							required
 						/>
-
-						{/* 챌린지 기간 */}
 						<LabelText>챌린지 기간*</LabelText>
 						<LocalizationProvider dateAdapter={AdapterDateFns}>
 							<DateRangePicker
@@ -272,8 +256,6 @@ function RegisterForm(props) {
 								)}
 							/>
 						</LocalizationProvider>
-
-						{/* 챌린지 인원 */}
 						<LabelText>챌린지 인원*</LabelText>
 						<NumInput
 							type="number"
@@ -283,10 +265,7 @@ function RegisterForm(props) {
 							onChange={onChange}
 						/>
 					</div>
-
-					{/* 챌린지 이미지 */}
 					<ImageContainer>
-						{/* 이미지 미리보기 */}
 						<ThumbnailContainer>
 							{image.imageFile ? (
 								<ImageThumbnail
@@ -296,13 +275,10 @@ function RegisterForm(props) {
 							) : (
 								<DefaultThumbnail></DefaultThumbnail>
 							)}
-							{/* 이미지 삭제 버튼 */}
 							<DeleteButtonContainer onClick={onDeleteFile}>
 								<Delete alt="Delete icon" style={{ zIndex: 10 }} />
 							</DeleteButtonContainer>
 						</ThumbnailContainer>
-
-						{/* 이미지 업로드 버튼 */}
 						<label htmlFor="input-image">
 							<ImageFileInput
 								type="file"
@@ -315,12 +291,8 @@ function RegisterForm(props) {
 						</label>
 					</ImageContainer>
 				</CustomContainer>
-
-				{/* 카테고리 */}
 				<Row>
 					<LabelText>카테고리*</LabelText>
-
-					{/* 카테고리-챌린지주제 */}
 					<SmallLabelText>챌린지 주제*</SmallLabelText>
 					<CategoryContainer>
 						{categories.map((item, i) => (
@@ -336,8 +308,6 @@ function RegisterForm(props) {
 							</CategoryLabel>
 						))}
 					</CategoryContainer>
-
-					{/* 카테고리-챌린지유형 */}
 					<SmallLabelText>챌린지 유형*</SmallLabelText>
 					<CategoryContainer>
 						{locationTypes.map((item, i) => (
@@ -353,7 +323,6 @@ function RegisterForm(props) {
 							</LocationTypeLabel>
 						))}
 					</CategoryContainer>
-
 					{locationType === "오프라인" ? (
 						<>
 							<SmallLabelText>오프라인 장소</SmallLabelText>
@@ -392,10 +361,7 @@ function RegisterForm(props) {
 					) : (
 						""
 					)}
-					{/* 카테고리-오프라인주소입력 */}
 				</Row>
-
-				{/* 챌린지 설명 */}
 				<Row>
 					<LabelText>챌린지 설명*</LabelText>
 					<TextInput

@@ -121,20 +121,16 @@ const ModifyUser = ({ userToken }) => {
 		<ModifyUserBox>
 			<FormContainer>
 				<ImageContainer>
-					{/* 이미지 미리보기 */}
 					<ThumbnailContainer>
 						{image.imageFile || image.imageUrl ? (
 							<ImageThumbnail alt="Profile Image" src={image.imageUrl} />
 						) : (
 							<DefaultThumbnail></DefaultThumbnail>
 						)}
-						{/* 이미지 삭제 버튼 */}
 						<DeleteButtonContainer onClick={onDeleteFile}>
 							<Delete alt="Delete icon" style={{ zIndex: 10 }} />
 						</DeleteButtonContainer>
 					</ThumbnailContainer>
-
-					{/* 이미지 업로드 버튼 */}
 					<label htmlFor="input-image">
 						<ImageFileInput
 							type="file"
@@ -146,12 +142,10 @@ const ModifyUser = ({ userToken }) => {
 						<ImageUploadButton component="span">이미지 변경</ImageUploadButton>
 					</label>
 				</ImageContainer>
-
 				<Row>
 					<LabelText>닉네임*</LabelText>
 					<NameInput placeholder={nickname} onChange={onChangeNickname} />
 				</Row>
-
 				<Row>
 					<SubmitButton
 						onClick={(e) => {

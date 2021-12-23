@@ -22,8 +22,6 @@ const Main = () => {
 			});
 
 			if (res.status === 200) setUserChallengList(res.data);
-
-			// response에서 받은 데이터 state에 저장해 컴포넌트에 props로 내려주기
 		} catch (err) {
 			console.error(err);
 		}
@@ -46,8 +44,8 @@ const Main = () => {
 	};
 
 	useEffect(() => {
-		fetchUserChallenges(); // 유저와 연관된 챌린지 정보 요청
-		fetchUserCreateChallenge(); // 유저가 생성한 챌린지 정보 요청
+		fetchUserChallenges();
+		fetchUserCreateChallenge();
 	}, []);
 
 	const StyledTabs = muiStyled((props) => (

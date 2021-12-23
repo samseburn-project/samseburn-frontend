@@ -194,28 +194,6 @@ const DeleteButton = styled.span`
 	}
 `;
 
-// const UploadInput = styled.input`
-// 	display: none;
-// `;
-
-// const UploadButton = styled.span`
-// 	display: inline-block;
-// 	padding: 1rem 2.4rem;
-// 	font-size: 1.4rem;
-// 	font-weight: bold;
-// 	color: #ffffff;
-// 	background-color: #eb3901;
-// 	outline: none;
-// 	border: none;
-// 	border-radius: 0.5rem;
-// 	cursor: pointer;
-// 	transition: opacity 0.3s;
-
-// 	&:hover {
-// 		opacity: 0.7;
-// 	}
-// `;
-
 const LabelText = styled.div`
 	font-size: 1.4rem;
 	font-weight: bold;
