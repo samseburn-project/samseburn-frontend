@@ -8,6 +8,104 @@ import StyledButton from "./StyledButton";
 import { ReactComponent as Close } from "../../assets/icons/close.svg";
 
 const CommonDialog = ({ ...props }) => {
+	const handleDialogRender = (id, openDialog) => {
+		if (id === "success" && openDialog === "auth")
+			return (
+				<Dialog onClose={props.handleOpenToggle} open={props.open}>
+					<StyledDialogContent>
+						<CloseButton>
+							<Close alt="Close icon" onClick={props.handleOpenToggle} />
+						</CloseButton>
+						<Container>
+							<Row>
+								<MainText>
+									챌린지 1주차 작심삼일 미션을 달성했습니다 🎉
+								</MainText>
+								<SubText>
+									계속 챌린지를 진행할 수도 있고, 여기서 그만 둘 수도 있어요.
+								</SubText>
+							</Row>
+							<Row>{handleButtonRender(props.mainText)}</Row>
+						</Container>
+					</StyledDialogContent>
+				</Dialog>
+			);
+		else if (id === "retry" && openDialog === "auth")
+			return (
+				<Dialog onClose={props.handleOpenToggle} open={props.open}>
+					<StyledDialogContent>
+						<CloseButton>
+							<Close alt="Close icon" onClick={props.handleOpenToggle} />
+						</CloseButton>
+						<Container>
+							<Row>
+								<MainText>
+									챌린지 1주차 작심삼일 미션을 달성하지 못했어요..
+								</MainText>
+								<SubText>
+									{`총 ${3 - props.retry}번의 재도전 기회가 남아 있어요!`}
+								</SubText>
+								<SubText>마이페이지에서 챌린지를 재도전할 수 있어요.</SubText>
+							</Row>
+							<Row>{handleButtonRender(props.mainText)}</Row>
+						</Container>
+					</StyledDialogContent>
+				</Dialog>
+			);
+		else if (id === "fail" && openDialog === "auth")
+			return (
+				<Dialog onClose={props.handleOpenToggle} open={props.open}>
+					<StyledDialogContent>
+						<CloseButton>
+							<Close alt="Close icon" onClick={props.handleOpenToggle} />
+						</CloseButton>
+						<Container>
+							<Row>
+								<MainText>챌린지 재도전 기회가 모두 소진되었습니다.</MainText>
+								<SubText>아쉽지만 더이상 챌린지에 참여하실 수 없어요..</SubText>
+							</Row>
+							<Row>{handleButtonRender(props.mainText)}</Row>
+						</Container>
+					</StyledDialogContent>
+				</Dialog>
+			);
+		else if (id === "apply" && openDialog === "apply")
+			return (
+				<Dialog onClose={props.handleOpenToggle} open={props.open}>
+					<StyledDialogContent>
+						<CloseButton>
+							<Close alt="Close icon" onClick={props.handleOpenToggle} />
+						</CloseButton>
+						<Container>
+							<Row>
+								<MainText>챌린지 참가 신청이 완료되었습니다.</MainText>
+							</Row>
+							<Row>{handleButtonRender(props.mainText)}</Row>
+						</Container>
+					</StyledDialogContent>
+				</Dialog>
+			);
+		else if (id === "cancel" && openDialog === "cancel")
+			return (
+				<Dialog onClose={props.handleOpenToggle} open={props.open}>
+					<StyledDialogContent>
+						<CloseButton>
+							<Close alt="Close icon" onClick={props.handleOpenToggle} />
+						</CloseButton>
+						<Container>
+							<Row>
+								<MainText>챌린지 참가를 취소하시겠습니까?</MainText>
+								<SubText>
+									참여 취소 시 모든 챌린지 인증 기록이 삭제됩니다.
+								</SubText>
+							</Row>
+							<Row>{handleButtonRender(props.mainText)}</Row>
+						</Container>
+					</StyledDialogContent>
+				</Dialog>
+			);
+	};
+
 	const handleButtonRender = (mainText) => {
 		if (mainText === "챌린지 참가 신청이 완료되었습니다.") {
 			return (
@@ -36,6 +134,7 @@ const CommonDialog = ({ ...props }) => {
 						type="button"
 						onClick={() => {
 							props.handleChallengeContinue();
+							props.handleOpenToggle();
 						}}
 					>
 						챌린지 계속 하기
@@ -44,13 +143,14 @@ const CommonDialog = ({ ...props }) => {
 						type="button"
 						onClick={() => {
 							props.handleChallengeStop();
+							props.handleOpenToggle();
 						}}
 					>
 						챌린지 그만 두기
 					</StopButton>
 				</ButtonRow>
 			);
-		} else if (mainText === "챌린지 1주차 작심삼일 미션을 달성하지 못했어요 😔")
+		} else if (mainText === "챌린지 1주차 작심삼일 미션을 달성하지 못했어요..")
 			return (
 				<ConfirmButton type="button" onClick={props.handleOpenToggle}>
 					확인
@@ -78,30 +178,15 @@ const CommonDialog = ({ ...props }) => {
 					</CancelButton>
 				</ButtonRow>
 			);
+		else if (mainText === "챌린지 재도전 기회가 모두 소진되었습니다.")
+			return (
+				<ConfirmButton type="button" onClick={props.handleOpenToggle}>
+					확인
+				</ConfirmButton>
+			);
 	};
 
-	return (
-		<>
-			{props.openDialog !== "auth" && props.openDialog !== "update" ? (
-				<Dialog onClose={props.handleOpenToggle} open={props.open}>
-					<StyledDialogContent>
-						<CloseButton>
-							<Close alt="Close icon" onClick={props.handleOpenToggle} />
-						</CloseButton>
-						<Container>
-							<Row>
-								<MainText>{props.mainText}</MainText>
-								<SubText>{props.subText}</SubText>
-							</Row>
-							<Row>{handleButtonRender(props.mainText)}</Row>
-						</Container>
-					</StyledDialogContent>
-				</Dialog>
-			) : (
-				""
-			)}
-		</>
-	);
+	return <>{handleDialogRender(props.id, props.openDialog)}</>;
 };
 
 export default CommonDialog;
@@ -138,6 +223,7 @@ const MainText = styled.div`
 const SubText = styled.div`
 	font-size: 1.6rem;
 	letter-spacing: 1px;
+	padding: 0.5rem;
 `;
 
 const ButtonRow = styled.div`

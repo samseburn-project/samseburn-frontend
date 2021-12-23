@@ -56,12 +56,18 @@ const AuthDialog = ({ ...props }) => {
 		const formData = new FormData();
 
 		if (!imgFile) {
-			alert("인증 이미지를 등록해주세요.");
+			alert("인증 이미지를 등록해주세요!");
 			return;
+		}
+
+		if (!contents) {
+			alert("인증 후기를 입력해주세요!");
 		}
 
 		formData.append("image", imgFile);
 		formData.append("contents", contents);
+
+		console.log(formData);
 
 		try {
 			const { status } = await axios.post(
@@ -77,11 +83,11 @@ const AuthDialog = ({ ...props }) => {
 
 			if (status === 200) {
 				handleReset();
+				props.handleOpenToggle();
 				enqueueSnackbar("인증이 성공적으로 등록되었습니다.", {
 					variant: "success",
 					autoHideDuration: 2000,
 				});
-				props.handleOpenToggle();
 			} else {
 				enqueueSnackbar("인증 등록에 실패했습니다.", {
 					variant: "error",
@@ -95,7 +101,8 @@ const AuthDialog = ({ ...props }) => {
 
 	return (
 		<>
-			{props.openDialog === "auth" || props.openDialog === "feed" ? (
+			{(props.id === "auth" && props.openDialog === "auth") ||
+			props.openDialog === "feed" ? (
 				<Dialog onClose={props.handleOpenToggle} open={props.open}>
 					<StyledDialogContent>
 						<CloseButton>
@@ -296,9 +303,4 @@ const CancelButton = styled(StyledButton)`
 	&:hover {
 		background-color: #c4c4c4;
 	}
-`;
-
-const ConfirmButton = styled(StyledButton)`
-	padding: 0.8rem 1.8rem;
-	font-size: 1.6rem;
 `;

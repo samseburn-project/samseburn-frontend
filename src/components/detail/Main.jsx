@@ -45,36 +45,33 @@ const Main = () => {
 				headers: { Authorization: `Bearer ${userToken}` },
 			});
 
-			console.log(res);
-
 			const { status, data } = res;
 
 			if (status === 200) {
 				setUserChallenge(data);
 			}
 		} catch (err) {
-			if (err.response.data.message === "해당 챌린지를 찾을 수 없습니다.") {
+			if (
+				err.response.data.message === "해당 챌린지를 찾을 수 없습니다." ||
+				err.response.status === 500
+			) {
 				console.log("참여중인 챌린지가 아닙니다.");
 			}
 		}
 	};
 
-	const handleChallengeJoin = async (userToken) => {
+	const handleChallengeJoin = async () => {
+		console.log(userToken);
 		try {
-			const res = await axios.post(`/challenges/${challengeId}/join`, {
+			const res = await axios.post(`/challenges/${challengeId}/join`, null, {
 				headers: {
 					Authorization: `Bearer ${userToken}`,
 				},
 			});
 
-			if (res.status === 200) {
-				enqueueSnackbar("챌린지에 참여하셨습니다.", {
+			if (res.status !== 200) {
+				enqueueSnackbar("챌린지에 참여 신청에 실패했습니다.", {
 					variant: "success",
-					autoHideDuration: 2000,
-				});
-			} else {
-				enqueueSnackbar("챌린지 참여 신청에 실패했습니다.", {
-					variant: "error",
 					autoHideDuration: 2000,
 				});
 			}
@@ -99,11 +96,18 @@ const Main = () => {
 
 	const handleChallengeContinue = async () => {
 		try {
-			await axios.put(`/challenges/${challengeId}/continue`, {
+			const res = await axios.put(`/challenges/${challengeId}/continue`, {
 				headers: {
 					Authorization: `Bearer ${userToken}`,
 				},
 			});
+
+			if (res.status !== 200) {
+				enqueueSnackbar("챌린지 계속하기에 실패했습니다.", {
+					variant: "error",
+					autoHideDuration: 2000,
+				});
+			}
 		} catch (err) {
 			console.error(err);
 		}
@@ -111,11 +115,18 @@ const Main = () => {
 
 	const handleChallengeStop = async () => {
 		try {
-			await axios.delete(`challenges/${challengeId}/continue`, {
+			const res = await axios.delete(`/challenges/${challengeId}/continue`, {
 				headers: {
 					Authorization: `Bearer ${userToken}`,
 				},
 			});
+
+			if (res.status !== 200) {
+				enqueueSnackbar("챌린지 그만두기에 실패했습니다.", {
+					variant: "error",
+					autoHideDuration: 2000,
+				});
+			}
 		} catch (err) {
 			console.error(err);
 		}
