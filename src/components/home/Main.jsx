@@ -102,16 +102,20 @@ const Main = () => {
         </SearchBarRow>
         {isSearch && (
           <SearchListContainer sx={{ width: '100%' }}>
-            <Grid container spacing={4}>
-              {searchChallenges.map((challenge) => (
-                <Grid item xs={4} key={challenge.challengeId}>
-                  <ChallengeCard
-                    key={challenge.challengeId}
-                    challenge={challenge}
-                  />
-                </Grid>
-              ))}
-            </Grid>
+            {searchChallenges.length ? (
+              <Grid container spacing={4}>
+                {searchChallenges.map((challenge) => (
+                  <Grid item xs={4} key={challenge.challengeId}>
+                    <ChallengeCard
+                      key={challenge.challengeId}
+                      challenge={challenge}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+            ) : (
+              <EmptyContainer>검색 결과가 없습니다.</EmptyContainer>
+            )}
           </SearchListContainer>
         )}
 
@@ -191,4 +195,11 @@ const Loading = styled.div`
 const SearchListContainer = styled(Box)`
   margin-top: 6rem;
   margin-bottom: 18rem;
+`;
+
+const EmptyContainer = styled.div`
+  width: 100%;
+  text-align: center;
+  font-size: 2rem;
+  margin: 8rem 0;
 `;
