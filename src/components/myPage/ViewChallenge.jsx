@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import styled from "styled-components";
 
-import { Grid } from "@mui/material";
+import { Grid, CircularProgress } from "@mui/material";
+
 import MyChallengeCard from "./MyChallengeCard";
 
 const ViewChallenge = ({ userToken, userChallengeList }) => {
+	const [loading, setLoading] = useState(true);
+
 	const joinChallenges = userChallengeList.filter(
 		(item) => item.challengeStatus === "JOIN"
 	);
@@ -16,105 +19,117 @@ const ViewChallenge = ({ userToken, userChallengeList }) => {
 		(item) => item.challengeStatus === "COMPLETE"
 	);
 
+	useEffect(() => {
+		setLoading(false);
+	}, []);
+
 	return (
-		<ViewChallengeBox>
-			<Row>
-				<Title>챌린지 현황</Title>
-				<CountContainer>
-					<CountCard>
-						<CountNumber>{joinChallenges.length}</CountNumber>
-						<CountText>참가중</CountText>
-					</CountCard>
-					<CountCard>
-						<CountNumber>{retryChallenges.length}</CountNumber>
-						<CountText>재도전 가능</CountText>
-					</CountCard>
-					<CountCard>
-						<CountNumber>{completeChallenges.length}</CountNumber>
-						<CountText>완료</CountText>
-					</CountCard>
-				</CountContainer>
-			</Row>
-			<Row>
-				<Title>참가중인 챌린지</Title>
-				{joinChallenges.length === 0 ? (
-					<EmptyContainer>참가중인 챌린지가 없습니다</EmptyContainer>
-				) : (
-					<Grid container>
-						{joinChallenges.map((challenge, i) => (
-							<Grid item xs={6} key={i}>
-								<MyChallengeCard
-									id={challenge.challengeId}
-									title={challenge.title}
-									category={challenge.category}
-									locationType={challenge.locationType}
-									challengeStartDate={challenge.challengeStartDate}
-									challengeEndDate={challenge.challengeEndDate}
-									certiCount={challenge.certiCount}
-									retryCount={challenge.retryCount}
-									imgUrl={challenge.imgUrl}
-									challengeStatus={challenge.challengeStatus}
-									firstWeekMission={challenge.firstWeekMission}
-								/>
+		<>
+			{loading ? (
+				<SpinnerContainer>
+					<CircularProgress size={30} color="warning" />
+				</SpinnerContainer>
+			) : (
+				<ViewChallengeBox>
+					<Row>
+						<Title>챌린지 현황</Title>
+						<CountContainer>
+							<CountCard>
+								<CountNumber>{joinChallenges.length}</CountNumber>
+								<CountText>참가중</CountText>
+							</CountCard>
+							<CountCard>
+								<CountNumber>{retryChallenges.length}</CountNumber>
+								<CountText>재도전 가능</CountText>
+							</CountCard>
+							<CountCard>
+								<CountNumber>{completeChallenges.length}</CountNumber>
+								<CountText>완료</CountText>
+							</CountCard>
+						</CountContainer>
+					</Row>
+					<Row>
+						<Title>참가중인 챌린지</Title>
+						{joinChallenges.length === 0 ? (
+							<EmptyContainer>참가중인 챌린지가 없습니다</EmptyContainer>
+						) : (
+							<Grid container>
+								{joinChallenges.map((challenge, i) => (
+									<Grid item xs={6} key={i}>
+										<MyChallengeCard
+											id={challenge.challengeId}
+											title={challenge.title}
+											category={challenge.category}
+											locationType={challenge.locationType}
+											challengeStartDate={challenge.challengeStartDate}
+											challengeEndDate={challenge.challengeEndDate}
+											certiCount={challenge.certiCount}
+											retryCount={challenge.retryCount}
+											imgUrl={challenge.imgUrl}
+											challengeStatus={challenge.challengeStatus}
+											firstWeekMission={challenge.firstWeekMission}
+										/>
+									</Grid>
+								))}
 							</Grid>
-						))}
-					</Grid>
-				)}
-			</Row>
-			<Row>
-				<Title>재도전 가능 챌린지</Title>
-				{retryChallenges.length === 0 ? (
-					<EmptyContainer>재도전 가능한 챌린지가 없습니다</EmptyContainer>
-				) : (
-					<Grid container>
-						{retryChallenges.map((challenge, i) => (
-							<Grid item xs={6} key={i}>
-								<MyChallengeCard
-									userToken={userToken}
-									id={challenge.challengeId}
-									title={challenge.title}
-									category={challenge.category}
-									locationType={challenge.locationType}
-									challengeStartDate={challenge.challengeStartDate}
-									challengeEndDate={challenge.challengeEndDate}
-									certiCount={challenge.certiCount}
-									retryCount={challenge.retryCount}
-									imgUrl={challenge.imgUrl}
-									challengeStatus={challenge.challengeStatus}
-									firstWeekMission={challenge.firstWeekMission}
-								/>
+						)}
+					</Row>
+					<Row>
+						<Title>재도전 가능 챌린지</Title>
+						{retryChallenges.length === 0 ? (
+							<EmptyContainer>재도전 가능한 챌린지가 없습니다</EmptyContainer>
+						) : (
+							<Grid container>
+								{retryChallenges.map((challenge, i) => (
+									<Grid item xs={6} key={i}>
+										<MyChallengeCard
+											userToken={userToken}
+											id={challenge.challengeId}
+											title={challenge.title}
+											category={challenge.category}
+											locationType={challenge.locationType}
+											challengeStartDate={challenge.challengeStartDate}
+											challengeEndDate={challenge.challengeEndDate}
+											certiCount={challenge.certiCount}
+											retryCount={challenge.retryCount}
+											imgUrl={challenge.imgUrl}
+											challengeStatus={challenge.challengeStatus}
+											firstWeekMission={challenge.firstWeekMission}
+										/>
+									</Grid>
+								))}
 							</Grid>
-						))}
-					</Grid>
-				)}
-			</Row>
-			<Row>
-				<Title>완료한 챌린지</Title>
-				{completeChallenges.length === 0 ? (
-					<EmptyContainer>완료한 챌린지가 없습니다</EmptyContainer>
-				) : (
-					<Grid container>
-						{completeChallenges.map((challenge, i) => (
-							<Grid item xs={6} key={i}>
-								<MyChallengeCard
-									id={challenge.challengeId}
-									title={challenge.title}
-									category={challenge.category}
-									locationType={challenge.locationType}
-									challengeStartDate={challenge.challengeStartDate}
-									challengeEndDate={challenge.challengeEndDate}
-									certiCount={challenge.certiCount}
-									retryCount={challenge.retryCount}
-									imgUrl={challenge.imgUrl}
-									challengeStatus={challenge.challengeStatus}
-									firstWeekMission={challenge.firstWeekMission}
-								/>
+						)}
+					</Row>
+					<Row>
+						<Title>완료한 챌린지</Title>
+						{completeChallenges.length === 0 ? (
+							<EmptyContainer>완료한 챌린지가 없습니다</EmptyContainer>
+						) : (
+							<Grid container>
+								{completeChallenges.map((challenge, i) => (
+									<Grid item xs={6} key={i}>
+										<MyChallengeCard
+											id={challenge.challengeId}
+											title={challenge.title}
+											category={challenge.category}
+											locationType={challenge.locationType}
+											challengeStartDate={challenge.challengeStartDate}
+											challengeEndDate={challenge.challengeEndDate}
+											certiCount={challenge.certiCount}
+											retryCount={challenge.retryCount}
+											imgUrl={challenge.imgUrl}
+											challengeStatus={challenge.challengeStatus}
+											firstWeekMission={challenge.firstWeekMission}
+										/>
+									</Grid>
+								))}
 							</Grid>
-						))}
-					</Grid>
-				)}
-			</Row>
-		</ViewChallengeBox>
+						)}
+					</Row>
+				</ViewChallengeBox>
+			)}
+		</>
 	);
 };
 
@@ -170,4 +185,12 @@ const CountText = styled.div`
 	font-size: 1.6rem;
 	font-weight: bold;
 	color: #959595;
+`;
+
+const SpinnerContainer = styled.div`
+	width: 100%;
+	height: 80vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 `;

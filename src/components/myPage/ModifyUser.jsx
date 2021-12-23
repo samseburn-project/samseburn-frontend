@@ -3,16 +3,16 @@ import axios from "axios";
 
 import styled from "styled-components";
 
-import { TextField } from "@mui/material";
+import { TextField, CircularProgress } from "@mui/material";
 
 import { ReactComponent as Delete } from "../../assets/icons/delete.svg";
 import StyledButton from "../common/StyledButton";
 import CommonDialog from "../common/CommonDialog";
 
 const ModifyUser = ({ userToken }) => {
+	const [loading, setLoading] = useState(true);
 	const [openDialog, setOpenDialog] = useState("");
 	const [open, setOpen] = useState(false);
-	const [loading, setLoading] = useState(false);
 	const [nickname, setNickname] = useState("");
 	const [image, setImage] = useState({
 		imageFile: null,
@@ -29,7 +29,6 @@ const ModifyUser = ({ userToken }) => {
 
 	useEffect(() => {
 		const fetchUser = async () => {
-			setLoading(true);
 			try {
 				const res = await axios.get("/user", {
 					headers: { Authorization: `Bearer ${userToken}` },
@@ -45,10 +44,10 @@ const ModifyUser = ({ userToken }) => {
 			} catch (err) {
 				console.error(err);
 			}
-			setLoading(false);
 		};
 
 		fetchUser(); // 유저 정보 요청
+		setLoading(false);
 	}, []);
 
 	const onChangeNickname = ({ target: { value } }) => {
@@ -105,77 +104,79 @@ const ModifyUser = ({ userToken }) => {
 		}
 	};
 
-	if (loading) {
-		return (
-			<ModifyUserBox>
-				<LoadingContainer>Loading...</LoadingContainer>
-			</ModifyUserBox>
-		);
-	}
-
 	if (!nickname) {
 		return null;
 	}
 
 	return (
-		<ModifyUserBox>
-			<FormContainer>
-				<ImageContainer>
-					<ThumbnailContainer>
-						{image.imageFile || image.imageUrl ? (
-							<ImageThumbnail alt="Profile Image" src={image.imageUrl} />
-						) : (
-							<DefaultThumbnail></DefaultThumbnail>
-						)}
-						<DeleteButtonContainer onClick={onDeleteFile}>
-							<Delete alt="Delete icon" style={{ zIndex: 10 }} />
-						</DeleteButtonContainer>
-					</ThumbnailContainer>
-					<label htmlFor="input-image">
-						<ImageFileInput
-							type="file"
-							accept="image/*"
-							name="file"
-							onChange={onLoadFile}
-							id="input-image"
-						/>
-						<ImageUploadButton component="span">이미지 변경</ImageUploadButton>
-					</label>
-				</ImageContainer>
-				<Row>
-					<LabelText>닉네임*</LabelText>
-					<NameInput placeholder={nickname} onChange={onChangeNickname} />
-				</Row>
-				<Row>
-					<SubmitButton
-						onClick={(e) => {
-							onSubmitHandler(e);
-							handleOpenToggle();
-						}}
-					>
-						수정 완료
-					</SubmitButton>
-					<CommonDialog
-						open={open}
-						handleOpenToggle={handleOpenToggle}
-						openDialog={openDialog}
-						handleOpenDialog={handleOpenDialog}
-						mainText={"회원 정보 변경이 완료되었습니다"}
-						subText={""}
-					/>
-				</Row>
-			</FormContainer>
-		</ModifyUserBox>
+		<>
+			{loading ? (
+				<SpinnerContainer>
+					<CircularProgress size={30} color="warning" />
+				</SpinnerContainer>
+			) : (
+				<ModifyUserBox>
+					<FormContainer>
+						<ImageContainer>
+							<ThumbnailContainer>
+								{image.imageFile || image.imageUrl ? (
+									<ImageThumbnail alt="Profile Image" src={image.imageUrl} />
+								) : (
+									<DefaultThumbnail></DefaultThumbnail>
+								)}
+								<DeleteButtonContainer onClick={onDeleteFile}>
+									<Delete alt="Delete icon" style={{ zIndex: 10 }} />
+								</DeleteButtonContainer>
+							</ThumbnailContainer>
+							<label htmlFor="input-image">
+								<ImageFileInput
+									type="file"
+									accept="image/*"
+									name="file"
+									onChange={onLoadFile}
+									id="input-image"
+								/>
+								<ImageUploadButton component="span">
+									이미지 변경
+								</ImageUploadButton>
+							</label>
+						</ImageContainer>
+						<Row>
+							<LabelText>닉네임*</LabelText>
+							<NameInput placeholder={nickname} onChange={onChangeNickname} />
+						</Row>
+						<Row>
+							<SubmitButton
+								onClick={(e) => {
+									onSubmitHandler(e);
+									handleOpenToggle();
+								}}
+							>
+								수정 완료
+							</SubmitButton>
+							<CommonDialog
+								open={open}
+								handleOpenToggle={handleOpenToggle}
+								openDialog={openDialog}
+								handleOpenDialog={handleOpenDialog}
+								mainText={"회원 정보 변경이 완료되었습니다"}
+								subText={""}
+							/>
+						</Row>
+					</FormContainer>
+				</ModifyUserBox>
+			)}
+		</>
 	);
 };
 
 export default ModifyUser;
 
-const LoadingContainer = styled.div`
-	text-align: center;
-	font-size: 2rem;
-	margin: 8rem 0;
-`;
+// const LoadingContainer = styled.div`
+// 	text-align: center;
+// 	font-size: 2rem;
+// 	margin: 8rem 0;
+// `;
 
 const Row = styled.div`
 	margin: 0;
@@ -189,6 +190,7 @@ const FormContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	margin-top: 5rem;
 `;
 
 const ImageContainer = styled.div`
@@ -266,4 +268,12 @@ const NameInput = styled(TextField)`
 		font-size: 1.6rem;
 		padding: 1.2rem;
 	}
+`;
+
+const SpinnerContainer = styled.div`
+	width: 100%;
+	height: 80vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 `;

@@ -5,18 +5,19 @@ import { useSnackbar } from "notistack";
 
 import styled from "styled-components";
 
-import { Divider, Grid } from "@mui/material";
+import { Divider, Grid, CircularProgress } from "@mui/material";
 
 import Intro from "./Intro";
 import Participant from "./Participant";
 import PlaceMap from "./PlaceMap";
 
 const Main = () => {
-	const params = useParams();
-	const challengeId = Number(params.id);
+	const [loading, setLoading] = useState(true);
 	const [challenge, setChallenge] = useState();
 	const [participants, setParticipants] = useState([]);
 	const [userChallenge, setUserChallenge] = useState({});
+	const params = useParams();
+	const challengeId = Number(params.id);
 	const userToken = localStorage.getItem("token");
 
 	const { enqueueSnackbar } = useSnackbar();
@@ -136,53 +137,64 @@ const Main = () => {
 		fetchChallenge();
 		fetchParticipants();
 		fetchUserChallenge();
+		setLoading(false);
 	}, []);
 
 	return (
 		<>
-			<Intro
-				challenge={challenge}
-				userChallenge={userChallenge}
-				handleChallengeJoin={handleChallengeJoin}
-				handleChallengeCancel={handleChallengeCancel}
-				handleChallengeContinue={handleChallengeContinue}
-				handleChallengeStop={handleChallengeStop}
-			/>
-			<Wrapper>
-				<Row>
-					<Title>챌린지 설명</Title>
-					<Text>{challenge?.description}</Text>
-				</Row>
-				<Row>
-					<Title>챌린지 참가 장소</Title>
+			{loading ? (
+				<SpinnerContainer>
+					<CircularProgress size={70} color="warning" />
+				</SpinnerContainer>
+			) : (
+				<>
+					<Intro
+						challenge={challenge}
+						userChallenge={userChallenge}
+						handleChallengeJoin={handleChallengeJoin}
+						handleChallengeCancel={handleChallengeCancel}
+						handleChallengeContinue={handleChallengeContinue}
+						handleChallengeStop={handleChallengeStop}
+					/>
+					<Wrapper>
+						<Row>
+							<Title>챌린지 설명</Title>
+							<Text>{challenge?.description}</Text>
+						</Row>
+						<Row>
+							<Title>챌린지 참가 장소</Title>
 
-					{challenge?.address ? (
-						<>
-							<AddressText>📌 도로명 주소 : {challenge?.address}</AddressText>
-							<MapContainer>
-								<PlaceMap address={challenge.address} />
-							</MapContainer>
-						</>
-					) : (
-						<OnlineText>본 챌린지는 온라인으로 진행됩니다.</OnlineText>
-					)}
-				</Row>
-				<Divider />
-				<Row>
-					<Title>챌린지 참가 현황</Title>
-					<Grid container rowSpacing={3}>
-						{participants.map((participant) => (
-							<Grid item key={participant.id}>
-								<Participant
-									participant={participant}
-									challenge={challenge}
-									userChallengeId={userChallenge?.userId}
-								/>
+							{challenge?.address ? (
+								<>
+									<AddressText>
+										📌 도로명 주소 : {challenge?.address}
+									</AddressText>
+									<MapContainer>
+										<PlaceMap address={challenge.address} />
+									</MapContainer>
+								</>
+							) : (
+								<OnlineText>본 챌린지는 온라인으로 진행됩니다.</OnlineText>
+							)}
+						</Row>
+						<Divider />
+						<Row>
+							<Title>챌린지 참가 현황</Title>
+							<Grid container rowSpacing={3}>
+								{participants.map((participant) => (
+									<Grid item key={participant.id}>
+										<Participant
+											participant={participant}
+											challenge={challenge}
+											userChallengeId={userChallenge?.userId}
+										/>
+									</Grid>
+								))}
 							</Grid>
-						))}
-					</Grid>
-				</Row>
-			</Wrapper>
+						</Row>
+					</Wrapper>
+				</>
+			)}
 		</>
 	);
 };
@@ -233,4 +245,12 @@ const OnlineText = styled.div`
 	margin: 8rem 0;
 	font-size: 2rem;
 	text-align: center;
+`;
+
+const SpinnerContainer = styled.div`
+	width: 100%;
+	height: 80vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 `;
