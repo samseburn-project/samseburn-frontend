@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import { Tab, Tabs } from "@mui/material";
-import { styled as muiStyled } from "@mui/material/styles";
-import ViewChallenge from "./ViewChallenge";
-import ModifyUser from "./ModifyUser";
-import ManageChallenge from "./ManageChallenge";
+import { Tab, Tabs } from '@mui/material';
+import { styled as muiStyled } from '@mui/material/styles';
+import ViewChallenge from './ViewChallenge';
+import ModifyUser from './ModifyUser';
+import ManageChallenge from './ManageChallenge';
 
 const Main = () => {
 	const [selectedTab, setSelectedTab] = useState(0);
@@ -115,9 +115,9 @@ const Main = () => {
 export default Main;
 
 const Wrapper = styled.section`
-	width: 104rem;
-	margin: 0 auto;
-	flex: 1;
+  width: 104rem;
+  margin: 0 auto;
+  flex: 1;
 `;
 
 const Row = styled.div``;
