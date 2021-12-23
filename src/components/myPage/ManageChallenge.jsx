@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import styled from "styled-components";
 
@@ -6,6 +6,17 @@ import { Grid } from "@mui/material";
 import RegisterChallengeCard from "./RegisterChallengeCard";
 
 function ManageChallenge({ ...props }) {
+	const [openDialog, setOpenDialog] = useState("");
+	const [open, setOpen] = useState(false);
+
+	const handleOpenDialog = (targetId) => {
+		setOpenDialog(targetId);
+	};
+
+	const handleOpenToggle = () => {
+		setOpen(!open);
+	};
+
 	return (
 		<ManageChallengeBox>
 			{props?.userCreateChallengeList.length === 0 ? (
@@ -15,17 +26,12 @@ function ManageChallenge({ ...props }) {
 					{props?.userCreateChallengeList.map((challenge) => (
 						<Grid item xs={6} key={challenge.challengeId}>
 							<RegisterChallengeCard
-								key={challenge.challengeId}
-								challengeId={challenge.challengeId}
-								title={challenge.title}
-								imgUrl={challenge.imgUrl}
-								category={challenge.category}
-								locationType={challenge.locationType}
-								challengeStartDate={challenge.challengeStartDate}
-								challengeEndDate={challenge.challengeEndDate}
-								dialogOpen={props?.dialogOpen}
-								handleDialogOpen={props?.handleDialogOpen}
-								handleDialogClose={props?.handleDialogClose}
+								id={challenge.challengeId}
+								open={open}
+								handleOpenToggle={handleOpenToggle}
+								openDialog={openDialog}
+								handleOpenDialog={handleOpenDialog}
+								challenge={challenge}
 							/>
 						</Grid>
 					))}

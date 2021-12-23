@@ -124,9 +124,11 @@ const Navbar = ({ ...props }) => {
 								</NavLink>
 								<MenuItem onClick={kakaoLogoutHandler}>Logout</MenuItem>
 							</StyledMenu>
-							<NavRegister>
-								<Register alt="Register icon" />
-							</NavRegister>
+							<NavLink to="/register">
+								<NavRegister>
+									<Register alt="Register icon" />
+								</NavRegister>
+							</NavLink>
 						</NavIcon>
 					</NavContainer>
 				</Nav>
@@ -147,7 +149,7 @@ const Nav = styled.nav`
 			position: fixed;
 			top: 0;
 			background-color: #ffffff;
-			z-index: 1;
+			z-index: 1000;
 			box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.2);
 		`}
 `;

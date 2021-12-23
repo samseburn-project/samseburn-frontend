@@ -13,7 +13,6 @@ const Main = () => {
 	const [selectedTab, setSelectedTab] = useState(0);
 	const [userChallengeList, setUserChallengList] = useState([]);
 	const [userCreateChallengeList, setUserCreateChallengList] = useState([]);
-	const [dialogOpen, setDialogOpen] = useState(false);
 	const userToken = localStorage.getItem("token");
 
 	const fetchUserChallenges = async () => {
@@ -23,7 +22,6 @@ const Main = () => {
 			});
 
 			if (res.status === 200) setUserChallengList(res.data);
-			console.log(res.data);
 
 			// response에서 받은 데이터 state에 저장해 컴포넌트에 props로 내려주기
 		} catch (err) {
@@ -38,7 +36,6 @@ const Main = () => {
 			});
 
 			if (res.status === 200) setUserCreateChallengList(res.data);
-			console.log(res);
 		} catch (err) {
 			console.error(err);
 		}
@@ -46,14 +43,6 @@ const Main = () => {
 
 	const handleChange = (event, newValue) => {
 		setSelectedTab(newValue);
-	};
-
-	const handleDialogOpen = () => {
-		setDialogOpen(true);
-	};
-
-	const handleDialogClose = () => {
-		setDialogOpen(false);
 	};
 
 	useEffect(() => {
@@ -117,9 +106,6 @@ const Main = () => {
 					{selectedTab === 2 && (
 						<ManageChallenge
 							userCreateChallengeList={userCreateChallengeList}
-							dialogOpen={dialogOpen}
-							handleDialogOpen={handleDialogOpen}
-							handleDialogClose={handleDialogClose}
 						/>
 					)}
 				</Row>
@@ -133,6 +119,7 @@ export default Main;
 const Wrapper = styled.section`
 	width: 104rem;
 	margin: 0 auto;
+	flex: 1;
 `;
 
 const Row = styled.div``;

@@ -11,11 +11,11 @@ const CommonDialog = ({ ...props }) => {
 	const handleButtonRender = (mainText) => {
 		if (mainText === "챌린지 참가 신청이 완료되었습니다.") {
 			return (
-				<ConfirmButton type="button" onClick={() => props.handleDialogClose()}>
+				<ConfirmButton type="button" onClick={props.handleOpenToggle}>
 					확인
 				</ConfirmButton>
 			);
-		} else if (mainText === "챌린지 참가 신청이 취소되었습니다.") {
+		} else if (mainText === "챌린지 참가를 취소하시겠습니까?") {
 			return (
 				<ButtonRow>
 					<ConfirmButton
@@ -24,7 +24,7 @@ const CommonDialog = ({ ...props }) => {
 					>
 						확인
 					</ConfirmButton>
-					<CancelButton type="button" onClick={() => props.handleDialogClose()}>
+					<CancelButton type="button" onClick={props.handleOpenToggle}>
 						취소
 					</CancelButton>
 				</ButtonRow>
@@ -36,7 +36,6 @@ const CommonDialog = ({ ...props }) => {
 						type="button"
 						onClick={() => {
 							props.handleChallengeContinue();
-							props.handleDialogClose();
 						}}
 					>
 						챌린지 계속 하기
@@ -45,7 +44,6 @@ const CommonDialog = ({ ...props }) => {
 						type="button"
 						onClick={() => {
 							props.handleChallengeStop();
-							props.handleDialogClose();
 						}}
 					>
 						챌린지 그만 두기
@@ -54,18 +52,13 @@ const CommonDialog = ({ ...props }) => {
 			);
 		} else if (mainText === "챌린지 1주차 작심삼일 미션을 달성하지 못했어요 😔")
 			return (
-				<ConfirmButton type="button" onClick={() => props.handleDialogClose()}>
+				<ConfirmButton type="button" onClick={props.handleOpenToggle}>
 					확인
 				</ConfirmButton>
 			);
 		else if (mainText === "회원 정보 변경이 완료되었습니다")
 			return (
-				<ConfirmButton
-					type="button"
-					onClick={() => {
-						props.handleDialogClose();
-					}}
-				>
+				<ConfirmButton type="button" onClick={props.handleOpenToggle}>
 					확인
 				</ConfirmButton>
 			);
@@ -76,12 +69,11 @@ const CommonDialog = ({ ...props }) => {
 						type="button"
 						onClick={() => {
 							props.handleChallengeDelete();
-							props.handleDialogClose();
 						}}
 					>
 						확인
 					</DeleteButton>
-					<CancelButton type="button" onClick={() => props.handleDialogClose()}>
+					<CancelButton type="button" onClick={props.handleOpenToggle}>
 						취소
 					</CancelButton>
 				</ButtonRow>
@@ -89,20 +81,26 @@ const CommonDialog = ({ ...props }) => {
 	};
 
 	return (
-		<Dialog onClose={() => props.handleDialogClose()} open={props.dialogOpen}>
-			<StyledDialogContent>
-				<CloseButton>
-					<Close alt="Close icon" onClick={props.handleDialogClose} />
-				</CloseButton>
-				<Container>
-					<Row>
-						<MainText>{props.mainText}</MainText>
-						<SubText>{props.subText}</SubText>
-					</Row>
-					<Row>{handleButtonRender(props.mainText)}</Row>
-				</Container>
-			</StyledDialogContent>
-		</Dialog>
+		<>
+			{props.openDialog !== "auth" && props.openDialog !== "update" ? (
+				<Dialog onClose={props.handleOpenToggle} open={props.open}>
+					<StyledDialogContent>
+						<CloseButton>
+							<Close alt="Close icon" onClick={props.handleOpenToggle} />
+						</CloseButton>
+						<Container>
+							<Row>
+								<MainText>{props.mainText}</MainText>
+								<SubText>{props.subText}</SubText>
+							</Row>
+							<Row>{handleButtonRender(props.mainText)}</Row>
+						</Container>
+					</StyledDialogContent>
+				</Dialog>
+			) : (
+				""
+			)}
+		</>
 	);
 };
 

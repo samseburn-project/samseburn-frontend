@@ -5,8 +5,8 @@ import styled from "styled-components";
 import { FormControl, Select, MenuItem } from "@mui/material";
 
 const SortFilter = ({ ...props }) => {
-	const handleChange = (e) => {
-		props.setSortBy(e.target.value);
+	const handleSortByChange = (e) => {
+		props.onSortBy(e.target.value);
 	};
 
 	return (
@@ -14,7 +14,7 @@ const SortFilter = ({ ...props }) => {
 			<StyledSelect
 				name="sortBy"
 				value={props.sortBy}
-				onChange={handleChange}
+				onChange={handleSortByChange}
 				displayEmpty
 			>
 				<StyledMenuItem value={""} disabled>

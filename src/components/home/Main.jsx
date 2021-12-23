@@ -14,56 +14,62 @@ import ChallengeCard from "./ChallengeCard";
 
 const Main = () => {
 	const [challenges, setChallenges] = useState([]);
-	const [sortBy, setSortBy] = useState("createdAt");
 	const [hasMore, setHasMore] = useState(false);
 	const [page, setPage] = useState(1);
+	const [sortBy, setSortBy] = useState("createdAt");
 	const [categoryName, setCategoryName] = useState("All");
+	const [totalCount, setTotalCount] = useState();
 
-	const fetchChallenges = async (pageNum) => {
+	const fetchChallenges = async () => {
 		try {
-			const { data } = await axios.get("/challenges", {
+			const res = await axios.get("/challenges", {
 				params: {
 					kind: categoryName,
-					page: pageNum,
+					page: page,
+					sortBy: sortBy,
 				},
 			});
-			setChallenges((prev) => [...prev, ...data]);
+
+			const { challengeList, totalCount } = res.data;
+
+			setChallenges([...challenges, ...challengeList]);
+			setTotalCount(totalCount);
 			setHasMore(true);
 		} catch (e) {
 			console.error(e);
 		}
 	};
 
-	const fetchFilter = async () => {
-		try {
-			await axios.get("/challenges/filter", {
-				params: {
-					sortBy: sortBy,
-				},
-			});
-		} catch (err) {
-			console.error(err);
-		}
-	};
-
 	const fetchMoreData = () => {
-		setPage((prev) => prev + 1);
+		setPage(page + 1);
 	};
-
-	useEffect(() => {
-		fetchChallenges(page);
-		fetchFilter();
-
-		return () => {
-			setHasMore(false);
-		};
-	}, []);
 
 	const onCategory = (name) => {
 		setCategoryName(name === "전체" ? "All" : name);
 		setPage(1);
 		setChallenges([]);
 	};
+
+	const onSortBy = (option) => {
+		setSortBy(option);
+		setPage(1);
+		setChallenges([]);
+	};
+
+	const refresh = () => {
+		setPage(1);
+		setChallenges([]);
+	};
+
+	useEffect(() => {
+		if (totalCount === challenges.length || challenges === []) {
+			setHasMore(false);
+			return;
+		}
+		fetchChallenges();
+
+		return () => setHasMore(false);
+	}, [page, sortBy, categoryName]);
 
 	return (
 		<>
@@ -76,39 +82,32 @@ const Main = () => {
 				</SearchBarRow>
 				<FilterRow>
 					<CategoryFilter onCategory={onCategory} />
-					<SortFilter sortBy={sortBy} setSortBy={setSortBy} />
+					<SortFilter sortBy={sortBy} onSortBy={onSortBy} />
 				</FilterRow>
-				<ListContainer sx={{ width: "100%" }}>
-					<InfiniteScroll
-						dataLength={challenges.length}
-						next={fetchMoreData}
-						hasMore={hasMore}
-						loader={
-							<Loading>
-								<CircularProgress />
-							</Loading>
-						}
-					>
+				<InfiniteScroll
+					dataLength={challenges.length}
+					next={fetchMoreData}
+					hasMore={hasMore}
+					loader={
+						<Loading>
+							<CircularProgress />
+						</Loading>
+					}
+					refreshFunction={refresh}
+				>
+					<ListContainer sx={{ width: "100%" }}>
 						<Grid container spacing={4}>
 							{challenges.map((challenge) => (
 								<Grid item xs={4} key={challenge.challengeId}>
 									<ChallengeCard
 										key={challenge.challengeId}
-										challengeId={challenge.challengeId}
-										title={challenge.title}
-										category={challenge.category}
-										locationType={challenge.locationType}
-										challengeStartDate={challenge.challengeStartDate}
-										challengeEndDate={challenge.challengeEndDate}
-										imgUrl={challenge.imgUrl}
-										limitPerson={challenge.limitPerson}
-										participants={challenge.participants}
+										challenge={challenge}
 									/>
 								</Grid>
 							))}
 						</Grid>
-					</InfiniteScroll>
-				</ListContainer>
+					</ListContainer>
+				</InfiniteScroll>
 			</Wrapper>
 		</>
 	);
@@ -119,6 +118,7 @@ export default Main;
 const Wrapper = styled.section`
 	width: 104rem;
 	margin: 10rem auto;
+	flex: 1;
 `;
 
 const Title = styled.div`

@@ -11,12 +11,13 @@ import { ReactComponent as Close } from "../../assets/icons/close.svg";
 import { ReactComponent as Delete } from "../../assets/icons/delete.svg";
 
 const AuthDialog = ({ ...props }) => {
-	console.log(props);
 	const certify = props?.certify;
 	const challengeId = props?.challengeId;
+	const certifyId = props?.certifyId;
+	const userChallengeId = props?.userChallengeId;
 	const [imgFile, setImgFile] = useState(null);
 	const [previewImg, setPreviewImg] = useState(
-		certify?.imgUrl ? certify?.imgUrl : null
+		certify ? props?.certifyImg : null
 	);
 	const [contents, setContents] = useState("");
 	const userToken = localStorage.getItem("token");
@@ -98,117 +99,61 @@ const AuthDialog = ({ ...props }) => {
 	};
 
 	return (
-		<Dialog onClose={props.handleDialogClose} open={props.dialogOpen}>
-			<StyledDialogContent>
-				<CloseButton>
-					<Close alt="Close icon" onClick={props.handleDialogClose} />
-				</CloseButton>
-				<form onSubmit={handleSubmit}>
-					<Grid container direction="column" rowSpacing={4}>
-						<Grid item container direction="column">
-							<Grid item>
-								{!previewImg ? (
-									<AuthThumbnail>
-										<DeleteButton>
-											<Delete
-												alt="Delete icon"
-												style={{ zIndex: 10 }}
-												onClick={handleImgDelete}
-											/>
-										</DeleteButton>
-									</AuthThumbnail>
-								) : (
-									<AuthThumbnail>
-										<img src={previewImg} alt="Auth Thumbnail" />
-										<DeleteButton style={{ cursor: "default" }}>
-											<Delete alt="Delete icon" style={{ zIndex: 10 }} />
-										</DeleteButton>
-									</AuthThumbnail>
-								)}
-							</Grid>
-							<Grid item textAlign="center">
-								<label htmlFor="auth-image">
-									{!certify ? (
-										<>
-											<UploadInput
-												id="auth-image"
-												accept="image/*"
-												type="file"
-												ref={imgRef}
-												onChange={handleImgChange}
-											/>
-											<UploadButton type="button">이미지 업로드</UploadButton>{" "}
-										</>
-									) : (
-										""
-									)}
-								</label>
-							</Grid>
-						</Grid>
-						<Grid item>
-							<LabelText>챌린지 인증 날짜</LabelText>
-							{!certify ? (
-								<DateInput
-									id="auth-date"
-									InputProps={{ readOnly: true }}
-									defaultValue={authDate}
-								/>
-							) : (
-								<DateInput
-									id="auth-date"
-									InputProps={{ readOnly: true }}
-									defaultValue={certify.createdDate}
-								/>
-							)}
-						</Grid>
-						<Grid item>
-							<LabelText>챌린지 인증 후기</LabelText>
-							{!certify ? (
-								<TextInput
-									id="auth-text"
-									multiline
-									rows={8}
-									onChange={handleContentsChange}
-								/>
-							) : (
-								<TextInput
-									id="auth-text"
-									multiline
-									rows={8}
-									InputProps={{ readOnly: true }}
-									defaultValue={certify.contents}
-								/>
-							)}
-						</Grid>
-						<Grid item textAlign="center">
-							{!certify ? (
-								<ButtonRow>
-									<EnrollButton type="submit">등록</EnrollButton>
-									<CancelButton
+		<>
+			{props.openDialog === "auth" || props.openDialog === "feed" ? (
+				<Dialog onClose={props.handleOpenToggle} open={props.open}>
+					<StyledDialogContent>
+						<CloseButton>
+							<Close alt="Close icon" onClick={props.handleOpenToggle} />
+						</CloseButton>
+						<form onSubmit={handleSubmit}>
+							<Grid container direction="column" rowSpacing={4}>
+								<Grid item container direction="column">
+									<Grid item>
+										<AuthThumbnail>
+											<img src={previewImg} alt="Auth Thumbnail" />
+											<DeleteButton style={{ cursor: "default" }}>
+												<Delete alt="Delete icon" style={{ zIndex: 10 }} />
+											</DeleteButton>
+										</AuthThumbnail>
+									</Grid>
+								</Grid>
+								<Grid item>
+									<LabelText>챌린지 인증 날짜</LabelText>
+									<DateInput
+										id="auth-date"
+										InputProps={{ readOnly: true }}
+										defaultValue={props?.certifyDate}
+									/>
+								</Grid>
+								<Grid item>
+									<LabelText>챌린지 인증 후기</LabelText>
+									<TextInput
+										id="auth-text"
+										multiline
+										rows={8}
+										InputProps={{ readOnly: true }}
+										defaultValue={props?.certifyContents}
+									/>
+								</Grid>
+								<Grid item textAlign="center">
+									<ConfirmButton
 										type="button"
 										onClick={() => {
-											handleReset();
-											props.handleDialogClose();
+											props.handleOpenToggle();
 										}}
 									>
-										취소
-									</CancelButton>
-								</ButtonRow>
-							) : (
-								<ConfirmButton
-									type="button"
-									onClick={() => {
-										props.handleDialogClose();
-									}}
-								>
-									확인
-								</ConfirmButton>
-							)}
-						</Grid>
-					</Grid>
-				</form>
-			</StyledDialogContent>
-		</Dialog>
+										확인
+									</ConfirmButton>
+								</Grid>
+							</Grid>
+						</form>
+					</StyledDialogContent>
+				</Dialog>
+			) : (
+				""
+			)}
+		</>
 	);
 };
 

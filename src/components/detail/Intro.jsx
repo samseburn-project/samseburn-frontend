@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSnackbar } from "notistack";
 
 import styled, { css } from "styled-components";
@@ -6,22 +6,53 @@ import styled, { css } from "styled-components";
 import Category from "../common/Category";
 import StyledButton from "../common/StyledButton";
 import CommonDialog from "../common/CommonDialog";
-import AuthDialog from "../common/AuthDialog";
+import AuthDialog from "./AuthDialog";
+
+import { ReactComponent as FirstMedal } from "../../assets/icons/1st-medal-icon.svg";
+import { ReactComponent as SecondMedal } from "../../assets/icons/2nd-medal-icon.svg";
+import { ReactComponent as ThirdMedal } from "../../assets/icons/3rd-medal-icon.svg";
 
 const Intro = ({ ...props }) => {
+	const [openDialog, setOpenDialog] = useState("");
+	const [open, setOpen] = useState(false);
 	const userToken = localStorage.getItem("token");
 	const today = new Date().getTime();
-	const missionDate = new Date(props.userChallenge?.userMissonDate).getTime();
+	const userMissionDate = new Date(
+		props.userChallenge?.userMissionDate
+	).getTime();
+	const certiCount = props.userChallenge?.certiCount;
+	console.log(certiCount);
 
 	const { enqueueSnackbar } = useSnackbar();
+
+	const handleOpenDialog = (targetId) => {
+		setOpenDialog(targetId);
+	};
+
+	const handleOpenToggle = () => {
+		setOpen(!open);
+	};
+
+	const renderMedal = (count) => {
+		if (count < 5) {
+			return "";
+		} else if (count < 10) {
+			return <ThirdMedal />;
+		} else if (count < 15) {
+			return <SecondMedal />;
+		} else {
+			return <FirstMedal />;
+		}
+	};
 
 	const handleMissionStatus = (missionStatus, count, missionDate, retry) => {
 		if (missionStatus === "NO" && count === 3) {
 			return (
 				<CommonDialog
-					dialogOpen={props.dialogOpen}
-					handleDialogOpen={props.handleDialogOpen}
-					handleDialogClose={props.handleDialogClose}
+					open={open}
+					handleOpenToggle={handleOpenToggle}
+					openDialog={openDialog}
+					handleOpenDialog={handleOpenDialog}
 					handleChallengeContinue={props.handleChallengeContinue}
 					handleChallengeStop={props.handleChallengeStop}
 					mainText={"챌린지 1주차 작심삼일 미션을 달성했습니다 🎉"}
@@ -33,9 +64,10 @@ const Intro = ({ ...props }) => {
 		} else if (missionStatus === "NO" && missionDate < today) {
 			return (
 				<CommonDialog
-					dialogOpen={props.dialogOpen}
-					handleDialogOpen={props.handleDialogOpen}
-					handleDialogClose={props.handleDialogClose}
+					open={open}
+					handleOpenToggle={handleOpenToggle}
+					openDialog={openDialog}
+					handleOpenDialog={handleOpenDialog}
 					mainText={"챌린지 1주차 작심삼일 미션을 달성하지 못했어요 😔"}
 					subText={`총 ${3 - retry}번의 재도전 기회가 남아 있어요!`}
 				/>
@@ -43,9 +75,10 @@ const Intro = ({ ...props }) => {
 		} else {
 			return (
 				<AuthDialog
-					dialogOpen={props.dialogOpen}
-					handleDialogOpen={props.handleDialogOpen}
-					handleDialogClose={props.handleDialogClose}
+					open={open}
+					handleOpenToggle={handleOpenToggle}
+					openDialog={openDialog}
+					handleOpenDialog={handleOpenDialog}
 					challengeId={props.challenge?.challengeId}
 				/>
 			);
@@ -55,45 +88,57 @@ const Intro = ({ ...props }) => {
 	const handleButtonRender = (challengeStatus) => {
 		if (challengeStatus === "JOIN") {
 			return (
-				<ButtonRow>
-					<AuthButton onClick={props.handleDialogOpen}>챌린지 인증</AuthButton>
+				<ButtonRow
+					onClick={(e) => {
+						if (e.target !== e.currentTarget) return;
+					}}
+				>
+					<AuthButton
+						id="auth"
+						onClick={(e) => {
+							handleOpenDialog(e.target.id);
+							handleOpenToggle();
+						}}
+					>
+						챌린지 인증
+					</AuthButton>
 					{handleMissionStatus(
 						props.userChallenge?.firstWeekMission,
 						props.userChallenge?.certiCount,
-						props.userChallenge?.userMissionDate,
+						userMissionDate,
 						props.userChallenge?.retryCount
 					)}
-					{/* <CancelButton
-						onClick={() => {
-							props.handleDialogOpen();
+					<CancelButton
+						id="cancel"
+						onClick={(e) => {
+							handleOpenDialog(e.target.id);
+							handleOpenToggle();
 						}}
 					>
 						참가 취소
 					</CancelButton>
 					<CancelDialog
-						dialogOpen={props.dialogOpen}
-						handleDialogOpen={props.handleDialogOpen}
-						handleDialogClose={props.handleDialogClose}
+						open={open}
+						handleOpenToggle={handleOpenToggle}
+						openDialog={openDialog}
+						handleOpenDialog={handleOpenDialog}
 						handleChallengeCancel={props.handleChallengeCancel}
-						mainText={"챌린지 참가 신청이 취소되었습니다."}
+						mainText={"챌린지 참가를 취소하시겠습니까?"}
 						subText={"참여 취소 시 모든 챌린지 인증 기록이 삭제됩니다."}
-					/> */}
+					/>
 				</ButtonRow>
 			);
 		} else if (challengeStatus === "COMPLETE") {
 			return <ClosedButton disabled>챌린지 마감</ClosedButton>;
-		} else if (
-			props.userChallenge === {} ||
-			props.userChallenge?.challengeStatus !== "JOIN"
-		) {
+		} else if (props.userChallenge === {} || challengeStatus !== "JOIN") {
 			return (
 				<>
 					<ApplyButton
+						id="apply"
 						type="button"
 						onClick={() => {
 							if (userToken) {
-								props.handleChallengeJoin();
-								props.handleDialogOpen();
+								props.handleChallengeJoin(userToken);
 							} else {
 								enqueueSnackbar("로그인이 필요한 기능입니다!", {
 									variant: "warning",
@@ -105,9 +150,10 @@ const Intro = ({ ...props }) => {
 						챌린지 참가하기
 					</ApplyButton>
 					<ApplyDialog
-						dialogOpen={props.dialogOpen}
-						handleDialogOpen={props.handleDialogOpen}
-						handleDialogClose={props.handleDialogClose}
+						open={open}
+						handleOpenToggle={handleOpenToggle}
+						openDialog={openDialog}
+						handleOpenDialog={handleOpenDialog}
 						mainText={"챌린지 참가 신청이 완료되었습니다."}
 					/>
 				</>
@@ -122,7 +168,9 @@ const Intro = ({ ...props }) => {
 					<img src={props.challenge?.imgUrl} alt="Challenge Thumbnail" />
 				</IntroThumbnail>
 				<ContentsContainer>
-					<Title>{props.challenge?.title}</Title>
+					<Title>
+						{props.challenge?.title} {certiCount && renderMedal(certiCount)}
+					</Title>
 					<CategoryRow>
 						<IntroCategory locationType={props.challenge?.locationType}>
 							{props.challenge?.locationType}
@@ -275,12 +323,12 @@ const AuthButton = styled(StyledButton)`
 	font-size: 2rem;
 `;
 
-// const CancelButton = styled(StyledButton)`
-// 	width: 17.6rem;
-// 	height: 5.5rem;
-// 	font-size: 2rem;
-// `;
-// const CancelDialog = styled(CommonDialog)``;
+const CancelButton = styled(StyledButton)`
+	width: 17.6rem;
+	height: 5.5rem;
+	font-size: 2rem;
+`;
+const CancelDialog = styled(CommonDialog)``;
 
 const ClosedButton = styled(StyledButton)`
 	width: 37.7rem;

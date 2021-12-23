@@ -6,113 +6,6 @@ import { Grid } from "@mui/material";
 import MyChallengeCard from "./MyChallengeCard";
 
 const ViewChallenge = ({ userToken, userChallengeList }) => {
-	// const currentChallenges = [
-	//   {
-	//     challengeId: 1,
-	//     title: '아침 8시 일어나기dddddddddddddddddddddddd',
-	//     imgUrl:
-	//       'https://images.unsplash.com/photo-1422433555807-2559a27433bd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-	//     category: '생활',
-	//     locationType: 'ONLINE',
-	//     challengeStartDate: '2021-10-11',
-	//     challengeEndDate: '2021-12-31',
-	//     challengeStatus: 'JOIN',
-	//     certiCount: 2,
-	//     retryCount: 3,
-	//     userStartDate: '2021-12-17T18:54:29.718122',
-	//     userMissonDate: '2021-12-24T18:54:29.718122',
-	//     firstWeekMission: 'NO',
-	//   },
-	//   {
-	//     challengeId: 2,
-	//     title: '런데이',
-	//     imgUrl:
-	//       'https://images.unsplash.com/photo-1422433555807-2559a27433bd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-	//     category: '운동',
-	//     locationType: 'OFFLINE',
-	//     challengeStartDate: '2021-10-11',
-	//     challengeEndDate: '2021-12-31',
-	//     challengeStatus: 'JOIN',
-	//     certiCount: 5,
-	//     retryCount: 3,
-	//     userStartDate: '2021-12-17T18:54:29.718122',
-	//     userMissonDate: '2021-12-24T18:54:29.718122',
-	//     firstWeekMission: 'YES',
-	//   },
-	// ];
-
-	// const retryPossibleChallenges = [
-	//   {
-	//     challengeId: 3,
-	//     title: '자기 전 스트레칭하기',
-	//     imgUrl:
-	//       'https://images.unsplash.com/photo-1422433555807-2559a27433bd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-	//     category: '생활',
-	//     locationType: 'ONLINE',
-	//     challengeStartDate: '2021-10-11',
-	//     challengeEndDate: '2021-12-31',
-	//     challengeStatus: 'RETRY',
-	//     certiCount: 15,
-	//     retryCount: 3,
-	//     userStartDate: '2021-12-17T18:54:29.718122',
-	//     userMissonDate: '2021-12-24T18:54:29.718122',
-	//     firstWeekMission: 'NO',
-	//   },
-	//   {
-	//     challengeId: 4,
-	//     title: '과일 먹기',
-	//     imgUrl:
-	//       'https://images.unsplash.com/photo-1422433555807-2559a27433bd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-	//     category: '생활',
-	//     locationType: 'ONLINE',
-	//     challengeStartDate: '2021-10-11',
-	//     challengeEndDate: '2021-12-31',
-	//     challengeStatus: 'RETRY',
-	//     certiCount: 7,
-	//     retryCount: 3,
-	//     userStartDate: '2021-12-17T18:54:29.718122',
-	//     userMissonDate: '2021-12-24T18:54:29.718122',
-	//     firstWeekMission: 'YES',
-	//   },
-	// ];
-
-	// const completedChallenges = [
-	//   {
-	//     challengeId: 5,
-	//     title: '자기 전 스트레칭하기',
-	//     imgUrl:
-	//       'https://images.unsplash.com/photo-1422433555807-2559a27433bd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-	//     category: '생활',
-	//     locationType: 'ONLINE',
-	//     challengeStartDate: '2021-10-11',
-	//     challengeEndDate: '2021-12-31',
-	//     challengeStatus: 'COMPLETE',
-	//     certiCount: 15,
-	//     retryCount: 3,
-	//     userStartDate: '2021-12-17T18:54:29.718122',
-	//     userMissonDate: '2021-12-24T18:54:29.718122',
-	//     firstWeekMission: 'YES',
-	//   },
-	//   {
-	//     challengeId: 6,
-	//     title: '과일 먹기',
-	//     imgUrl:
-	//       'https://images.unsplash.com/photo-1422433555807-2559a27433bd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-	//     category: '생활',
-	//     locationType: 'ONLINE',
-	//     challengeStartDate: '2021-10-11',
-	//     challengeEndDate: '2021-12-31',
-	//     challengeStatus: 'COMPLETE',
-	//     certiCount: 7,
-	//     retryCount: 3,
-	//     userStartDate: '2021-12-17T18:54:29.718122',
-	//     userMissonDate: '2021-12-24T18:54:29.718122',
-	//     firstWeekMission: 'YES',
-	//   },
-	// ];
-
-	console.log(userChallengeList);
-
 	const joinChallenges = userChallengeList.filter(
 		(item) => item.challengeStatus === "JOIN"
 	);
@@ -148,8 +41,8 @@ const ViewChallenge = ({ userToken, userChallengeList }) => {
 					<EmptyContainer>참가중인 챌린지가 없습니다</EmptyContainer>
 				) : (
 					<Grid container>
-						{joinChallenges.map((challenge) => (
-							<Grid item xs={6} key={challenge.challengeId}>
+						{joinChallenges.map((challenge, i) => (
+							<Grid item xs={6} key={i}>
 								<MyChallengeCard
 									id={challenge.challengeId}
 									title={challenge.title}
@@ -173,8 +66,8 @@ const ViewChallenge = ({ userToken, userChallengeList }) => {
 					<EmptyContainer>재도전 가능한 챌린지가 없습니다</EmptyContainer>
 				) : (
 					<Grid container>
-						{retryChallenges.map((challenge) => (
-							<Grid item xs={6} key={challenge.challengeId}>
+						{retryChallenges.map((challenge, i) => (
+							<Grid item xs={6} key={i}>
 								<MyChallengeCard
 									userToken={userToken}
 									id={challenge.challengeId}
@@ -199,8 +92,8 @@ const ViewChallenge = ({ userToken, userChallengeList }) => {
 					<EmptyContainer>완료한 챌린지가 없습니다</EmptyContainer>
 				) : (
 					<Grid container>
-						{completeChallenges.map((challenge) => (
-							<Grid item xs={6} key={challenge.challengeId}>
+						{completeChallenges.map((challenge, i) => (
+							<Grid item xs={6} key={i}>
 								<MyChallengeCard
 									id={challenge.challengeId}
 									title={challenge.title}
