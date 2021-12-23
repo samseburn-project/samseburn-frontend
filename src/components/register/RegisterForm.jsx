@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Modal from "react-modal";
+import { useSnackbar } from "notistack";
 import DaumPostcode from "react-daum-postcode";
+import Modal from "react-modal";
 import addDays from "date-fns/addDays";
 
 import styled from "styled-components";
@@ -19,12 +20,6 @@ import { ReactComponent as Delete } from "../../assets/icons/delete.svg";
 import { ReactComponent as Close } from "../../assets/icons/close.svg";
 
 function RegisterForm(props) {
-	const navigate = useNavigate();
-	const userToken = localStorage.getItem("token");
-	const MAX_DATE = 99;
-	const categories = ["운동", "생활", "공부", "취미", "독서", "기타"];
-	const locationTypes = ["ONLINE", "OFFLINE"];
-
 	const [title, setTitle] = useState("");
 	const [description, setDescription] = useState("");
 	const [participants, setParticipants] = useState(0);
@@ -38,6 +33,14 @@ function RegisterForm(props) {
 		imageUrl: null,
 	});
 	const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+	const navigate = useNavigate();
+	const userToken = localStorage.getItem("token");
+	const MAX_DATE = 99;
+	const categories = ["운동", "생활", "공부", "취미", "독서", "기타"];
+	const locationTypes = ["온라인", "오프라인"];
+
+	const { enqueueSnackbar } = useSnackbar();
 
 	const onChange = (event) => {
 		event.preventDefault();
@@ -69,7 +72,7 @@ function RegisterForm(props) {
 			target: { value },
 		} = event;
 		setLocationType(value);
-		if (value === "ONLINE") {
+		if (value === "온라인") {
 			setRoadAddress("");
 			setDetailAddress("");
 		}
@@ -133,7 +136,7 @@ function RegisterForm(props) {
 	const onSubmitFormData = async () => {
 		try {
 			const address =
-				locationType === "ONLINE" ? "" : roadAddress + detailAddress;
+				locationType === "온라인" ? "" : roadAddress + detailAddress;
 
 			const formData = new FormData();
 
@@ -166,7 +169,16 @@ function RegisterForm(props) {
 			console.log(res);
 
 			if (res.status === 200) {
+				enqueueSnackbar("챌린지가 생성되었습니다.", {
+					variant: "success",
+					autoHideDuration: 2000,
+				});
 				navigate("/");
+			} else {
+				enqueueSnackbar("챌린지 생성에 실패했습니다.", {
+					variant: "error",
+					autoHideDuration: 2000,
+				});
 			}
 
 			// const response = axios({
@@ -239,9 +251,6 @@ function RegisterForm(props) {
 								inputFormat={"yyyy-MM-dd"}
 								mask={"____-__-__"}
 								maxDate={addDays(date[0], MAX_DATE)}
-								// size="small"
-								// startText="시작 일자"
-								// endText="종료 일자"
 								value={date}
 								onChange={(newValue) => {
 									setDate(newValue);
@@ -302,7 +311,7 @@ function RegisterForm(props) {
 								onChange={onLoadFile}
 								id="input-image"
 							/>
-							<RedSmallButton component="span">이미지 업로드</RedSmallButton>
+							<UploadButton component="span">이미지 업로드</UploadButton>
 						</label>
 					</ImageContainer>
 				</CustomContainer>
@@ -340,48 +349,45 @@ function RegisterForm(props) {
 									onChange={onLocationType}
 									checked={locationType === item}
 								></LocationTypeRadio>
-								<LocationTypeSpan>
-									{item === "ONLINE" ? "온라인" : "오프라인"}
-								</LocationTypeSpan>
+								<LocationTypeSpan>{item}</LocationTypeSpan>
 							</LocationTypeLabel>
 						))}
 					</CategoryContainer>
 
-					{locationType === "OFFLINE" ? (
+					{locationType === "오프라인" ? (
 						<>
 							<SmallLabelText>오프라인 장소</SmallLabelText>
-							<Box>
-								<BasicInput
-									placeholder="도로명 주소"
-									size="small"
-									isNext={true}
+							<AddressRow>
+								<AddressInput
 									name="roadAddress"
+									placeholder="도로명 주소"
 									value={roadAddress}
 									onChange={onChange}
-									readOnly
+									InputProps={{
+										readOnly: true,
+									}}
 								/>
-								<BlackSmallButton onClick={onClickPopupHandler}>
+								<AddressButton onClick={onClickPopupHandler}>
 									주소 검색
-								</BlackSmallButton>
-							</Box>
-							<BasicInput
-								placeholder="상세주소"
-								size="small"
+								</AddressButton>
+								<Modal
+									isOpen={isPopupOpen}
+									ariaHideApp={false}
+									onRequestClose={onModalHandler}
+									style={modalStyles}
+								>
+									<CloseIconButton onClick={onModalHandler}>
+										<Close alt="Close icon" />
+									</CloseIconButton>
+									<DaumPostcode onComplete={handleComplete} {...props} />;
+								</Modal>
+							</AddressRow>
+							<AddressInput
 								name="detailAddress"
+								placeholder="상세 주소"
 								value={detailAddress}
 								onChange={onChange}
 							/>
-							<Modal
-								isOpen={isPopupOpen}
-								ariaHideApp={false}
-								onRequestClose={onModalHandler}
-								style={modalStyles}
-							>
-								<CloseIconButton onClick={onModalHandler}>
-									<Close />
-								</CloseIconButton>
-								<DaumPostcode onComplete={handleComplete} {...props} />;
-							</Modal>
 						</>
 					) : (
 						""
@@ -400,10 +406,9 @@ function RegisterForm(props) {
 						onChange={onChange}
 					></TextInput>
 				</Row>
-
 				<ButtonContainer>
-					<RedBigButton onClick={onSubmitFormData}>등록</RedBigButton>
-					<BlackBigButton onClick={onCancelHandler}>취소</BlackBigButton>
+					<EnrollButton onClick={onSubmitFormData}>등록</EnrollButton>
+					<CancelButton onClick={onCancelHandler}>취소</CancelButton>
 				</ButtonContainer>
 			</FormContainer>
 		</RegisterPageBox>
@@ -416,11 +421,6 @@ const RegisterPageBox = styled.div`
 	padding: 0 17.7rem;
 `;
 
-// const Wrapper = styled.section`
-//   width: 104rem;
-//   margin: 10rem auto;
-// `;
-
 const Title = styled.div`
 	font-size: 2.4rem;
 	font-weight: bold;
@@ -429,7 +429,6 @@ const Title = styled.div`
 `;
 
 const FormContainer = styled.div`
-	/* margin: 0 8.8rem; */
 	&:checked {
 		background-color: #000000;
 	}
@@ -445,8 +444,7 @@ const CustomContainer = styled.div`
 const LabelText = styled.div`
 	font-size: 2rem;
 	font-weight: bold;
-
-	margin-bottom: 2rem;
+	margin: 2rem 0;
 `;
 
 const SmallLabelText = styled.div`
@@ -463,8 +461,7 @@ const BasicInput = styled.input`
 	border: 1px solid #e5e5e5;
 	border-radius: 0.5rem;
 	box-sizing: border-box;
-
-	margin-bottom: ${(props) => (props.isNext ? "1rem" : "3rem")};
+	margin-bottom: 2rem;
 `;
 
 const DateInput = styled(BasicInput)`
@@ -473,6 +470,23 @@ const DateInput = styled(BasicInput)`
 
 const NumInput = styled(BasicInput)`
 	width: 6.5rem;
+`;
+
+const AddressRow = styled.div`
+	display: flex;
+	gap: 0.5rem;
+	margin-bottom: 0.5rem;
+`;
+
+const AddressInput = styled(TextField)`
+	width: 33rem;
+	border: 1px solid #c4c4c4;
+	border-radius: 0.5rem;
+
+	.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+		font-size: 1.4rem;
+		padding: 1.2rem;
+	}
 `;
 
 const TextInput = styled(TextField)`
@@ -518,70 +532,43 @@ const ImageFileInput = styled.input`
 const ButtonContainer = styled.div`
 	display: flex;
 	justify-content: center;
-	gap: 1rem;
+	gap: 8rem;
 `;
 
-const BlackSmallButton = styled(StyledButton)`
+const AddressButton = styled(StyledButton)`
 	background-color: #c4c4c4;
 	color: white;
 
 	font-size: 1.6rem;
 	font-weight: bold;
 
-	/* margin: 0 1rem; */
-	margin-bottom: 2rem;
+	transition: opacity 0.3s;
 
 	&:hover {
-		background-color: white;
-		color: #e5e5e5;
+		opacity: 0.6;
 	}
 `;
 
-const BlackBigButton = styled(StyledButton)`
-	background-color: #c4c4c4;
-	color: white;
-
+const CancelButton = styled(StyledButton)`
 	font-size: 2rem;
 	font-weight: bold;
-
-	/* margin: 0 1rem; */
-	margin-bottom: 2rem;
+	background-color: #e5e5e5;
 
 	&:hover {
-		background-color: white;
-		color: #e5e5e5;
+		background-color: #e5e5e5;
 	}
 `;
 
-const RedSmallButton = styled(StyledButton)`
-	background-color: #eb3901;
-	color: white;
-
+const UploadButton = styled(StyledButton)`
 	font-size: 1.6rem;
 	font-weight: bold;
 
 	margin-bottom: 2rem;
-
-	&:hover {
-		background-color: #ffe6db;
-		color: #eb3901;
-	}
 `;
 
-const RedBigButton = styled(StyledButton)`
-	background-color: #eb3901;
-	color: white;
-
+const EnrollButton = styled(StyledButton)`
 	font-size: 2rem;
 	font-weight: bold;
-
-	/* margin: 0 1rem; */
-	margin-bottom: 2rem;
-
-	&:hover {
-		background-color: #ffe6db;
-		color: #eb3901;
-	}
 `;
 
 const CategoryContainer = styled.div`

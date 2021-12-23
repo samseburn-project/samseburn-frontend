@@ -15,7 +15,7 @@ export default Main;
 
 const Wrapper = styled.section`
 	width: 104rem;
-	margin: 0 auto;
+	margin: 4rem auto 10rem auto;
 	flex: 1;
 `;
 
