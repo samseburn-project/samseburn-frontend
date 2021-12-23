@@ -51,6 +51,7 @@ const ViewChallenge = ({ userToken, userChallengeList }) => {
 									challengeStartDate={challenge.challengeStartDate}
 									challengeEndDate={challenge.challengeEndDate}
 									certiCount={challenge.certiCount}
+									retryCount={challenge.retryCount}
 									imgUrl={challenge.imgUrl}
 									challengeStatus={challenge.challengeStatus}
 									firstWeekMission={challenge.firstWeekMission}
@@ -77,6 +78,7 @@ const ViewChallenge = ({ userToken, userChallengeList }) => {
 									challengeStartDate={challenge.challengeStartDate}
 									challengeEndDate={challenge.challengeEndDate}
 									certiCount={challenge.certiCount}
+									retryCount={challenge.retryCount}
 									imgUrl={challenge.imgUrl}
 									challengeStatus={challenge.challengeStatus}
 									firstWeekMission={challenge.firstWeekMission}
@@ -102,6 +104,7 @@ const ViewChallenge = ({ userToken, userChallengeList }) => {
 									challengeStartDate={challenge.challengeStartDate}
 									challengeEndDate={challenge.challengeEndDate}
 									certiCount={challenge.certiCount}
+									retryCount={challenge.retryCount}
 									imgUrl={challenge.imgUrl}
 									challengeStatus={challenge.challengeStatus}
 									firstWeekMission={challenge.firstWeekMission}
