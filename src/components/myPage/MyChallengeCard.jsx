@@ -12,6 +12,8 @@ import {
 	Box,
 } from "@mui/material";
 // import { useTheme } from "@mui/material/styles";
+import Category from "../common/Category";
+
 import { ReactComponent as FirstMedal } from "../../assets/icons/1st-medal-icon.svg";
 import { ReactComponent as SecondMedal } from "../../assets/icons/2nd-medal-icon.svg";
 import { ReactComponent as ThirdMedal } from "../../assets/icons/3rd-medal-icon.svg";
@@ -19,8 +21,6 @@ import { ReactComponent as AbledProgress } from "../../assets/icons/progress-ico
 import { ReactComponent as DisabledProgress } from "../../assets/icons/progress-icon-disabled.svg";
 import { ReactComponent as Congrats } from "../../assets/icons/congrats-icon.svg";
 import { ReactComponent as Calender } from "../../assets/icons/calender.svg";
-import Category from "../common/Category";
-import StyledButton from "../common/StyledButton";
 
 const MyChallengeCard = ({
 	userToken,
@@ -49,17 +49,17 @@ const MyChallengeCard = ({
 		}
 	};
 
-	const onRetryHandler = async (e) => {
+	const onRetryHandler = async () => {
 		try {
 			const res = axios.put(`/challenges/${id}/retry`, {
 				headers: {
 					Authorization: `Bearer ${userToken}`,
 				},
 			});
-
-			console.log("retry button click!");
 			console.log(res);
-			navigate(`/detail/${id}`);
+			if (res.status === 200) {
+				navigate(`/detail/${id}`);
+			}
 		} catch (err) {
 			console.error(err);
 		}
@@ -75,9 +75,7 @@ const MyChallengeCard = ({
 						justifyContent: "space-between",
 					}}
 					onClick={(e) => {
-						if (e.target.name !== "retryButton") {
-							navigate(`/detail/${id}`);
-						}
+						navigate(`/detail/${id}`);
 					}}
 				>
 					<StyledCardMedia component="img" image={imgUrl} />
@@ -143,7 +141,13 @@ const MyChallengeCard = ({
 									""
 								)}
 								{challengeStatus === "RETRY" ? (
-									<RetryButton name="retryButton" onClick={onRetryHandler}>
+									<RetryButton
+										name="retryButton"
+										onClick={(e) => {
+											if (e.target !== e.currentTarget) return;
+											onRetryHandler();
+										}}
+									>
 										재도전하기
 									</RetryButton>
 								) : (
@@ -364,12 +368,25 @@ const Row = styled.div`
 	flex-wrap: wrap;
 `;
 
-const RetryButton = styled(StyledButton)`
-	font-size: 1.6rem;
+const RetryButton = styled.span`
 	width: 100%;
-
+	height: 3.2rem;
 	padding: 0.2rem;
-	/* margin: 0 auto; */
+	font-size: 1.6rem;
+	font-weight: bold;
+	color: #ffffff;
+	background-color: #eb3901;
+	border-radius: 0.5rem;
+	transition: opacity 0.3s;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	&:hover {
+		background-color: #eb3901;
+		opacity: 0.6;
+	}
 `;
 
 // ====================================

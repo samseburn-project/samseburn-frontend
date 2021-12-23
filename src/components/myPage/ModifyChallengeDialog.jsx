@@ -4,7 +4,7 @@ import Modal from "react-modal";
 import DaumPostcode from "react-daum-postcode";
 import { useSnackbar } from "notistack";
 
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import { Grid, Dialog, DialogContent, TextField } from "@mui/material";
 import Category from "../common/Category";
@@ -14,12 +14,12 @@ import { ReactComponent as Close } from "../../assets/icons/close.svg";
 import { ReactComponent as Delete } from "../../assets/icons/delete.svg";
 
 const ModifyChallengeDialog = ({ ...props }) => {
-	const [imgFile, setImgFile] = useState(null);
-	const [previewImg, setPreviewImg] = useState(props.imgUrl);
+	const [imgFile, setImgFile] = useState(props.challenge?.imgUrl);
+	const [previewImg, setPreviewImg] = useState(props.challenge?.imgUrl);
 	const [roadAddress, setRoadAddress] = useState("");
 	const [detailAddress, setDetailAddress] = useState("");
-	const [open, setOpen] = useState(false);
-	const challengeId = props?.challengeId;
+	const [modalOpen, setModalOpen] = useState(false);
+	const challengeId = props.challenge?.challengeId;
 	const userToken = localStorage.getItem("token");
 	const imgRef = useRef();
 
@@ -57,15 +57,15 @@ const ModifyChallengeDialog = ({ ...props }) => {
 		}
 
 		setRoadAddress(fullAddress);
-		setOpen(false);
+		setModalOpen(false);
 	};
 
 	const handleModalOpen = () => {
-		setOpen(true);
+		setModalOpen(true);
 	};
 
-	const handleModalClose = () => {
-		setOpen(false);
+	const handleModalToggle = () => {
+		setModalOpen(!modalOpen);
 	};
 
 	const handleRoadAddressChange = (e) => {
@@ -86,7 +86,10 @@ const ModifyChallengeDialog = ({ ...props }) => {
 
 		const formData = new FormData();
 
+		console.log(imgFile);
+
 		formData.append("image", imgFile);
+		formData.append("address", `${roadAddress} ${detailAddress}`);
 
 		try {
 			const { status } = await axios.put(
@@ -129,118 +132,162 @@ const ModifyChallengeDialog = ({ ...props }) => {
 			zIndex: 10,
 		},
 		content: {
-			display: "flex",
-			flexDirection: "column",
-			justifyContent: "center",
-			alignItems: "center",
-			background: "white",
-			overflow: "auto",
-			top: "22vh",
-			left: "18vw",
-			right: "18vw",
-			bottom: "30vh",
+			width: "50%",
+			padding: "5rem 2rem",
 			WebkitOverflowScrolling: "touch",
-			borderRadius: "14px",
+			borderRadius: "0.5rem",
 			outline: "none",
-			zIndex: 10,
+			zIndex: 100,
+			overflow: "auto",
+			top: "50%",
+			left: "50%",
+			transform: "translate(-50%, -50%)",
 			position: "relative",
 		},
 	};
 
 	return (
-		<Dialog onClose={props.handleDialogClose} open={props.dialogOpen}>
-			<StyledDialogContent>
-				<CloseButton>
-					<Close alt="Close icon" onClick={props.handleDialogClose} />
-				</CloseButton>
-				<form onSubmit={handleSubmit}>
-					<Grid container direction="column">
-						<Grid item>
-							<Title>{props.title}</Title>
-						</Grid>
-						<Grid item>
-							<CategoryRow>
-								<Category>{props.locationType}</Category>
-								<Category>{props.category}</Category>
-							</CategoryRow>
-						</Grid>
-						<Grid item>
-							<DateText>
-								{props.challengeStartDate} ~ {props.challengeEndDate}
-							</DateText>
-						</Grid>
-						<Grid item>
-							<ChallengeThumbnail>
-								<img src={previewImg} alt="Challenge thumbnail" />
-								<DeleteButton>
-									<Delete
-										alt="Delete icon"
-										style={{ zIndex: 10 }}
-										onClick={handleImgDelete}
-									/>
-								</DeleteButton>
-							</ChallengeThumbnail>
-						</Grid>
-						<Grid item textAlign="center">
-							<label htmlFor="challenge-image">
-								<UploadInput
-									id="challenge-image"
-									accept="image/*"
-									type="file"
-									ref={imgRef}
-									onChange={handleImgChange}
-								/>
-								<UploadButton type="button">이미지 변경</UploadButton>
-							</label>
-						</Grid>
-						<Grid item>
-							<LabelText>오프라인 장소</LabelText>
-							<AddressInput
-								id="road-address"
-								placeholder="도로명 주소"
-								value={roadAddress}
-								onChange={handleRoadAddressChange}
-							/>
-							<AddressButton onClick={handleModalOpen}>주소 검색</AddressButton>
-							<Modal
-								isOpen={open}
-								ariaHideApp={false}
-								onRequestClose={handleModalClose}
-								style={modalStyles}
-							>
-								<CloseButton onClick={handleModalClose}>
-									<Close alt="Close icon" />
-								</CloseButton>
-								<DaumPostcode onComplete={handleComplete} {...props} />
-							</Modal>
-							<AddressInput
-								id="detail-address"
-								placeholder="상세 주소"
-								value={detailAddress}
-								onChange={handleDetailAddressChange}
-							/>
-						</Grid>
-						<Grid item>
-							<ButtonRow>
-								<EditButton type="submit">수정</EditButton>
-								<CancelButton
-									type="button"
-									onClick={() => props.handleDialogClose()}
-								>
-									취소
-								</CancelButton>
-							</ButtonRow>
-						</Grid>
-					</Grid>
-				</form>
-			</StyledDialogContent>
-		</Dialog>
+		<>
+			{props.openDialog === "update" ? (
+				<Dialog
+					onClose={props.handleOpenToggle}
+					open={props.open}
+					style={{ zIndex: 10 }}
+				>
+					<StyledDialogContent>
+						<CloseButton>
+							<Close alt="Close icon" onClick={props.handleOpenToggle} />
+						</CloseButton>
+						<form onSubmit={handleSubmit}>
+							<Grid container direction="column">
+								<Grid item>
+									<Title>{props.challenge?.title}</Title>
+								</Grid>
+								<Grid item>
+									<CategoryRow>
+										<SmallCategory locationType={props.challenge?.locationType}>
+											{props.challenge?.locationType}
+										</SmallCategory>
+										<SmallCategory category={props.challenge?.category}>
+											{props.challenge?.category}
+										</SmallCategory>
+									</CategoryRow>
+								</Grid>
+								<Grid item>
+									<DateRow>
+										<DateText>
+											{props.challenge?.challengeStartDate} ~{" "}
+											{props.challenge?.challengeEndDate}
+										</DateText>
+									</DateRow>
+								</Grid>
+								<Grid item>
+									{previewImg ? (
+										<ChallengeThumbnail>
+											<img src={previewImg} alt="Challenge thumbnail" />
+											<DeleteButton>
+												<Delete
+													alt="Delete icon"
+													style={{ zIndex: 10 }}
+													onClick={handleImgDelete}
+												/>
+											</DeleteButton>
+										</ChallengeThumbnail>
+									) : (
+										<ChallengeThumbnail>
+											<DeleteButton>
+												<Delete
+													alt="Delete icon"
+													style={{ zIndex: 10 }}
+													onClick={handleImgDelete}
+												/>
+											</DeleteButton>
+										</ChallengeThumbnail>
+									)}
+								</Grid>
+								<Grid item textAlign="center">
+									<label htmlFor="challenge-image">
+										<UploadInput
+											id="challenge-image"
+											accept="image/*"
+											type="file"
+											ref={imgRef}
+											onChange={handleImgChange}
+										/>
+										<UploadButton type="button">이미지 변경</UploadButton>
+									</label>
+								</Grid>
+								<Grid item>
+									{props.challenge?.locationType === "오프라인" ? (
+										<>
+											<LabelText>오프라인 장소</LabelText>
+											<AddressRow>
+												<AddressInput
+													id="road-address"
+													placeholder="도로명 주소"
+													value={roadAddress}
+													onChange={handleRoadAddressChange}
+													InputProps={{
+														readOnly: true,
+													}}
+												/>
+												<AddressButton onClick={handleModalOpen}>
+													주소 검색
+												</AddressButton>
+												<Modal
+													isOpen={modalOpen}
+													ariaHideApp={false}
+													onRequestClose={handleModalToggle}
+													style={modalStyles}
+												>
+													<CloseButton onClick={handleModalToggle}>
+														<Close alt="Close icon" />
+													</CloseButton>
+													<DaumPostcode
+														onComplete={handleComplete}
+														{...props}
+													/>
+												</Modal>
+											</AddressRow>
+											<AddressInput
+												id="detail-address"
+												placeholder="상세 주소"
+												value={detailAddress}
+												onChange={handleDetailAddressChange}
+											/>
+										</>
+									) : (
+										""
+									)}
+								</Grid>
+								<Grid item>
+									<ButtonRow>
+										<EditButton type="submit">수정</EditButton>
+										<CancelButton
+											type="button"
+											onClick={() => props.handleOpenToggle()}
+										>
+											취소
+										</CancelButton>
+									</ButtonRow>
+								</Grid>
+							</Grid>
+						</form>
+					</StyledDialogContent>
+				</Dialog>
+			) : (
+				""
+			)}
+		</>
 	);
 };
 
 export default ModifyChallengeDialog;
 
-const StyledDialogContent = styled(DialogContent)``;
+const StyledDialogContent = styled(DialogContent)`
+	padding: 4rem 7rem;
+	position: relative;
+`;
 
 const CloseButton = styled.span`
 	position: absolute;
@@ -253,21 +300,77 @@ const Title = styled.div`
 	font-size: 2rem;
 	font-weight: bold;
 	letter-spacing: 2px;
+	margin-bottom: 0.5rem;
 `;
 
 const CategoryRow = styled.div`
 	display: flex;
-	justify-content: center;
+	gap: 1rem;
+	margin-bottom: 1rem;
+`;
+
+const SmallCategory = styled(Category)`
+	font-size: 1.2rem;
+	padding: 0.7rem 1rem;
+	cursor: default;
+
+	${(props) => {
+		if (props.locationType === "온라인") {
+			return css`
+				color: #ffffff;
+				background-color: #ff7539;
+			`;
+		} else if (props.locationType === "오프라인") {
+			return css`
+				color: #ffffff;
+				background-color: #0057ff;
+			`;
+		} else if (props.category === "운동") {
+			return css`
+				color: #ffffff;
+				background-color: #04c50c;
+			`;
+		} else if (props.category === "공부") {
+			return css`
+				color: #ffffff;
+				background-color: #9900cf;
+			`;
+		} else if (props.category === "취미") {
+			return css`
+				color: #ffffff;
+				background-color: #e2cd0f;
+			`;
+		} else if (props.category === "독서") {
+			return css`
+				color: #ffffff;
+				background-color: #e71aad;
+			`;
+		} else if (props.category === "기타") {
+			return css`
+				color: #ffffff;
+				background-color: #6ae4c7;
+			`;
+		}
+	}}
+`;
+
+const DateRow = styled.div`
+	display: flex;
+	align-items: center;
+	margin-bottom: 3rem;
 `;
 
 const DateText = styled.div`
 	font-size: 1.6rem;
+	margin-left: 0.3rem;
 `;
 
 const ChallengeThumbnail = styled.div`
-	margin: 1rem 0;
+	margin: 1rem auto;
 	width: 24rem;
 	height: 24rem;
+	background-color: #959595;
+	border-radius: 0.5rem;
 	position: relative;
 
 	img {
@@ -320,12 +423,25 @@ const LabelText = styled.div`
 	font-size: 1.6rem;
 	font-weight: bold;
 	letter-spacing: 1px;
+	line-height: 2.5rem;
+	margin-top: 5rem;
+`;
+
+const AddressRow = styled.div`
+	display: flex;
+	gap: 0.5rem;
+	margin-bottom: 0.5rem;
 `;
 
 const AddressInput = styled(TextField)`
 	width: 33rem;
 	border: 1px solid #c4c4c4;
 	border-radius: 0.5rem;
+
+	.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+		font-size: 1.4rem;
+		padding: 1.2rem;
+	}
 `;
 
 const AddressButton = styled(StyledButton)`
@@ -342,6 +458,7 @@ const ButtonRow = styled.div`
 	display: flex;
 	justify-content: center;
 	gap: 4rem;
+	margin-top: 10rem;
 `;
 
 const EditButton = styled(StyledButton)`

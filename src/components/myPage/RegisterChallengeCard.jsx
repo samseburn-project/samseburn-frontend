@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useSnackbar } from "notistack";
 
 import styled from "styled-components";
 
@@ -12,66 +13,112 @@ import {
 	CardContent,
 } from "@mui/material";
 import Category from "../common/Category";
-import StyledButton from "../common/StyledButton";
 import CommonDialog from "../common/CommonDialog";
+import ModifyChallengeDialog from "./ModifyChallengeDialog";
 
 import { ReactComponent as Calendar } from "../../assets/icons/calender.svg";
 
 const RegisterChallengeCard = ({ ...props }) => {
-	const navigate = useNavigate();
+	const [openDialog, setOpenDialog] = useState("");
+	const [open, setOpen] = useState(false);
 	const userToken = localStorage.getItem("token");
+	const challengeId = props.challenge?.challengeId;
+	const navigate = useNavigate();
+
+	const { enqueueSnackbar } = useSnackbar();
+
+	const handleOpenDialog = (targetId) => {
+		setOpenDialog(targetId);
+	};
+
+	const handleOpenToggle = () => {
+		setOpen(!open);
+	};
 
 	const handleChallengeDelete = async () => {
-		const { status } = await axios.delete(`/challenges/${props?.challengeId}`, {
+		const { status } = await axios.delete(`/challenges/${challengeId}`, {
 			headers: { Authorization: `Bearer ${userToken}` },
 		});
 
 		if (status === 200) {
+			enqueueSnackbar("챌린지가 삭제되었습니다.", {
+				variant: "success",
+				autoHideDuration: 2000,
+			});
+			handleOpenToggle();
+		} else {
+			enqueueSnackbar("챌린지 삭제에 실패했습니다.", {
+				variant: "error",
+				autoHideDuration: 2000,
+			});
+			handleOpenToggle();
 		}
 	};
+
+	console.log(openDialog);
 
 	return (
 		<CardContainer>
 			<CardActionArea>
 				<StyledCard
 					onClick={(e) => {
+						if (e.target !== e.currentTarget) return;
 						if (e.target.name !== "retryButton") {
-							navigate(`/detail/${props?.challengeId}`);
+							navigate(`/detail/${challengeId}`);
 						}
 					}}
 				>
-					<StyledCardMedia component="img" image={props.imgUrl} />
+					<StyledCardMedia component="img" image={props.challenge?.imgUrl} />
 
 					<StyledBox>
 						<StyledCardContent>
 							<Row>
-								<CardTitle>{props.title}</CardTitle>
+								<CardTitle>{props.challenge?.title}</CardTitle>
 							</Row>
 							<Row>
-								<CardCategory>{props.category}</CardCategory>
-								<CardCategory>{props.locationType}</CardCategory>
+								<CardCategory>{props.challenge?.category}</CardCategory>
+								<CardCategory>{props.challenge?.locationType}</CardCategory>
 							</Row>
 							<Row>
 								<CardIcon>
 									<Calendar alt="Calendar icon" />
 								</CardIcon>
 								<CardDate>
-									{props.challengeStartDate} ~ {props.challengeEndDate}
+									{props.challenge?.challengeStartDate} ~{" "}
+									{props.challenge?.challengeEndDate}
 								</CardDate>
 							</Row>
 							<ButtonRow>
-								<UpdateButton>수정</UpdateButton>
+								<UpdateButton
+									id="update"
+									onClick={(e) => {
+										handleOpenDialog(e.target.id);
+										handleOpenToggle();
+									}}
+								>
+									수정
+								</UpdateButton>
+								<ModifyChallengeDialog
+									open={open}
+									handleOpenToggle={handleOpenToggle}
+									openDialog={openDialog}
+									handleOpenDialog={handleOpenDialog}
+									challenge={props?.challenge}
+								/>
 								<DeleteButton
-									onClick={() => {
-										props.handleDialogOpen();
+									id="delete"
+									onClick={(e) => {
+										handleOpenDialog(e.target.id);
+										handleOpenToggle();
 									}}
 								>
 									삭제
 								</DeleteButton>
 								<CommonDialog
-									dialogOpen={props?.dialogOpen}
-									handleDialogOpen={props?.handleDialogOpen}
-									handleDialogClose={props?.handleDialogClose}
+									open={open}
+									handleOpenToggle={handleOpenToggle}
+									openDialog={openDialog}
+									handleOpenDialog={handleOpenDialog}
 									handleChallengeDelete={handleChallengeDelete}
 									mainText={"챌린지를 정말 삭제하시겠어요?"}
 									subText={"챌린지에 대한 데이터가 모두 삭제됩니다."}
@@ -160,19 +207,46 @@ const ButtonRow = styled.div`
 	display: flex;
 	justify-content: center;
 	gap: 2rem;
-	margin-top: 1.5rem;
+	margin-top: 2.5rem;
 `;
 
-const DeleteButton = styled(StyledButton)`
+const UpdateButton = styled.span`
 	width: 100%;
+	height: 3.2rem;
+	padding: 0.2rem;
 	font-size: 1.6rem;
-	background-color: #c4c4c4;
+	font-weight: bold;
+	color: #ffffff;
+	background-color: #eb3901;
+	border-radius: 0.5rem;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: opacity 0.3s;
+
 	&:hover {
-		background-color: #959595;
+		background-color: #eb3901;
+		opacity: 0.6;
 	}
 `;
 
-const UpdateButton = styled(StyledButton)`
+const DeleteButton = styled.span`
 	width: 100%;
+	height: 3.2rem;
+	padding: 0.2rem;
 	font-size: 1.6rem;
+	font-weight: bold;
+	color: #ffffff;
+	border-radius: 0.5rem;
+	background-color: #c4c4c4;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: opacity 0.3s;
+
+	&:hover {
+		background-color: #c4c4c4;
+		opacity: 0.6;
+	}
 `;
