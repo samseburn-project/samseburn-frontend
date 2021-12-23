@@ -86,8 +86,6 @@ const ModifyChallengeDialog = ({ ...props }) => {
 
 		const formData = new FormData();
 
-		console.log(imgFile);
-
 		formData.append("image", imgFile);
 		formData.append("address", `${roadAddress} ${detailAddress}`);
 
@@ -105,11 +103,11 @@ const ModifyChallengeDialog = ({ ...props }) => {
 
 			if (status === 200) {
 				handleReset();
+				props.handleOpenToggle();
 				enqueueSnackbar("챌린지가 성공적으로 수정되었습니다.", {
 					variant: "success",
 					autoHideDuration: 2000,
 				});
-				props.handleDialogClose();
 			} else {
 				enqueueSnackbar("챌린지 수정에 실패했습니다.", {
 					variant: "error",
@@ -117,7 +115,8 @@ const ModifyChallengeDialog = ({ ...props }) => {
 				});
 			}
 		} catch (err) {
-			console.error(err);
+			if (err.response?.statusText === "Request Entity Too Large")
+				alert("이미지 용량이 초과되었습니다! 다른 이미지를 선택해주세요.");
 		}
 	};
 

@@ -55,21 +55,17 @@ const RegisterChallengeCard = ({ ...props }) => {
 		}
 	};
 
-	console.log(openDialog);
-
 	return (
 		<CardContainer>
 			<CardActionArea>
 				<StyledCard
 					onClick={(e) => {
+						// e.stopPropagation();
 						if (e.target !== e.currentTarget) return;
-						if (e.target.name !== "retryButton") {
-							navigate(`/detail/${challengeId}`);
-						}
+						navigate(`/detail/${challengeId}`);
 					}}
 				>
 					<StyledCardMedia component="img" image={props.challenge?.imgUrl} />
-
 					<StyledBox>
 						<StyledCardContent>
 							<Row>

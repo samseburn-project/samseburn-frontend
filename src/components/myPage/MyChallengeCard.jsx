@@ -56,7 +56,6 @@ const MyChallengeCard = ({
 					Authorization: `Bearer ${userToken}`,
 				},
 			});
-			console.log(res);
 			if (res.status === 200) {
 				navigate(`/detail/${id}`);
 			}
@@ -75,6 +74,8 @@ const MyChallengeCard = ({
 						justifyContent: "space-between",
 					}}
 					onClick={(e) => {
+						// e.stopPropagation();
+						if (e.target !== e.currentTarget) return;
 						navigate(`/detail/${id}`);
 					}}
 				>
@@ -92,9 +93,7 @@ const MyChallengeCard = ({
 							</Row>
 							<Row>
 								<CardCategory>{category}</CardCategory>
-								<CardCategory>
-									{locationType === "ONLINE" ? "온라인" : "오프라인"}
-								</CardCategory>
+								<CardCategory>{locationType}</CardCategory>
 							</Row>
 							<Row>
 								<CardIcon>
