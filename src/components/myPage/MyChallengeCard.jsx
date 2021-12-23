@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import {
   Card,
@@ -75,10 +75,8 @@ const MyChallengeCard = ({
             alignItems: 'center',
             justifyContent: 'space-between',
           }}
-          onClick={(e) => {
-            if (e.target.name !== 'retryButton') {
-              navigate(`/detail/${id}`);
-            }
+          onClick={() => {
+            navigate(`/detail/${id}`);
           }}
         >
           <StyledCardMedia component="img" image={imgUrl} />
@@ -94,9 +92,9 @@ const MyChallengeCard = ({
                 )}
               </Row>
               <Row>
-                <CardCategory>{category}</CardCategory>
-                <CardCategory>
-                  {locationType === 'ONLINE' ? '온라인' : '오프라인'}
+                <CardCategory category={category}>{category}</CardCategory>
+                <CardCategory locationType={locationType}>
+                  {locationType}
                 </CardCategory>
               </Row>
               <Row>
@@ -299,6 +297,46 @@ const CardCategory = styled(Category)`
     color: #8f8f8f;
     background-color: #e5e5e5;
   }
+
+  ${(props) => {
+    if (props.locationType === '온라인') {
+      return css`
+        background-color: #ff7539;
+        color: #ffffff;
+      `;
+    } else if (props.locationType === '오프라인') {
+      return css`
+        background-color: #0057ff;
+        color: #ffffff;
+        border: 1px solid #0057ff;
+      `;
+    } else if (props.category === '운동') {
+      return css`
+        background-color: #04c50c;
+        color: #ffffff;
+      `;
+    } else if (props.category === '공부') {
+      return css`
+        background-color: #9900cf;
+        color: #ffffff;
+      `;
+    } else if (props.category === '취미') {
+      return css`
+        background-color: #e2cd0f;
+        color: #ffffff;
+      `;
+    } else if (props.category === '독서') {
+      return css`
+        background-color: #e71aad;
+        color: #ffffff;
+      `;
+    } else if (props.category === '기타') {
+      return css`
+        background-color: #6ae4c7;
+        color: #ffffff;
+      `;
+    }
+  }}
 `;
 
 const CardIcon = styled.div`

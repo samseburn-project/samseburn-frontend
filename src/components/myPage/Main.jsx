@@ -22,7 +22,7 @@ const Main = () => {
       });
 
       if (res.status === 200) setUserChallengList(res.data);
-
+      console.log(res);
       // response에서 받은 데이터 state에 저장해 컴포넌트에 props로 내려주기
     } catch (err) {
       console.error(err);
