@@ -7,22 +7,20 @@ import { Grid } from "@mui/material";
 import FeedCarousel from "./FeedCarousel";
 
 import { ReactComponent as User } from "../../assets/user.svg";
-import { ReactComponent as FirstMedal } from "../../assets/icons/1st-medal-icon.svg";
-import { ReactComponent as SecondMedal } from "../../assets/icons/2nd-medal-icon.svg";
-import { ReactComponent as ThirdMedal } from "../../assets/icons/3rd-medal-icon.svg";
+// import { ReactComponent as FirstMedal } from "../../assets/icons/1st-medal-icon.svg";
+// import { ReactComponent as SecondMedal } from "../../assets/icons/2nd-medal-icon.svg";
+// import { ReactComponent as ThirdMedal } from "../../assets/icons/3rd-medal-icon.svg";
 
 const Participant = ({ ...props }) => {
-	const renderMedal = (count) => {
-		if (count < 5) {
-			return null;
-		} else if (count < 10) {
-			return <ThirdMedal />;
-		} else if (count < 15) {
-			return <SecondMedal />;
-		} else {
-			return <FirstMedal />;
-		}
-	};
+	// const renderMedal = (count) => {
+	// 	if (count >= 15) {
+	// 		return <FirstMedal />;
+	// 	} else if (count >= 10) {
+	// 		return <SecondMedal />;
+	// 	} else if (count >= 5) {
+	// 		return <ThirdMedal />;
+	// 	} else return "";
+	// };
 
 	return (
 		<Grid container spacing={2.5}>
@@ -39,10 +37,8 @@ const Participant = ({ ...props }) => {
 					<ProfileContainer>
 						<ProfileId>{props.participant?.username}</ProfileId>
 						<ProfileText>
-							{props?.firstWeekMission === "YES"
-								? `${props.participant?.certiCount}회 인증 ${renderMedal(
-										props.participant?.certiCount
-								  )}`
+							{props?.participant?.firstWeekMission === "YES"
+								? `${props?.participant?.certiCount}회 인증`
 								: "1주차 진행중"}
 						</ProfileText>
 					</ProfileContainer>
@@ -68,7 +64,6 @@ const ProfileBox = styled.div`
 	border-radius: 0.5rem;
 
 	display: flex;
-	justify-content: center;
 	align-items: center;
 	gap: 2.6rem;
 `;
@@ -76,6 +71,7 @@ const ProfileBox = styled.div`
 const ProfileImg = styled.div`
 	width: 13rem;
 	height: 13rem;
+	padding-left: 4rem;
 
 	img {
 		width: 100%;

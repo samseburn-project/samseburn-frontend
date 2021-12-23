@@ -16,8 +16,6 @@ const FeedCarousel = ({ ...props }) => {
 	const userChallengeId = props?.userChallengeId;
 	const placeholderImgUrl = "https://plchldr.co/i/186x130?&bg=C4C4C4&fc=ffffff";
 
-	console.log(certifies);
-
 	const settings = {
 		dots: true,
 		infinite: true,
@@ -52,9 +50,9 @@ const FeedCarousel = ({ ...props }) => {
 		} else if (list.length === 1) {
 			return (
 				<StyledCarousel {...settings}>
-					<Feed>
+					<Feed id={list[0]?.certificationId}>
 						<FeedThumbnail
-							id="feed"
+							id={list[0]?.certificationId}
 							src={list[0]?.imgUrl}
 							alt="Feed Thumbnail"
 							onClick={(e) => {
@@ -64,13 +62,16 @@ const FeedCarousel = ({ ...props }) => {
 							}}
 						/>
 						<AuthViewDialog
+							id={list[0]?.certificationId}
 							open={open}
 							handleOpenToggle={handleOpenToggle}
 							openDialog={openDialog}
 							handleOpenDialog={handleOpenDialog}
 							challengeId={challengeId}
-							certify={list[0]}
 							certifyId={list[0].userId}
+							certifyImg={list[0]?.imgUrl}
+							certifyDate={list[0]?.createdDate}
+							certifyContents={list[0]?.contents}
 							userChallengeId={userChallengeId}
 						/>
 					</Feed>
@@ -85,50 +86,46 @@ const FeedCarousel = ({ ...props }) => {
 		} else if (list.length === 2) {
 			return (
 				<StyledCarousel {...settings}>
-					<Feed
-						onClick={(e) => {
-							console.log(e.target.id);
-							handleOpenDialog(e.target.id);
-							handleOpenToggle();
-						}}
-					>
+					<Feed id={list[0]?.certificationId}>
 						<FeedThumbnail
-							id="feed"
+							id={list[0]?.certificationId}
 							src={list[0]?.imgUrl}
 							alt="Feed Thumbnail"
+							onClick={(e) => {
+								handleOpenDialog(e.target.id);
+								handleOpenToggle();
+							}}
 						/>
 						<AuthViewDialog
+							id={list[0]?.certificationId}
 							open={open}
 							handleOpenToggle={handleOpenToggle}
 							openDialog={openDialog}
 							handleOpenDialog={handleOpenDialog}
-							certify={list[0]}
-							certifyId={list[0].userId}
-							certifyImg={list[0].imgUrl}
-							certifyDate={list[0].createdDate}
-							certifyContents={list[0].contents}
+							certifyId={list[0]?.userId}
+							certifyImg={list[0]?.imgUrl}
+							certifyDate={list[0]?.createdDate}
+							certifyContents={list[0]?.contents}
 							challengeId={challengeId}
 							userChallengeId={userChallengeId}
 						/>
 					</Feed>
-					<Feed
-						onClick={(e) => {
-							console.log(e.target.id);
-							handleOpenDialog(e.target.id);
-							handleOpenToggle();
-						}}
-					>
+					<Feed id={list[1]?.certificationId}>
 						<FeedThumbnail
-							id="feed"
+							id={list[1]?.certificationId}
 							src={list[1]?.imgUrl}
 							alt="Feed Thumbnail"
+							onClick={(e) => {
+								handleOpenDialog(e.target.id);
+								handleOpenToggle();
+							}}
 						/>
 						<AuthViewDialog
+							id={list[1]?.certificationId}
 							open={open}
 							handleOpenToggle={handleOpenToggle}
 							openDialog={openDialog}
 							handleOpenDialog={handleOpenDialog}
-							certify={list[1]}
 							certifyId={list[1].userId}
 							certifyImg={list[1].imgUrl}
 							certifyDate={list[1].createdDate}
@@ -146,26 +143,22 @@ const FeedCarousel = ({ ...props }) => {
 			return (
 				<StyledCarousel {...settings}>
 					{list.map((item) => (
-						<Feed
-							key={item?.certificationId}
-							onClick={(e) => {
-								console.log(e.target.id);
-								handleOpenDialog(e.target.id);
-								handleOpenToggle();
-							}}
-						>
+						<Feed key={item?.certificationId} id={item?.certificationId}>
 							<FeedThumbnail
-								id="feed"
+								id={item?.certificationId}
 								src={item?.imgUrl}
 								alt="Feed Thumbnail"
-								onClick={handleOpenToggle}
+								onClick={(e) => {
+									handleOpenDialog(e.target.id);
+									handleOpenToggle();
+								}}
 							/>
 							<AuthViewDialog
+								id={item?.certificationId}
 								open={open}
 								handleOpenToggle={handleOpenToggle}
 								openDialog={openDialog}
 								handleOpenDialog={handleOpenDialog}
-								certify={item}
 								certifyId={item.userId}
 								certifyImg={item.imgUrl}
 								certifyDate={item.createdDate}
@@ -214,6 +207,6 @@ const Feed = styled.div`
 const FeedThumbnail = styled.img`
 	width: 100%;
 	height: 100%;
-	border-radius: 0.5rem;
 	cursor: pointer;
+	border-radius: 0.5rem;
 `;
