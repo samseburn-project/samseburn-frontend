@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { useSnackbar } from "notistack";
 
 import styled from "styled-components";
 
@@ -16,8 +17,9 @@ const Main = () => {
 	const [challenge, setChallenge] = useState();
 	const [participants, setParticipants] = useState([]);
 	const [userChallenge, setUserChallenge] = useState({});
-	const [dialogOpen, setDialogOpen] = useState(false);
 	const userToken = localStorage.getItem("token");
+
+	const { enqueueSnackbar } = useSnackbar();
 
 	const fetchChallenge = async () => {
 		try {
@@ -39,36 +41,43 @@ const Main = () => {
 
 	const fetchUserChallenge = async () => {
 		try {
-			const { status, data } = await axios.get(
-				`/challenges/${challengeId}/user`,
-				{
-					headers: { Authorization: `Bearer ${userToken}` },
-				}
-			);
+			const res = await axios.get(`/challenges/${challengeId}/user`, {
+				headers: { Authorization: `Bearer ${userToken}` },
+			});
+
+			console.log(res);
+
+			const { status, data } = res;
 
 			if (status === 200) {
 				setUserChallenge(data);
-			} else {
-				console.log("참여중인 챌린지가 아닙니다.");
 			}
 		} catch (err) {
-			console.log(err);
+			if (err.response.data.message === "해당 챌린지를 찾을 수 없습니다.") {
+				console.log("참여중인 챌린지가 아닙니다.");
+			}
 		}
 	};
 
-	const handleDialogOpen = () => {
-		setDialogOpen(true);
-	};
-
-	const handleDialogClose = () => {
-		setDialogOpen(false);
-	};
-
-	const handleChallengeJoin = async () => {
+	const handleChallengeJoin = async (userToken) => {
 		try {
-			await axios.post(`/challenges/${challengeId}/join`, {
-				headers: { Authorization: `Bearer ${userToken}` },
+			const res = await axios.post(`/challenges/${challengeId}/join`, {
+				headers: {
+					Authorization: `Bearer ${userToken}`,
+				},
 			});
+
+			if (res.status === 200) {
+				enqueueSnackbar("챌린지에 참여하셨습니다.", {
+					variant: "success",
+					autoHideDuration: 2000,
+				});
+			} else {
+				enqueueSnackbar("챌린지 참여 신청에 실패했습니다.", {
+					variant: "error",
+					autoHideDuration: 2000,
+				});
+			}
 		} catch (err) {
 			console.log(err);
 		}
@@ -127,9 +136,6 @@ const Main = () => {
 				handleChallengeCancel={handleChallengeCancel}
 				handleChallengeContinue={handleChallengeContinue}
 				handleChallengeStop={handleChallengeStop}
-				dialogOpen={dialogOpen}
-				handleDialogOpen={handleDialogOpen}
-				handleDialogClose={handleDialogClose}
 			/>
 			<Wrapper>
 				<Row>
@@ -196,7 +202,7 @@ const AddressText = styled.div`
 `;
 
 const Text = styled.div`
-	font-size: 1.6rem;
+	font-size: 2rem;
 	line-height: 2.8rem;
 	white-space: pre-wrap;
 	margin-bottom: 10rem;

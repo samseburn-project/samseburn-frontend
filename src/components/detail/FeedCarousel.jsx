@@ -3,17 +3,20 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 import Slider from "react-slick";
-import AuthDialog from "../common/AuthDialog";
+import AuthViewDialog from "./AuthViewDialog";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 const FeedCarousel = ({ ...props }) => {
-	const [dialogOpen, setDialogOpen] = useState(false);
+	const [openDialog, setOpenDialog] = useState("");
+	const [open, setOpen] = useState(false);
 	const certifies = props?.certifies;
 	const challengeId = props?.challengeId;
 	const userChallengeId = props?.userChallengeId;
 	const placeholderImgUrl = "https://plchldr.co/i/186x130?&bg=C4C4C4&fc=ffffff";
+
+	console.log(certifies);
 
 	const settings = {
 		dots: true,
@@ -23,12 +26,12 @@ const FeedCarousel = ({ ...props }) => {
 		slidesToScroll: 3,
 	};
 
-	const handleDialogOpen = () => {
-		setDialogOpen(true);
+	const handleOpenDialog = (targetId) => {
+		setOpenDialog(targetId);
 	};
 
-	const handleDialogClose = () => {
-		setDialogOpen(false);
+	const handleOpenToggle = () => {
+		setOpen(!open);
 	};
 
 	const renderFeedCarousel = (list) => {
@@ -51,15 +54,23 @@ const FeedCarousel = ({ ...props }) => {
 				<StyledCarousel {...settings}>
 					<Feed>
 						<FeedThumbnail
+							id="feed"
 							src={list[0]?.imgUrl}
 							alt="Feed Thumbnail"
-							onClick={handleDialogOpen}
+							onClick={(e) => {
+								console.log(e.target);
+								handleOpenDialog(e.target.id);
+								handleOpenToggle();
+							}}
 						/>
-						<AuthDialog
-							dialogOpen={dialogOpen}
-							handleDialogClose={handleDialogClose}
-							certify={list[0]}
+						<AuthViewDialog
+							open={open}
+							handleOpenToggle={handleOpenToggle}
+							openDialog={openDialog}
+							handleOpenDialog={handleOpenDialog}
 							challengeId={challengeId}
+							certify={list[0]}
+							certifyId={list[0].userId}
 							userChallengeId={userChallengeId}
 						/>
 					</Feed>
@@ -74,30 +85,54 @@ const FeedCarousel = ({ ...props }) => {
 		} else if (list.length === 2) {
 			return (
 				<StyledCarousel {...settings}>
-					<Feed>
+					<Feed
+						onClick={(e) => {
+							console.log(e.target.id);
+							handleOpenDialog(e.target.id);
+							handleOpenToggle();
+						}}
+					>
 						<FeedThumbnail
+							id="feed"
 							src={list[0]?.imgUrl}
 							alt="Feed Thumbnail"
-							onClick={handleDialogOpen}
 						/>
-						<AuthDialog
-							dialogOpen={dialogOpen}
-							handleDialogClose={handleDialogClose}
+						<AuthViewDialog
+							open={open}
+							handleOpenToggle={handleOpenToggle}
+							openDialog={openDialog}
+							handleOpenDialog={handleOpenDialog}
 							certify={list[0]}
+							certifyId={list[0].userId}
+							certifyImg={list[0].imgUrl}
+							certifyDate={list[0].createdDate}
+							certifyContents={list[0].contents}
 							challengeId={challengeId}
 							userChallengeId={userChallengeId}
 						/>
 					</Feed>
-					<Feed>
+					<Feed
+						onClick={(e) => {
+							console.log(e.target.id);
+							handleOpenDialog(e.target.id);
+							handleOpenToggle();
+						}}
+					>
 						<FeedThumbnail
+							id="feed"
 							src={list[1]?.imgUrl}
 							alt="Feed Thumbnail"
-							onClick={handleDialogOpen}
 						/>
-						<AuthDialog
-							dialogOpen={dialogOpen}
-							handleDialogClose={handleDialogClose}
+						<AuthViewDialog
+							open={open}
+							handleOpenToggle={handleOpenToggle}
+							openDialog={openDialog}
+							handleOpenDialog={handleOpenDialog}
 							certify={list[1]}
+							certifyId={list[1].userId}
+							certifyImg={list[1].imgUrl}
+							certifyDate={list[1].createdDate}
+							certifyContents={list[1].contents}
 							challengeId={challengeId}
 							userChallengeId={userChallengeId}
 						/>
@@ -111,16 +146,30 @@ const FeedCarousel = ({ ...props }) => {
 			return (
 				<StyledCarousel {...settings}>
 					{list.map((item) => (
-						<Feed key={item?.certificationId}>
+						<Feed
+							key={item?.certificationId}
+							onClick={(e) => {
+								console.log(e.target.id);
+								handleOpenDialog(e.target.id);
+								handleOpenToggle();
+							}}
+						>
 							<FeedThumbnail
+								id="feed"
 								src={item?.imgUrl}
 								alt="Feed Thumbnail"
-								onClick={handleDialogOpen}
+								onClick={handleOpenToggle}
 							/>
-							<AuthDialog
-								dialogOpen={dialogOpen}
-								handleDialogClose={handleDialogClose}
+							<AuthViewDialog
+								open={open}
+								handleOpenToggle={handleOpenToggle}
+								openDialog={openDialog}
+								handleOpenDialog={handleOpenDialog}
 								certify={item}
+								certifyId={item.userId}
+								certifyImg={item.imgUrl}
+								certifyDate={item.createdDate}
+								certifyContents={item.contents}
 								challengeId={challengeId}
 								userChallengeId={userChallengeId}
 							/>
