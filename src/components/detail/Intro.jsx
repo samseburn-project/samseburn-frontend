@@ -21,7 +21,6 @@ const Intro = ({ ...props }) => {
 		props.userChallenge?.userMissionDate
 	).getTime();
 	const certiCount = props.userChallenge?.certiCount;
-	console.log(certiCount);
 
 	const { enqueueSnackbar } = useSnackbar();
 
@@ -34,21 +33,20 @@ const Intro = ({ ...props }) => {
 	};
 
 	const renderMedal = (count) => {
-		if (count < 5) {
-			return "";
-		} else if (count < 10) {
-			return <ThirdMedal />;
-		} else if (count < 15) {
-			return <SecondMedal />;
-		} else {
+		if (count >= 15) {
 			return <FirstMedal />;
-		}
+		} else if (count >= 10) {
+			return <SecondMedal />;
+		} else if (count >= 5) {
+			return <ThirdMedal />;
+		} else return "";
 	};
 
 	const handleMissionStatus = (missionStatus, count, missionDate, retry) => {
 		if (missionStatus === "NO" && count === 3) {
 			return (
-				<CommonDialog
+				<SuccessDialog
+					id="success"
 					open={open}
 					handleOpenToggle={handleOpenToggle}
 					openDialog={openDialog}
@@ -61,20 +59,40 @@ const Intro = ({ ...props }) => {
 					}
 				/>
 			);
-		} else if (missionStatus === "NO" && missionDate < today) {
+		} else if (missionStatus === "NO" && today > missionDate && count < 3) {
 			return (
-				<CommonDialog
+				<RetryDialog
+					id="retry"
+					retry={props.userChallenge?.retryCount}
 					open={open}
 					handleOpenToggle={handleOpenToggle}
 					openDialog={openDialog}
 					handleOpenDialog={handleOpenDialog}
-					mainText={"챌린지 1주차 작심삼일 미션을 달성하지 못했어요 😔"}
+					mainText={"챌린지 1주차 작심삼일 미션을 달성하지 못했어요.."}
 					subText={`총 ${3 - retry}번의 재도전 기회가 남아 있어요!`}
+				/>
+			);
+		} else if (
+			retry === 3 &&
+			missionStatus === "NO" &&
+			today > missionDate &&
+			count < 3
+		) {
+			return (
+				<FailDialog
+					id="fail"
+					open={open}
+					handleOpenToggle={handleOpenToggle}
+					openDialog={openDialog}
+					handleOpenDialog={handleOpenDialog}
+					mainText={"챌린지 재도전 기회가 모두 소진되었습니다."}
+					subText={"아쉽지만 더이상 챌린지에 참여하실 수 없어요.."}
 				/>
 			);
 		} else {
 			return (
 				<AuthDialog
+					id="auth"
 					open={open}
 					handleOpenToggle={handleOpenToggle}
 					openDialog={openDialog}
@@ -85,8 +103,8 @@ const Intro = ({ ...props }) => {
 		}
 	};
 
-	const handleButtonRender = (challengeStatus) => {
-		if (challengeStatus === "JOIN") {
+	const handleButtonRender = (challengeStatus, challengeProgress) => {
+		if (challengeStatus === "JOIN" && challengeProgress === "INPROGRESS") {
 			return (
 				<ButtonRow
 					onClick={(e) => {
@@ -118,6 +136,7 @@ const Intro = ({ ...props }) => {
 						참가 취소
 					</CancelButton>
 					<CancelDialog
+						id="cancel"
 						open={open}
 						handleOpenToggle={handleOpenToggle}
 						openDialog={openDialog}
@@ -128,17 +147,23 @@ const Intro = ({ ...props }) => {
 					/>
 				</ButtonRow>
 			);
-		} else if (challengeStatus === "COMPLETE") {
+		} else if (challengeStatus === "COMPLETE" || challengeProgress === "STOP") {
 			return <ClosedButton disabled>챌린지 마감</ClosedButton>;
-		} else if (props.userChallenge === {} || challengeStatus !== "JOIN") {
+		} else if (
+			props.userChallenge === {} ||
+			challengeStatus !== "JOIN" ||
+			challengeStatus === "RETRY"
+		) {
 			return (
 				<>
 					<ApplyButton
 						id="apply"
 						type="button"
-						onClick={() => {
+						onClick={(e) => {
 							if (userToken) {
-								props.handleChallengeJoin(userToken);
+								handleOpenDialog(e.target.id);
+								handleOpenToggle();
+								props.handleChallengeJoin();
 							} else {
 								enqueueSnackbar("로그인이 필요한 기능입니다!", {
 									variant: "warning",
@@ -150,6 +175,7 @@ const Intro = ({ ...props }) => {
 						챌린지 참가하기
 					</ApplyButton>
 					<ApplyDialog
+						id="apply"
 						open={open}
 						handleOpenToggle={handleOpenToggle}
 						openDialog={openDialog}
@@ -169,7 +195,7 @@ const Intro = ({ ...props }) => {
 				</IntroThumbnail>
 				<ContentsContainer>
 					<Title>
-						{props.challenge?.title} {certiCount && renderMedal(certiCount)}
+						{props.challenge?.title} {certiCount ? renderMedal(certiCount) : ""}
 					</Title>
 					<CategoryRow>
 						<IntroCategory locationType={props.challenge?.locationType}>
@@ -188,7 +214,10 @@ const Intro = ({ ...props }) => {
 					<Text>
 						{props.challenge?.participants} / {props.challenge?.limitPerson} 명
 					</Text>
-					{handleButtonRender(props.userChallenge?.challengeStatus)}
+					{handleButtonRender(
+						props.userChallenge?.challengeStatus,
+						props.challenge?.challengeProgress
+					)}
 				</ContentsContainer>
 			</IntroContainer>
 		</IntroBox>
@@ -309,6 +338,12 @@ const ApplyButton = styled(StyledButton)`
 	height: 5.5rem;
 	font-size: 2rem;
 `;
+
+const SuccessDialog = styled(CommonDialog)``;
+
+const RetryDialog = styled(CommonDialog)``;
+
+const FailDialog = styled(CommonDialog)``;
 
 const ApplyDialog = styled(CommonDialog)``;
 

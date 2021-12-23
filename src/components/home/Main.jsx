@@ -86,14 +86,15 @@ const Main = () => {
   };
 
   useEffect(() => {
-    if (totalCount === challenges.length || challenges === []) {
-      setHasMore(false);
-      return;
-    }
-    fetchChallenges();
+		let controller = new AbortController();
+		if (totalCount === challenges.length || challenges === []) {
+			setHasMore(false);
+			return;
+		}
+		fetchChallenges();
 
-    return () => setHasMore(false);
-  }, [page, sortBy, categoryName]);
+		return () => controller.abort();
+	}, [page, sortBy, categoryName]);
 
   return (
     <>
@@ -145,8 +146,8 @@ const Main = () => {
             >
               <ListContainer sx={{ width: '100%' }}>
                 <Grid container spacing={4}>
-                  {challenges.map((challenge) => (
-                    <Grid item xs={4} key={challenge.challengeId}>
+                  {challenges.map((challenge, i) => (
+                    <Grid item xs={4} key={i}>
                       <ChallengeCard
                         key={challenge.challengeId}
                         challenge={challenge}

@@ -35,6 +35,7 @@ const MyChallengeCard = ({
   challengeStatus,
   firstWeekMission,
 }) => {
+  
   const navigate = useNavigate();
 
   const viewMedalIcon = (param) => {
@@ -76,6 +77,7 @@ const MyChallengeCard = ({
             justifyContent: 'space-between',
           }}
           onClick={() => {
+            if (e.target !== e.currentTarget) return;
             navigate(`/detail/${id}`);
           }}
         >
@@ -170,87 +172,6 @@ const MyChallengeCard = ({
       </CardActionArea>
     </CardContainer>
   );
-
-  // return (
-  //   <Grid item xs={6}>
-  //     <StyledCard
-  //       onClick={(e) => {
-  //         if (e.target.name !== 'retryButton') {
-  //           navigate(`/detail/${id}`);
-  //         }
-  //       }}
-  //     >
-  //       <StyledCardThumbnail>
-  //         <img alt={title} src={imgUrl} className="thumbnail"></img>
-  //       </StyledCardThumbnail>
-  //       <StyledCardContent>
-  //         <Row>
-  //           <CardTitle>{title}</CardTitle>
-  //           {challengeStatus === 'RETRY' ? (
-  //             ''
-  //           ) : (
-  //             <CardMedal>{viewMedalIcon(certiCount)}</CardMedal>
-  //           )}
-  //         </Row>
-  //         <Row>
-  //           <CardCategory>{category}</CardCategory>
-  //           <CardCategory>
-  //             {locationType === 'ONLINE' ? '온라인' : '오프라인'}
-  //           </CardCategory>
-  //         </Row>
-  //         <Row>
-  //           <CardIcon>
-  //             <Calender alt="Calendar icon" />
-  //           </CardIcon>
-  //           <CardDate>
-  //             {challengeStartDate} ~ {challengeEndDate}
-  //           </CardDate>
-  //         </Row>
-  //         <Row>
-  //           {challengeStatus === 'JOIN' ? (
-  //             firstWeekMission ? (
-  //               <CertiCount>
-  //                 누적 <CertiCountNumber>{certiCount}</CertiCountNumber>
-  //                 회 달성
-  //                 <Congrats />
-  //               </CertiCount>
-  //             ) : (
-  //               <Progress>
-  //                 <ProgressTitle>달성률</ProgressTitle>
-  //                 {/* <ProgressLineContainer>
-  //                 <ProgressLine />
-  //               </ProgressLineContainer> */}
-  //                 <ProgressIcons>
-  //                   {certiCount >= 1 ? <AbledProgress /> : <DisabledProgress />}
-  //                   {certiCount >= 2 ? <AbledProgress /> : <DisabledProgress />}
-  //                   {certiCount >= 3 ? <AbledProgress /> : <DisabledProgress />}
-  //                 </ProgressIcons>
-  //               </Progress>
-  //             )
-  //           ) : (
-  //             ''
-  //           )}
-  //           {challengeStatus === 'RETRY' ? (
-  //             <RetryButton name="retryButton" onClick={onRetryHandler}>
-  //               재도전하기
-  //             </RetryButton>
-  //           ) : (
-  //             ''
-  //           )}
-  //           {challengeStatus === 'COMPLETE' ? (
-  //             <CertiCount>
-  //               총 <CertiCountNumber>{certiCount}</CertiCountNumber>
-  //               회 달성
-  //               <Congrats />
-  //             </CertiCount>
-  //           ) : (
-  //             ''
-  //           )}
-  //         </Row>
-  //       </StyledCardContent>
-  //     </StyledCard>
-  //   </Grid>
-  // );
 };
 
 export default MyChallengeCard;
@@ -430,35 +351,4 @@ const RetryButton = styled.span`
   }
 `;
 
-// ====================================
 
-// const StyledCard = styled.div`
-//   height: 20rem;
-//   box-shadow: 0.6rem 1.1rem 2rem rgba(0, 0, 0, 0.25);
-//   border-radius: 0.5rem;
-
-//   display: flex;
-//   align-items: center;
-//   cursor: pointer;
-//   word-break: break-all;
-//   margin: 2rem;
-
-//   .thumbnail {
-//     width: 15rem;
-//     height: 15rem;
-//     object-fit: cover;
-//     margin: 2.5rem;
-//     border-radius: 0.5rem;
-//   }
-
-//   &:hover {
-//     background-color: #f6f6f6;
-//   }
-// `;
-
-// const StyledCardThumbnail = styled.div`
-//   width: 40%;
-// `;
-// const StyledCardContent = styled.div`
-//   width: 60%;
-// `;

@@ -27,7 +27,7 @@ const ChallengeCard = ({ ...props }) => {
 								{props.challenge?.locationType}
 							</CardCategory>
 							<CardCategory category={props.challenge?.category}>
-								{props.challenge?.category})
+								{props.challenge?.category}
 							</CardCategory>
 						</Row>
 						<Row>
@@ -192,6 +192,7 @@ const EndOverlay = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	cursor: pointer;
 `;
 
 const Text = styled.div`

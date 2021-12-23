@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 
@@ -10,48 +10,22 @@ import StyledButton from "../common/StyledButton";
 import { ReactComponent as Close } from "../../assets/icons/close.svg";
 import { ReactComponent as Delete } from "../../assets/icons/delete.svg";
 
-const AuthDialog = ({ ...props }) => {
-	const certify = props?.certify;
+const AuthViewDialog = ({ ...props }) => {
 	const challengeId = props?.challengeId;
 	const certifyId = props?.certifyId;
 	const userChallengeId = props?.userChallengeId;
-	const [imgFile, setImgFile] = useState(null);
-	const [previewImg, setPreviewImg] = useState(
-		certify ? props?.certifyImg : null
-	);
+	const certificationId = props?.id;
+	const previewImg = props?.certifyImg;
 	const [contents, setContents] = useState("");
 	const userToken = localStorage.getItem("token");
-	const imgRef = useRef();
-
-	const date = new Date(+new Date() + 3240 * 10000).toISOString().split("T")[0];
-	const time = new Date().toTimeString().split(" ")[0];
-	const authDate = `${date} ${time}`;
 
 	const { enqueueSnackbar } = useSnackbar();
-
-	const handleImgChange = (e) => {
-		let file = e.target.files[0];
-		let reader = new FileReader();
-
-		reader.onloadend = () => {
-			setImgFile(file);
-			setPreviewImg(reader.result);
-		};
-		if (file) reader.readAsDataURL(file);
-	};
-
-	const handleImgDelete = () => {
-		imgRef.current.value = "";
-		setPreviewImg(null);
-	};
 
 	const handleContentsChange = (e) => {
 		setContents(e.target.value);
 	};
 
 	const handleReset = () => {
-		setImgFile();
-		setPreviewImg();
 		setContents();
 	};
 
@@ -60,17 +34,11 @@ const AuthDialog = ({ ...props }) => {
 
 		const formData = new FormData();
 
-		if (!imgFile) {
-			alert("인증 이미지를 등록해주세요.");
-			return;
-		}
-
-		formData.append("image", imgFile);
 		formData.append("contents", contents);
 
 		try {
-			const { status } = await axios.post(
-				`/challenges/${challengeId}/certi`,
+			const { status } = await axios.put(
+				`/challenges/${challengeId}/certis/${certificationId}`,
 				formData,
 				{
 					headers: {
@@ -82,13 +50,13 @@ const AuthDialog = ({ ...props }) => {
 
 			if (status === 200) {
 				handleReset();
-				enqueueSnackbar("인증이 성공적으로 등록되었습니다.", {
+				enqueueSnackbar("인증 후기가 성공적으로 수정되었습니다.", {
 					variant: "success",
 					autoHideDuration: 2000,
 				});
-				props.handleDialogClose();
+				props.handleOpenToggle();
 			} else {
-				enqueueSnackbar("인증 등록에 실패했습니다.", {
+				enqueueSnackbar("인증 후기 수정에 실패했습니다.", {
 					variant: "error",
 					autoHideDuration: 2000,
 				});
@@ -100,7 +68,7 @@ const AuthDialog = ({ ...props }) => {
 
 	return (
 		<>
-			{props.openDialog === "auth" || props.openDialog === "feed" ? (
+			{props.id === Number(props.openDialog) ? (
 				<Dialog onClose={props.handleOpenToggle} open={props.open}>
 					<StyledDialogContent>
 						<CloseButton>
@@ -128,23 +96,48 @@ const AuthDialog = ({ ...props }) => {
 								</Grid>
 								<Grid item>
 									<LabelText>챌린지 인증 후기</LabelText>
-									<TextInput
-										id="auth-text"
-										multiline
-										rows={8}
-										InputProps={{ readOnly: true }}
-										defaultValue={props?.certifyContents}
-									/>
+									{certifyId === userChallengeId ? (
+										<TextInput
+											id="auth-text"
+											multiline
+											rows={8}
+											defaultValue={props?.certifyContents}
+											onChange={handleContentsChange}
+										/>
+									) : (
+										<TextInput
+											id="auth-text"
+											multiline
+											rows={8}
+											InputProps={{ readOnly: true }}
+											defaultValue={props?.certifyContents}
+										/>
+									)}
 								</Grid>
 								<Grid item textAlign="center">
-									<ConfirmButton
-										type="button"
-										onClick={() => {
-											props.handleOpenToggle();
-										}}
-									>
-										확인
-									</ConfirmButton>
+									{certifyId === userChallengeId ? (
+										<ButtonRow>
+											<EditButton type="submit">수정</EditButton>
+											<CancelButton
+												type="button"
+												onClick={() => {
+													handleReset();
+													props.handleOpenToggle();
+												}}
+											>
+												취소
+											</CancelButton>
+										</ButtonRow>
+									) : (
+										<ConfirmButton
+											type="button"
+											onClick={() => {
+												props.handleOpenToggle();
+											}}
+										>
+											확인
+										</ConfirmButton>
+									)}
 								</Grid>
 							</Grid>
 						</form>
@@ -157,7 +150,7 @@ const AuthDialog = ({ ...props }) => {
 	);
 };
 
-export default AuthDialog;
+export default AuthViewDialog;
 
 const StyledDialogContent = styled(DialogContent)`
 	padding: 4rem 7.5rem;
@@ -175,13 +168,12 @@ const AuthThumbnail = styled.div`
 	margin: 1rem 0;
 	width: 35rem;
 	height: 25rem;
-	background-color: #959595;
 	position: relative;
+	border-radius: 0.5rem;
 
 	img {
 		width: 100%;
 		height: 100%;
-		border-radius: 0.5rem;
 	}
 `;
 
@@ -199,28 +191,6 @@ const DeleteButton = styled.span`
 
 	&:hover {
 		opacity: 1;
-	}
-`;
-
-const UploadInput = styled.input`
-	display: none;
-`;
-
-const UploadButton = styled.span`
-	display: inline-block;
-	padding: 1rem 2.4rem;
-	font-size: 1.4rem;
-	font-weight: bold;
-	color: #ffffff;
-	background-color: #eb3901;
-	outline: none;
-	border: none;
-	border-radius: 0.5rem;
-	cursor: pointer;
-	transition: opacity 0.3s;
-
-	&:hover {
-		opacity: 0.7;
 	}
 `;
 
@@ -260,7 +230,7 @@ const ButtonRow = styled.div`
 	gap: 4rem;
 `;
 
-const EnrollButton = styled(StyledButton)`
+const EditButton = styled(StyledButton)`
 	padding: 0.8rem 1.8rem;
 	font-size: 1.6rem;
 `;

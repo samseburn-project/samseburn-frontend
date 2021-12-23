@@ -10,108 +10,106 @@ import ModifyUser from './ModifyUser';
 import ManageChallenge from './ManageChallenge';
 
 const Main = () => {
-  const [selectedTab, setSelectedTab] = useState(0);
-  const [userChallengeList, setUserChallengList] = useState([]);
-  const [userCreateChallengeList, setUserCreateChallengList] = useState([]);
-  const userToken = localStorage.getItem('token');
+	const [selectedTab, setSelectedTab] = useState(0);
+	const [userChallengeList, setUserChallengList] = useState([]);
+	const [userCreateChallengeList, setUserCreateChallengList] = useState([]);
+	const userToken = localStorage.getItem("token");
 
-  const fetchUserChallenges = async () => {
-    try {
-      const res = await axios.get('/user/challenges', {
-        headers: { Authorization: `Bearer ${userToken}` },
-      });
+	const fetchUserChallenges = async () => {
+		try {
+			const res = await axios.get("/user/challenges", {
+				headers: { Authorization: `Bearer ${userToken}` },
+			});
 
-      if (res.status === 200) setUserChallengList(res.data);
-      console.log(res);
-      // response에서 받은 데이터 state에 저장해 컴포넌트에 props로 내려주기
-    } catch (err) {
-      console.error(err);
-    }
-  };
+			if (res.status === 200) setUserChallengList(res.data);
+		} catch (err) {
+			console.error(err);
+		}
+	};
 
-  const fetchUserCreateChallenge = async () => {
-    try {
-      const res = await axios.get('/user/challenges/create', {
-        headers: { Authorization: `Bearer ${userToken}` },
-      });
+	const fetchUserCreateChallenge = async () => {
+		try {
+			const res = await axios.get("/user/challenges/create", {
+				headers: { Authorization: `Bearer ${userToken}` },
+			});
 
-      if (res.status === 200) setUserCreateChallengList(res.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+			if (res.status === 200) setUserCreateChallengList(res.data);
+		} catch (err) {
+			console.error(err);
+		}
+	};
 
-  const handleChange = (event, newValue) => {
-    setSelectedTab(newValue);
-  };
+	const handleChange = (event, newValue) => {
+		setSelectedTab(newValue);
+	};
 
-  useEffect(() => {
-    fetchUserChallenges(); // 유저와 연관된 챌린지 정보 요청
-    fetchUserCreateChallenge(); // 유저가 생성한 챌린지 정보 요청
-  }, []);
+	useEffect(() => {
+		fetchUserChallenges();
+		fetchUserCreateChallenge();
+	}, []);
 
-  const StyledTabs = muiStyled((props) => (
-    <Tabs
-      {...props}
-      TabIndicatorProps={{
-        children: <span className="MuiTabs-indicatorSpan" />,
-      }}
-    />
-  ))({
-    '& .MuiTabs-indicator': {
-      display: 'flex',
-      justifyContent: 'center',
-      backgroundColor: 'transparent',
-    },
-    '& .MuiTabs-indicatorSpan': {
-      maxWidth: 100,
-      width: '100%',
-      backgroundColor: '#EB3901',
-    },
-  });
+	const StyledTabs = muiStyled((props) => (
+		<Tabs
+			{...props}
+			TabIndicatorProps={{
+				children: <span className="MuiTabs-indicatorSpan" />,
+			}}
+		/>
+	))({
+		"& .MuiTabs-indicator": {
+			display: "flex",
+			justifyContent: "center",
+			backgroundColor: "transparent",
+		},
+		"& .MuiTabs-indicatorSpan": {
+			maxWidth: 100,
+			width: "100%",
+			backgroundColor: "#EB3901",
+		},
+	});
 
-  const StyledTab = muiStyled((props) => <Tab disableRipple {...props} />)({
-    fontFamily: ['Lato'],
-    fontWeight: 'bold',
-    fontSize: '2rem',
-    color: '#000000',
-    '&.Mui-selected': {
-      color: '#EB3901',
-    },
-  });
+	const StyledTab = muiStyled((props) => <Tab disableRipple {...props} />)({
+		fontFamily: ["Lato"],
+		fontWeight: "bold",
+		fontSize: "2rem",
+		color: "#000000",
+		"&.Mui-selected": {
+			color: "#EB3901",
+		},
+	});
 
-  return (
-    <>
-      <Wrapper>
-        <Row>
-          <StyledTabs
-            value={selectedTab}
-            onChange={handleChange}
-            aria-label="styled tabs example"
-          >
-            <StyledTab label="챌린지 정보" />
-            <StyledTab label="회원 정보 수정" />
-            <StyledTab label="개설한 챌린지 관리" />
-          </StyledTabs>
-        </Row>
+	return (
+		<>
+			<Wrapper>
+				<Row>
+					<StyledTabs
+						value={selectedTab}
+						onChange={handleChange}
+						aria-label="styled tabs example"
+					>
+						<StyledTab label="챌린지 정보" />
+						<StyledTab label="회원 정보 수정" />
+						<StyledTab label="개설한 챌린지 관리" />
+					</StyledTabs>
+				</Row>
 
-        <Row>
-          {selectedTab === 0 && (
-            <ViewChallenge
-              userToken={userToken}
-              userChallengeList={userChallengeList}
-            />
-          )}
-          {selectedTab === 1 && <ModifyUser userToken={userToken} />}
-          {selectedTab === 2 && (
-            <ManageChallenge
-              userCreateChallengeList={userCreateChallengeList}
-            />
-          )}
-        </Row>
-      </Wrapper>
-    </>
-  );
+				<Row>
+					{selectedTab === 0 && (
+						<ViewChallenge
+							userToken={userToken}
+							userChallengeList={userChallengeList}
+						/>
+					)}
+					{selectedTab === 1 && <ModifyUser userToken={userToken} />}
+					{selectedTab === 2 && (
+						<ManageChallenge
+							userCreateChallengeList={userCreateChallengeList}
+						/>
+					)}
+				</Row>
+			</Wrapper>
+		</>
+	);
 };
 
 export default Main;
