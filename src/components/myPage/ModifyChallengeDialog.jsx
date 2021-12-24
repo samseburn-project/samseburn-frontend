@@ -91,7 +91,7 @@ const ModifyChallengeDialog = ({ ...props }) => {
 
 		try {
 			const { status } = await axios.put(
-				`/challenges/${challengeId}`,
+				`https://api.samseburn.site/challenges/${challengeId}`,
 				formData,
 				{
 					headers: {

@@ -30,7 +30,7 @@ const ModifyUser = ({ userToken }) => {
 	useEffect(() => {
 		const fetchUser = async () => {
 			try {
-				const res = await axios.get("/user", {
+				const res = await axios.get("https://api.samseburn.site/user", {
 					headers: { Authorization: `Bearer ${userToken}` },
 				});
 
@@ -93,7 +93,7 @@ const ModifyUser = ({ userToken }) => {
 				image.imageFile ? image.imageFile : image.imageUrl
 			);
 
-			await axios.put("/user", formData, {
+			await axios.put("https://api.samseburn.site/user", formData, {
 				headers: {
 					"Content-Type": "multipart/form-data",
 					Authorization: `Bearer ${userToken}`,

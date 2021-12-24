@@ -38,7 +38,7 @@ const AuthViewDialog = ({ ...props }) => {
 
 		try {
 			const { status } = await axios.put(
-				`/challenges/${challengeId}/certis/${certificationId}`,
+				`https://api.samseburn.site/challenges/${challengeId}/certis/${certificationId}`,
 				formData,
 				{
 					headers: {

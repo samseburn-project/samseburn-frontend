@@ -18,9 +18,12 @@ const Main = () => {
 
 	const fetchUserChallenges = async () => {
 		try {
-			const res = await axios.get("/user/challenges", {
-				headers: { Authorization: `Bearer ${userToken}` },
-			});
+			const res = await axios.get(
+				"https://api.samseburn.site/user/challenges",
+				{
+					headers: { Authorization: `Bearer ${userToken}` },
+				}
+			);
 
 			if (res.status === 200) setUserChallengList(res.data);
 		} catch (err) {
@@ -30,9 +33,12 @@ const Main = () => {
 
 	const fetchUserCreateChallenge = async () => {
 		try {
-			const res = await axios.get("/user/challenges/create", {
-				headers: { Authorization: `Bearer ${userToken}` },
-			});
+			const res = await axios.get(
+				"https://api.samseburn.site/user/challenges/create",
+				{
+					headers: { Authorization: `Bearer ${userToken}` },
+				}
+			);
 
 			if (res.status === 200) setUserCreateChallengList(res.data);
 		} catch (err) {

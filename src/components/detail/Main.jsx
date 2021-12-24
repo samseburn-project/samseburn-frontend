@@ -24,7 +24,9 @@ const Main = () => {
 
 	const fetchChallenge = async () => {
 		try {
-			const { data } = await axios.get(`/challenges/${challengeId}`);
+			const { data } = await axios.get(
+				`https://api.samseburn.site/challenges/${challengeId}`
+			);
 			setChallenge(data);
 		} catch (err) {
 			console.error(err);
@@ -33,7 +35,9 @@ const Main = () => {
 
 	const fetchParticipants = async () => {
 		try {
-			const { data } = await axios.get(`/challenges/${challengeId}/users`);
+			const { data } = await axios.get(
+				`https://api.samseburn.site/challenges/${challengeId}/users`
+			);
 			setParticipants(data);
 		} catch (err) {
 			console.log(err);
@@ -42,9 +46,12 @@ const Main = () => {
 
 	const fetchUserChallenge = async () => {
 		try {
-			const res = await axios.get(`/challenges/${challengeId}/user`, {
-				headers: { Authorization: `Bearer ${userToken}` },
-			});
+			const res = await axios.get(
+				`https://api.samseburn.site/challenges/${challengeId}/user`,
+				{
+					headers: { Authorization: `Bearer ${userToken}` },
+				}
+			);
 
 			const { status, data } = res;
 
@@ -64,11 +71,15 @@ const Main = () => {
 	const handleChallengeJoin = async () => {
 		console.log(userToken);
 		try {
-			const res = await axios.post(`/challenges/${challengeId}/join`, null, {
-				headers: {
-					Authorization: `Bearer ${userToken}`,
-				},
-			});
+			const res = await axios.post(
+				`https://api.samseburn.site/challenges/${challengeId}/join`,
+				null,
+				{
+					headers: {
+						Authorization: `Bearer ${userToken}`,
+					},
+				}
+			);
 
 			if (res.status !== 200) {
 				enqueueSnackbar("챌린지에 참여 신청에 실패했습니다.", {
@@ -83,11 +94,14 @@ const Main = () => {
 
 	const handleChallengeCancel = async () => {
 		try {
-			const res = await axios.delete(`/challenges/${challengeId}/join`, {
-				headers: {
-					Authorization: `Bearer ${userToken}`,
-				},
-			});
+			const res = await axios.delete(
+				`https://api.samseburn.site/challenges/${challengeId}/join`,
+				{
+					headers: {
+						Authorization: `Bearer ${userToken}`,
+					},
+				}
+			);
 
 			if (res.status === 200) setUserChallenge();
 		} catch (err) {
@@ -97,11 +111,14 @@ const Main = () => {
 
 	const handleChallengeContinue = async () => {
 		try {
-			const res = await axios.put(`/challenges/${challengeId}/continue`, {
-				headers: {
-					Authorization: `Bearer ${userToken}`,
-				},
-			});
+			const res = await axios.put(
+				`https://api.samseburn.site/challenges/${challengeId}/continue`,
+				{
+					headers: {
+						Authorization: `Bearer ${userToken}`,
+					},
+				}
+			);
 
 			if (res.status !== 200) {
 				enqueueSnackbar("챌린지 계속하기에 실패했습니다.", {
@@ -116,11 +133,14 @@ const Main = () => {
 
 	const handleChallengeStop = async () => {
 		try {
-			const res = await axios.delete(`/challenges/${challengeId}/continue`, {
-				headers: {
-					Authorization: `Bearer ${userToken}`,
-				},
-			});
+			const res = await axios.delete(
+				`https://api.samseburn.site/challenges/${challengeId}/continue`,
+				{
+					headers: {
+						Authorization: `Bearer ${userToken}`,
+					},
+				}
+			);
 
 			if (res.status !== 200) {
 				enqueueSnackbar("챌린지 그만두기에 실패했습니다.", {

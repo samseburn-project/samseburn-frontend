@@ -36,9 +36,12 @@ const RegisterChallengeCard = ({ ...props }) => {
 	};
 
 	const handleChallengeDelete = async () => {
-		const { status } = await axios.delete(`/challenges/${challengeId}`, {
-			headers: { Authorization: `Bearer ${userToken}` },
-		});
+		const { status } = await axios.delete(
+			`https://api.samseburn.site/challenges/${challengeId}`,
+			{
+				headers: { Authorization: `Bearer ${userToken}` },
+			}
+		);
 
 		if (status === 200) {
 			enqueueSnackbar("챌린지가 삭제되었습니다.", {

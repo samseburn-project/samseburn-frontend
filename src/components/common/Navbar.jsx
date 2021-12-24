@@ -45,9 +45,13 @@ const Navbar = ({ ...props }) => {
 			success: (response) => {
 				const token = response.access_token;
 				axios
-					.post("/login/kakao", JSON.stringify({ token: token }), {
-						headers: { "Content-Type": "application/json" },
-					})
+					.post(
+						"https://api.samseburn.site/login/kakao",
+						JSON.stringify({ token: token }),
+						{
+							headers: { "Content-Type": "application/json" },
+						}
+					)
 					.then((res) => {
 						if (res.data.token) {
 							localStorage.setItem("token", res.data.token);

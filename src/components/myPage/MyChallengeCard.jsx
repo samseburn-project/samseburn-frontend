@@ -52,14 +52,18 @@ const MyChallengeCard = ({
 
 	const onRetryHandler = async () => {
 		try {
-			const res = axios.put(`/challenges/${id}/retry`, null, {
-				headers: {
-					Authorization: `Bearer ${userToken}`,
-				},
-			});
+			const res = axios.put(
+				`https://api.samseburn.site/challenges/${id}/retry`,
+				null,
+				{
+					headers: {
+						Authorization: `Bearer ${userToken}`,
+					},
+				}
+			);
 
 			if (res.status === 200) {
-				navigate(`/detail/${id}`);
+				navigate(`https://api.samseburn.site/detail/${id}`);
 			}
 		} catch (err) {
 			console.error(err);

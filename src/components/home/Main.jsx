@@ -25,7 +25,7 @@ const Main = () => {
 
 	const fetchChallenges = async () => {
 		try {
-			const res = await axios.get("/challenges", {
+			const res = await axios.get("https://api.samseburn.site/challenges", {
 				params: {
 					kind: categoryName,
 					page: page,
@@ -66,11 +66,14 @@ const Main = () => {
 
 	const onSearchSubmit = async (searchKeyword) => {
 		try {
-			const res = await axios.get("/challenges/search", {
-				params: {
-					search: searchKeyword,
-				},
-			});
+			const res = await axios.get(
+				"https://api.samseburn.site/challenges/search",
+				{
+					params: {
+						search: searchKeyword,
+					},
+				}
+			);
 
 			if (res.status === 200) {
 				console.log(res.data);

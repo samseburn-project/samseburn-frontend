@@ -71,7 +71,7 @@ const AuthDialog = ({ ...props }) => {
 
 		try {
 			const { status } = await axios.post(
-				`/challenges/${challengeId}/certi`,
+				`https://api.samseburn.site/challenges/${challengeId}/certi`,
 				formData,
 				{
 					headers: {
