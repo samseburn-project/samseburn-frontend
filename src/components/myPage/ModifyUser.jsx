@@ -211,6 +211,21 @@ const ImageThumbnail = styled.img`
   border-radius: 0.5rem;
   object-fit: cover;
   margin-bottom: 2rem;
+
+  ${customMedia.between('mobile', 'lgMobile')`
+    width: 20.2rem;
+  height: 20.2rem;
+  `}
+
+  ${customMedia.between('lgMobile', 'tablet')`
+width: 22.2rem;
+  height: 22.2rem;
+    
+  `}
+  
+	${customMedia.between('tablet', 'desktop')`
+
+  `}
 `;
 
 const DefaultThumbnail = styled.div`
@@ -219,6 +234,21 @@ const DefaultThumbnail = styled.div`
   border-radius: 0.5rem;
   background-color: lightgray;
   margin-bottom: 2rem;
+
+  ${customMedia.between('mobile', 'lgMobile')`
+    width: 20.2rem;
+  height: 20.2rem;
+  `}
+
+  ${customMedia.between('lgMobile', 'tablet')`
+width: 22.2rem;
+  height: 22.2rem;
+    
+  `}
+  
+	${customMedia.between('tablet', 'desktop')`
+
+  `}
 `;
 
 const ImageFileInput = styled.input`
