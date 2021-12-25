@@ -371,6 +371,7 @@ const CardDate = styled.div`
 
   ${customMedia.between('mobile', 'lgMobile')`
     font-size: 1.3rem;
+    letter-spacing: 0;
   `}
 
   ${customMedia.between('lgMobile', 'tablet')`
