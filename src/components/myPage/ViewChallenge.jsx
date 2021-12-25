@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Grid, CircularProgress } from '@mui/material';
 
 import MyChallengeCard from './MyChallengeCard';
+import { customMedia } from '../../GlobalStyles';
 
 const ViewChallenge = ({ userToken, userChallengeList }) => {
   const [loading, setLoading] = useState(true);
@@ -169,10 +170,23 @@ const Title = styled.div`
   font-size: 2.4rem;
   font-weight: bold;
   margin: 5rem 0 2rem 0;
+
+  ${customMedia.between('mobile', 'lgMobile')`
+    font-size: 1.8rem;
+  `}
+
+  ${customMedia.between('lgMobile', 'tablet')`
+    font-size: 2rem;
+  `}
+  
+	${customMedia.between('tablet', 'desktop')`
+    font-size: 2.2rem;
+  `}
 `;
 
 const CountContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-evenly;
   align-items: center;
 `;
@@ -182,24 +196,55 @@ const CountCard = styled.div`
   justify-content: space-evenly;
   align-items: center;
   cursor: pointer;
+  flex-basis: 17.7rem;
 
   width: 17.7rem;
   height: 9.3rem;
   box-shadow: 0.6rem 1.1rem 2rem rgba(0, 0, 0, 0.25);
   margin-bottom: 6rem;
   border-radius: 0.5rem;
+
+  ${customMedia.between('mobile', 'lgMobile')`
+flex-basis: 100%;
+height: 7rem;
+margin-bottom: 2rem;
+  `}
+
+  ${customMedia.between('lgMobile', 'tablet')`
+    flex-basis: 12rem;
+  `}
 `;
 
 const CountNumber = styled.div`
   font-size: 3.4rem;
   font-weight: bold;
   color: #eb3901;
+
+  ${customMedia.between('mobile', 'lgMobile')`
+    font-size: 2.8rem;
+  `}
+
+  ${customMedia.between('lgMobile', 'tablet')`
+    font-size: 3rem;
+  `}
+  
+	${customMedia.between('tablet', 'desktop')`
+    font-size: 3.2rem;
+  `}
 `;
 
 const CountText = styled.div`
   font-size: 1.6rem;
   font-weight: bold;
   color: #959595;
+
+  ${customMedia.between('mobile', 'lgMobile')`
+    font-size: 1.5rem;
+  `}
+
+  ${customMedia.between('lgMobile', 'tablet')`
+    font-size: 1.5rem;
+  `}
 `;
 
 const SpinnerContainer = styled.div`
