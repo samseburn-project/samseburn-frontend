@@ -91,7 +91,7 @@ const StyledCard = styled(Card)`
 		height: 18.15rem;
 	}
 
-	.css-46bh2p-MuiCardContent-root {
+	& .MuiCardContent-root {
 		padding: 2rem;
 		cursor: pointer;
 	}

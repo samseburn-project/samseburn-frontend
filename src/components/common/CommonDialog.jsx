@@ -157,28 +157,6 @@ const CommonDialog = ({ ...props }) => {
 					</StyledDialogContent>
 				</Dialog>
 			);
-		else if (id === "user" && openDialog === "user")
-			return (
-				<Dialog onClose={props.handleOpenToggle} open={props.open}>
-					<StyledDialogContent>
-						<CloseButton>
-							<Close
-								alt="Close icon"
-								onClick={(e) => {
-									e.stopPropagation();
-									props.handleOpenToggle();
-								}}
-							/>
-						</CloseButton>
-						<Container>
-							<Row>
-								<MainText>회원 정보 변경이 완료되었습니다.</MainText>
-							</Row>
-							<Row>{handleButtonRender(props.mainText)}</Row>
-						</Container>
-					</StyledDialogContent>
-				</Dialog>
-			);
 	};
 
 	const handleButtonRender = (mainText) => {
@@ -226,12 +204,6 @@ const CommonDialog = ({ ...props }) => {
 				</ButtonRow>
 			);
 		} else if (mainText === "챌린지 1주차 작심삼일 미션을 달성하지 못했어요..")
-			return (
-				<ConfirmButton type="button" onClick={props.handleOpenToggle}>
-					확인
-				</ConfirmButton>
-			);
-		else if (mainText === "회원 정보 변경이 완료되었습니다.")
 			return (
 				<ConfirmButton type="button" onClick={props.handleOpenToggle}>
 					확인

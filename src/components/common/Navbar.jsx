@@ -200,16 +200,16 @@ const NavRegister = styled.div`
 `;
 
 const StyledMenu = styled(Menu)`
-	.css-6hp17o-MuiList-root-MuiMenu-list {
+	& .MuiMenu-list {
 		background-color: #ffa883;
 	}
 
-	.css-1poimk-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper {
+	& .MuiPopover-paper {
 		box-shadow: none;
 		border-radius: 0;
 	}
 
-	.css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root {
+	& .MuiMenuItem-root {
 		font-size: 1.4rem;
 		color: #ffffff;
 	}

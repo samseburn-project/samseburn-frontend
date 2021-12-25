@@ -453,7 +453,7 @@ const AddressInput = styled(TextField)`
 	border: 1px solid #c4c4c4;
 	border-radius: 0.5rem;
 
-	.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+	& .MuiOutlinedInput-input {
 		font-size: 1.4rem;
 		padding: 1.2rem;
 	}

@@ -32,7 +32,7 @@ export default SortFilter;
 const StyledSelect = styled(Select)`
 	font-size: 1.4rem;
 
-	.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+	& .MuiOutlinedInput-input {
 		padding: 1rem 0 1rem 1.5rem;
 	}
 `;
