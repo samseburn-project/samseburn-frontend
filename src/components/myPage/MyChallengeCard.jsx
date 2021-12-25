@@ -1,6 +1,7 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useSnackbar } from "notistack";
 
 import styled, { css } from 'styled-components';
 
@@ -38,17 +39,19 @@ const MyChallengeCard = ({
 }) => {
   const navigate = useNavigate();
 
-  const viewMedalIcon = (param) => {
-    if (param < 5) {
-      return '';
-    } else if (param < 10) {
-      return <ThirdMedal />;
-    } else if (param < 15) {
-      return <SecondMedal />;
-    } else {
-      return <FirstMedal />;
-    }
-  };
+	const { enqueueSnackbar } = useSnackbar();
+
+	const viewMedalIcon = (param) => {
+		if (param < 5) {
+			return "";
+		} else if (param < 10) {
+			return <ThirdMedal />;
+		} else if (param < 15) {
+			return <SecondMedal />;
+		} else {
+			return <FirstMedal />;
+		}
+	};
 
   const onRetryHandler = async () => {
     try {
@@ -62,29 +65,38 @@ const MyChallengeCard = ({
         }
       );
 
-      if (res.status === 200) {
-        navigate(`https://api.samseburn.site/detail/${id}`);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
+			if (res.status === 200) {
+				enqueueSnackbar("챌린지 재도전이 신청되었습니다.", {
+					variant: "success",
+					autoHideDuration: 2000,
+				});
+				navigate(`https://api.samseburn.site/detail/${id}`);
+			} else {
+				enqueueSnackbar("챌린지 재도전 신청에 실패했습니다.", {
+					variant: "error",
+					autoHideDuration: 2000,
+				});
+			}
+		} catch (err) {
+			console.error(err);
+		}
+	};
 
-  return (
-    <CardContainer>
-      <CardActionArea>
-        <StyledCard
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-          onClick={(e) => {
-            if (e.target !== e.currentTarget) return;
-            navigate(`/detail/${id}`);
-          }}
-        >
-          <StyledCardMedia component="img" image={imgUrl} />
+	return (
+		<CardContainer>
+			<CardActionArea>
+				<StyledCard
+					sx={{
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "space-between",
+					}}
+					onClick={(e) => {
+						// if (e.target !== e.currentTarget) return;
+						navigate(`/detail/${id}`);
+					}}
+				>
+					<StyledCardMedia component="img" image={imgUrl} />
 
           <StyledBox sx={{ display: 'flex', flexDirection: 'column' }}>
             <StyledCardContent>
@@ -124,59 +136,62 @@ const MyChallengeCard = ({
                       {/* <ProgressLineContainer>
                  <ProgressLine />
                </ProgressLineContainer> */}
-                      <ProgressIcons>
-                        {certiCount >= 1 ? (
-                          <AbledProgress />
-                        ) : (
-                          <DisabledProgress />
-                        )}
-                        {certiCount >= 2 ? (
-                          <AbledProgress />
-                        ) : (
-                          <DisabledProgress />
-                        )}
-                        {certiCount >= 3 ? (
-                          <AbledProgress />
-                        ) : (
-                          <DisabledProgress />
-                        )}
-                      </ProgressIcons>
-                    </Progress>
-                  )
-                ) : (
-                  ''
-                )}
-                {challengeStatus === 'RETRY' ? (
-                  <RetryButton
-                    name="retryButton"
-                    onClick={(e) => {
-                      if (e.target !== e.currentTarget) return;
-                      if (retryCount === 3)
-                        alert('챌린지 재도전은 3번까지만 가능합니다!');
-                      onRetryHandler();
-                    }}
-                  >
-                    재도전하기
-                  </RetryButton>
-                ) : (
-                  ''
-                )}
-                {challengeStatus === 'COMPLETE' ? (
-                  <CertiCount>
-                    총 <CertiCountNumber>{certiCount}</CertiCountNumber>
-                    회 달성
-                    <Congrats />
-                  </CertiCount>
-                ) : (
-                  ''
-                )}
-              </Row>
-            </StyledCardContent>
-          </StyledBox>
-        </StyledCard>
-      </CardActionArea>
-    </CardContainer>
-  );
+
+											<ProgressIcons>
+												{certiCount >= 1 ? (
+													<AbledProgress />
+												) : (
+													<DisabledProgress />
+												)}
+												{certiCount >= 2 ? (
+													<AbledProgress />
+												) : (
+													<DisabledProgress />
+												)}
+												{certiCount >= 3 ? (
+													<AbledProgress />
+												) : (
+													<DisabledProgress />
+												)}
+											</ProgressIcons>
+										</Progress>
+									)
+								) : (
+									""
+								)}
+								{challengeStatus === "RETRY" ? (
+									<>
+										<RetryButton
+											name="retryButton"
+											onClick={(e) => {
+												e.stopPropagation();
+												if (retryCount === 3)
+													alert("챌린지 재도전은 3번까지만 가능합니다!");
+												onRetryHandler();
+											}}
+										>
+											재도전하기
+										</RetryButton>
+									</>
+								) : (
+									""
+								)}
+								{challengeStatus === "COMPLETE" ? (
+									<CertiCount>
+										총 <CertiCountNumber>{certiCount}</CertiCountNumber>
+										회 달성
+										<Congrats />
+									</CertiCount>
+								) : (
+									""
+								)}
+							</Row>
+						</StyledCardContent>
+					</StyledBox>
+				</StyledCard>
+			</CardActionArea>
+		</CardContainer>
+	);
 };
 
 export default MyChallengeCard;

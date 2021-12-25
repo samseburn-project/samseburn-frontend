@@ -143,7 +143,7 @@ function RegisterForm(props) {
 				locationType === "온라인" ? "" : roadAddress + detailAddress;
 
 			if (participants < 1 || participants > 33) {
-				enqueueSnackbar("챌린지 인원은 최소 1명, 최대 33명까지 가능합니다", {
+				enqueueSnackbar("챌린지 인원은 최소 1명, 최대 33명까지 가능합니다.", {
 					variant: "warning",
 					autoHideDuration: 2000,
 				});
@@ -250,12 +250,10 @@ function RegisterForm(props) {
 				<CustomContainer>
 					<LeftContentContainer>
 						{/* 챌린지명 */}
-
 						<LabelText>
 							챌린지명
 							<RequiredMark>*</RequiredMark>
 						</LabelText>
-
 						<BasicInput
 							placeholder="챌린지명"
 							size="small"
@@ -264,7 +262,9 @@ function RegisterForm(props) {
 							onChange={onChange}
 							required
 						/>
-
+						<ValidationText>
+							챌린지명은 띄어쓰기 포함 최대 20자까지 입력할 수 있습니다.
+						</ValidationText>
 						{/* 챌린지 기간 */}
 						<LabelText>
 							챌린지 기간
@@ -316,7 +316,7 @@ function RegisterForm(props) {
 							onChange={onChange}
 						/>
 						<ValidationText>
-							최소 1명, 최대 33명까지 설정할 수 있습니다
+							최소 1명, 최대 33명까지 설정할 수 있습니다.
 						</ValidationText>
 					</LeftContentContainer>
 
@@ -337,7 +337,6 @@ function RegisterForm(props) {
 								<Delete alt="Delete icon" style={{ zIndex: 10 }} />
 							</DeleteButtonContainer>
 						</ThumbnailContainer>
-
 						{/* 이미지 업로드 버튼 */}
 						<label htmlFor="input-image">
 							<ImageFileInput
@@ -351,14 +350,12 @@ function RegisterForm(props) {
 						</label>
 					</ImageContainer>
 				</CustomContainer>
-
 				{/* 카테고리 */}
 				<Row>
 					<LabelText>
 						카테고리
 						<RequiredMark>*</RequiredMark>
 					</LabelText>
-
 					{/* 카테고리-챌린지주제 */}
 					<SmallLabelText>
 						챌린지 주제
@@ -376,7 +373,6 @@ function RegisterForm(props) {
 							</CategoryButton>
 						))}
 					</CategoryContainer>
-
 					{/* 카테고리-챌린지유형 */}
 					<SmallLabelText>
 						챌린지 유형
@@ -394,7 +390,6 @@ function RegisterForm(props) {
 							</CategoryButton>
 						))}
 					</CategoryContainer>
-
 					{locationType === "오프라인" ? (
 						<>
 							<SmallLabelText>오프라인 장소</SmallLabelText>
@@ -616,6 +611,7 @@ const CancelButton = styled(StyledButton)`
 const UploadButton = styled(StyledButton)`
 	font-size: 1.6rem;
 	font-weight: bold;
+	padding: 0.7rem 1rem;
 
 	margin-bottom: 2rem;
 `;
@@ -656,16 +652,14 @@ const DeleteButtonContainer = styled.div`
 	}
 `;
 
-const ValidationText = styled.span`
+const ValidationText = styled.div`
 	font-size: 1.4rem;
-	color: #c4c4c4;
-	display: block;
+	color: #eb3901;
 `;
 
 const CategoryButton = styled(Category)`
-	width: 6.5rem;
 	height: auto;
-	padding: 0.6rem 1.4rem;
+	padding: 1rem 1.4rem;
 	font-size: 1.4rem;
 	display: inline-block;
 	text-align: center;

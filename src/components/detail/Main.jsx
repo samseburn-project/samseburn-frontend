@@ -156,7 +156,11 @@ const Main = () => {
 	useEffect(() => {
 		fetchChallenge();
 		fetchParticipants();
-		fetchUserChallenge();
+
+		if (userToken) {
+			fetchUserChallenge();
+		}
+
 		setLoading(false);
 	}, []);
 

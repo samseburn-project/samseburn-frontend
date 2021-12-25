@@ -10,83 +10,84 @@ import StyledButton from '../common/StyledButton';
 import CommonDialog from '../common/CommonDialog';
 
 const ModifyUser = ({ userToken }) => {
-  const [loading, setLoading] = useState(true);
-  const [openDialog, setOpenDialog] = useState('');
-  const [open, setOpen] = useState(false);
-  const [nickname, setNickname] = useState('');
-  const [image, setImage] = useState({
-    imageFile: null,
-    imageUrl: null,
-  });
-  const { enqueueSnackbar } = useSnackbar();
 
-  const handleOpenDialog = (targetId) => {
-    setOpenDialog(targetId);
-  };
+	const [loading, setLoading] = useState(true);
+	const [openDialog, setOpenDialog] = useState("");
+	const [open, setOpen] = useState(false);
+	const [nickname, setNickname] = useState("");
+	const [image, setImage] = useState({
+		imageFile: null,
+		imageUrl: null,
+	});
+const { enqueueSnackbar } = useSnackbar();
 
-  const handleOpenToggle = () => {
-    setOpen(!open);
-  };
+	const handleOpenDialog = (targetId) => {
+		setOpenDialog(targetId);
+	};
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await axios.get('https://api.samseburn.site/user', {
-          headers: { Authorization: `Bearer ${userToken}` },
-        });
+	const handleOpenToggle = () => {
+		setOpen(!open);
+	};
 
-        if (res.status === 200) {
-          setNickname(res.data.username);
-          setImage({
-            imageFile: null,
-            imageUrl: res.data.imgUrl,
-          });
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    };
+	useEffect(() => {
+		const fetchUser = async () => {
+			try {
+				const res = await axios.get("https://api.samseburn.site/user", {
+					headers: { Authorization: `Bearer ${userToken}` },
+				});
 
-    fetchUser(); // 유저 정보 요청
-    setLoading(false);
-  }, []);
+				if (res.status === 200) {
+					setNickname(res.data.username);
+					setImage({
+						imageFile: null,
+						imageUrl: res.data.imgUrl,
+					});
+				}
+			} catch (err) {
+				console.error(err);
+			}
+		};
 
-  const onChangeNickname = ({ target: { value } }) => {
-    setNickname(value);
-  };
+		fetchUser(); // 유저 정보 요청
+		setLoading(false);
+	}, []);
 
-  const setImageFromFile = ({ file, setImageUrl }) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      setImageUrl({ result: reader.result });
-    };
-    reader.readAsDataURL(file);
-  };
+	const onChangeNickname = ({ target: { value } }) => {
+		setNickname(value);
+	};
 
-  const onLoadFile = ({ target: { files } }) => {
-    if (files.length) {
-      setImageFromFile({
-        file: files[0],
-        setImageUrl: ({ result }) =>
-          setImage({
-            imageFile: files[0],
-            imageUrl: result,
-          }),
-      });
-    }
-  };
+	const setImageFromFile = ({ file, setImageUrl }) => {
+		const reader = new FileReader();
+		reader.onload = () => {
+			setImageUrl({ result: reader.result });
+		};
+		reader.readAsDataURL(file);
+	};
 
-  const onDeleteFile = () => {
-    setImage({
-      imageFile: null,
-      imageUrl:
-        'https://samseburn-bucket.s3.ap-northeast-2.amazonaws.com/user/SpartaIconScale7.png',
-    });
-  };
+	const onLoadFile = ({ target: { files } }) => {
+		if (files.length) {
+			setImageFromFile({
+				file: files[0],
+				setImageUrl: ({ result }) =>
+					setImage({
+						imageFile: files[0],
+						imageUrl: result,
+					}),
+			});
+		}
+	};
 
-  const onSubmitHandler = async (e) => {
-    e.preventDefault();
-    try {
+	const onDeleteFile = () => {
+		setImage({
+			imageFile: null,
+			imageUrl:
+				"https://samseburn-bucket.s3.ap-northeast-2.amazonaws.com/user/SpartaIconScale7.png",
+		});
+	};
+
+	const onSubmitHandler = async (e) => {
+		e.preventDefault();
+		try {
       if (!nickname.trim()) {
         enqueueSnackbar('닉네임을 입력해주세요', {
           variant: 'warning',
@@ -94,90 +95,89 @@ const ModifyUser = ({ userToken }) => {
         });
         return false;
       }
-      const formData = new FormData();
-      formData.append('username', nickname);
-      formData.append(
-        'image',
-        image.imageFile ? image.imageFile : image.imageUrl
-      );
+			const formData = new FormData();
+			formData.append("username", nickname);
+			formData.append(
+				"image",
+				image.imageFile ? image.imageFile : image.imageUrl
+			);
 
-      await axios.put('https://api.samseburn.site/user', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${userToken}`,
-        },
-      });
-    } catch (e) {
-      console.error(e);
-    }
-  };
+			await axios.put("https://api.samseburn.site/user", formData, {
+				headers: {
+					"Content-Type": "multipart/form-data",
+					Authorization: `Bearer ${userToken}`,
+				},
+			});
+		} catch (e) {
+			console.error(e);
+		}
+	};
 
-  //   if (!nickname) {
-  //     return null;
-  //   }
+	return (
+		<>
+			{loading ? (
+				<SpinnerContainer>
+					<CircularProgress size={30} color="warning" />
+				</SpinnerContainer>
+			) : (
+				<ModifyUserBox>
+					<FormContainer>
+						<ImageContainer>
+							<ThumbnailContainer>
+								{image.imageFile || image.imageUrl ? (
+									<ImageThumbnail alt="Profile Image" src={image.imageUrl} />
+								) : (
+									<DefaultThumbnail></DefaultThumbnail>
+								)}
+								<DeleteButtonContainer onClick={onDeleteFile}>
+									<Delete alt="Delete icon" style={{ zIndex: 10 }} />
+								</DeleteButtonContainer>
+							</ThumbnailContainer>
+							<label htmlFor="input-image">
+								<ImageFileInput
+									type="file"
+									accept="image/*"
+									name="file"
+									onChange={onLoadFile}
+									id="input-image"
+								/>
+								<ImageUploadButton component="span">
+									이미지 변경
+								</ImageUploadButton>
+							</label>
+						</ImageContainer>
+						<Row>
+							<LabelText>닉네임
+                <RequiredMark>*</RequiredMark>
+              </LabelText>
+							<NameInput placeholder={nickname} onChange={onChangeNickname} />
+						</Row>
+						<Row>
+							<SubmitButton
+								id="user"
+								onClick={(e) => {
+									onSubmitHandler(e);
+									handleOpenDialog(e.target.id);
+									handleOpenToggle();
+								}}
+							>
+								수정 완료
+							</SubmitButton>
+							<CommonDialog
+								id="user"
+								open={open}
+								handleOpenToggle={handleOpenToggle}
+								openDialog={openDialog}
+								handleOpenDialog={handleOpenDialog}
+								mainText={"회원 정보 변경이 완료되었습니다."}
+							/>
+						</Row>
+					</FormContainer>
+				</ModifyUserBox>
+			)}
+		</>
+	);
 
-  return (
-    <>
-      {loading ? (
-        <SpinnerContainer>
-          <CircularProgress size={30} color="warning" />
-        </SpinnerContainer>
-      ) : (
-        <ModifyUserBox>
-          <FormContainer>
-            <ImageContainer>
-              <ThumbnailContainer>
-                {image.imageFile || image.imageUrl ? (
-                  <ImageThumbnail alt="Profile Image" src={image.imageUrl} />
-                ) : (
-                  <DefaultThumbnail></DefaultThumbnail>
-                )}
-                <DeleteButtonContainer onClick={onDeleteFile}>
-                  <Delete alt="Delete icon" style={{ zIndex: 10 }} />
-                </DeleteButtonContainer>
-              </ThumbnailContainer>
-              <label htmlFor="input-image">
-                <ImageFileInput
-                  type="file"
-                  accept="image/*"
-                  name="file"
-                  onChange={onLoadFile}
-                  id="input-image"
-                />
-                <ImageUploadButton component="span">
-                  이미지 변경
-                </ImageUploadButton>
-              </label>
-            </ImageContainer>
-            <Row>
-              <LabelText>닉네임
-			  <RequiredMark>*</RequiredMark>
-			  </LabelText>
-              <NameInput placeholder={nickname} onChange={onChangeNickname} />
-            </Row>
-            <Row>
-              <SubmitButton
-                onClick={(e) => {
-                  onSubmitHandler(e);
-                  handleOpenToggle();
-                }}
-              >
-                수정 완료
-              </SubmitButton>
-              <CommonDialog
-                open={open}
-                handleOpenToggle={handleOpenToggle}
-                openDialog={openDialog}
-                handleOpenDialog={handleOpenDialog}
-                mainText={'회원 정보 변경이 완료되었습니다'}
-                subText={''}
-              />
-            </Row>
-          </FormContainer>
-        </ModifyUserBox>
-      )}
-    </>
-  );
 };
 
 export default ModifyUser;
