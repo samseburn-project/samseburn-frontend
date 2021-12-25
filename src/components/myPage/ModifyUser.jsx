@@ -147,20 +147,22 @@ const ModifyUser = ({ userToken }) => {
 						</Row>
 						<Row>
 							<SubmitButton
+								id="user"
 								onClick={(e) => {
 									onSubmitHandler(e);
+									handleOpenDialog(e.target.id);
 									handleOpenToggle();
 								}}
 							>
 								수정 완료
 							</SubmitButton>
 							<CommonDialog
+								id="user"
 								open={open}
 								handleOpenToggle={handleOpenToggle}
 								openDialog={openDialog}
 								handleOpenDialog={handleOpenDialog}
-								mainText={"회원 정보 변경이 완료되었습니다"}
-								subText={""}
+								mainText={"회원 정보 변경이 완료되었습니다."}
 							/>
 						</Row>
 					</FormContainer>
