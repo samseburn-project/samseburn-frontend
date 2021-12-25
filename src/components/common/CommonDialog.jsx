@@ -14,7 +14,13 @@ const CommonDialog = ({ ...props }) => {
 				<Dialog onClose={props.handleOpenToggle} open={props.open}>
 					<StyledDialogContent>
 						<CloseButton>
-							<Close alt="Close icon" onClick={props.handleOpenToggle} />
+							<Close
+								alt="Close icon"
+								onClick={(e) => {
+									e.stopPropagation();
+									props.handleOpenToggle();
+								}}
+							/>
 						</CloseButton>
 						<Container>
 							<Row>
@@ -35,7 +41,13 @@ const CommonDialog = ({ ...props }) => {
 				<Dialog onClose={props.handleOpenToggle} open={props.open}>
 					<StyledDialogContent>
 						<CloseButton>
-							<Close alt="Close icon" onClick={props.handleOpenToggle} />
+							<Close
+								alt="Close icon"
+								onClick={(e) => {
+									e.stopPropagation();
+									props.handleOpenToggle();
+								}}
+							/>
 						</CloseButton>
 						<Container>
 							<Row>
@@ -57,7 +69,13 @@ const CommonDialog = ({ ...props }) => {
 				<Dialog onClose={props.handleOpenToggle} open={props.open}>
 					<StyledDialogContent>
 						<CloseButton>
-							<Close alt="Close icon" onClick={props.handleOpenToggle} />
+							<Close
+								alt="Close icon"
+								onClick={(e) => {
+									e.stopPropagation();
+									props.handleOpenToggle();
+								}}
+							/>
 						</CloseButton>
 						<Container>
 							<Row>
@@ -74,7 +92,13 @@ const CommonDialog = ({ ...props }) => {
 				<Dialog onClose={props.handleOpenToggle} open={props.open}>
 					<StyledDialogContent>
 						<CloseButton>
-							<Close alt="Close icon" onClick={props.handleOpenToggle} />
+							<Close
+								alt="Close icon"
+								onClick={(e) => {
+									e.stopPropagation();
+									props.handleOpenToggle();
+								}}
+							/>
 						</CloseButton>
 						<Container>
 							<Row>
@@ -90,7 +114,13 @@ const CommonDialog = ({ ...props }) => {
 				<Dialog onClose={props.handleOpenToggle} open={props.open}>
 					<StyledDialogContent>
 						<CloseButton>
-							<Close alt="Close icon" onClick={props.handleOpenToggle} />
+							<Close
+								alt="Close icon"
+								onClick={(e) => {
+									e.stopPropagation();
+									props.handleOpenToggle();
+								}}
+							/>
 						</CloseButton>
 						<Container>
 							<Row>
@@ -98,6 +128,51 @@ const CommonDialog = ({ ...props }) => {
 								<SubText>
 									참여 취소 시 모든 챌린지 인증 기록이 삭제됩니다.
 								</SubText>
+							</Row>
+							<Row>{handleButtonRender(props.mainText)}</Row>
+						</Container>
+					</StyledDialogContent>
+				</Dialog>
+			);
+		else if (id === "delete" && openDialog === "delete")
+			return (
+				<Dialog onClose={props.handleOpenToggle} open={props.open}>
+					<StyledDialogContent>
+						<CloseButton>
+							<Close
+								alt="Close icon"
+								onClick={(e) => {
+									e.stopPropagation();
+									props.handleOpenToggle();
+								}}
+							/>
+						</CloseButton>
+						<Container>
+							<Row>
+								<MainText>챌린지를 정말 삭제하시겠어요?</MainText>
+								<SubText>챌린지에 대한 데이터가 모두 삭제됩니다.</SubText>
+							</Row>
+							<Row>{handleButtonRender(props.mainText)}</Row>
+						</Container>
+					</StyledDialogContent>
+				</Dialog>
+			);
+		else if (id === "user" && openDialog === "user")
+			return (
+				<Dialog onClose={props.handleOpenToggle} open={props.open}>
+					<StyledDialogContent>
+						<CloseButton>
+							<Close
+								alt="Close icon"
+								onClick={(e) => {
+									e.stopPropagation();
+									props.handleOpenToggle();
+								}}
+							/>
+						</CloseButton>
+						<Container>
+							<Row>
+								<MainText>회원 정보 변경이 완료되었습니다.</MainText>
 							</Row>
 							<Row>{handleButtonRender(props.mainText)}</Row>
 						</Container>
@@ -156,7 +231,7 @@ const CommonDialog = ({ ...props }) => {
 					확인
 				</ConfirmButton>
 			);
-		else if (mainText === "회원 정보 변경이 완료되었습니다")
+		else if (mainText === "회원 정보 변경이 완료되었습니다.")
 			return (
 				<ConfirmButton type="button" onClick={props.handleOpenToggle}>
 					확인
@@ -167,13 +242,26 @@ const CommonDialog = ({ ...props }) => {
 				<ButtonRow>
 					<DeleteButton
 						type="button"
-						onClick={() => {
+						onClick={(e) => {
+							e.stopPropagation();
+							if (props.participants > 1) {
+								alert(
+									"개설자 외에 챌린지 참여자가 있으면 챌린지를 삭제하실 수 없어요!"
+								);
+								return;
+							}
 							props.handleChallengeDelete();
 						}}
 					>
 						확인
 					</DeleteButton>
-					<CancelButton type="button" onClick={props.handleOpenToggle}>
+					<CancelButton
+						type="button"
+						onClick={(e) => {
+							e.stopPropagation();
+							props.handleOpenToggle();
+						}}
+					>
 						취소
 					</CancelButton>
 				</ButtonRow>
