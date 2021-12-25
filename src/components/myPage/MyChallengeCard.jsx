@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useSnackbar } from "notistack";
 
 import styled, { css } from "styled-components";
 
@@ -38,6 +39,8 @@ const MyChallengeCard = ({
 }) => {
 	const navigate = useNavigate();
 
+	const { enqueueSnackbar } = useSnackbar();
+
 	const viewMedalIcon = (param) => {
 		if (param < 5) {
 			return "";
@@ -63,7 +66,16 @@ const MyChallengeCard = ({
 			);
 
 			if (res.status === 200) {
+				enqueueSnackbar("챌린지 재도전이 신청되었습니다.", {
+					variant: "success",
+					autoHideDuration: 2000,
+				});
 				navigate(`https://api.samseburn.site/detail/${id}`);
+			} else {
+				enqueueSnackbar("챌린지 재도전 신청에 실패했습니다.", {
+					variant: "error",
+					autoHideDuration: 2000,
+				});
 			}
 		} catch (err) {
 			console.error(err);
@@ -80,7 +92,7 @@ const MyChallengeCard = ({
 						justifyContent: "space-between",
 					}}
 					onClick={(e) => {
-						if (e.target !== e.currentTarget) return;
+						// if (e.target !== e.currentTarget) return;
 						navigate(`/detail/${id}`);
 					}}
 				>
@@ -147,17 +159,19 @@ const MyChallengeCard = ({
 									""
 								)}
 								{challengeStatus === "RETRY" ? (
-									<RetryButton
-										name="retryButton"
-										onClick={(e) => {
-											if (e.target !== e.currentTarget) return;
-											if (retryCount === 3)
-												alert("챌린지 재도전은 3번까지만 가능합니다!");
-											onRetryHandler();
-										}}
-									>
-										재도전하기
-									</RetryButton>
+									<>
+										<RetryButton
+											name="retryButton"
+											onClick={(e) => {
+												e.stopPropagation();
+												if (retryCount === 3)
+													alert("챌린지 재도전은 3번까지만 가능합니다!");
+												onRetryHandler();
+											}}
+										>
+											재도전하기
+										</RetryButton>
+									</>
 								) : (
 									""
 								)}

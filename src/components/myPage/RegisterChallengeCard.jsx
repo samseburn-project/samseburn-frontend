@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import {
 	Box,
@@ -63,8 +63,6 @@ const RegisterChallengeCard = ({ ...props }) => {
 			<CardActionArea>
 				<StyledCard
 					onClick={(e) => {
-						// e.stopPropagation();
-						if (e.target !== e.currentTarget) return;
 						navigate(`/detail/${challengeId}`);
 					}}
 				>
@@ -75,8 +73,12 @@ const RegisterChallengeCard = ({ ...props }) => {
 								<CardTitle>{props.challenge?.title}</CardTitle>
 							</Row>
 							<Row>
-								<CardCategory>{props.challenge?.category}</CardCategory>
-								<CardCategory>{props.challenge?.locationType}</CardCategory>
+								<CardCategory locationType={props.challenge?.locationType}>
+									{props.challenge?.locationType}
+								</CardCategory>
+								<CardCategory category={props.challenge?.category}>
+									{props.challenge?.category}
+								</CardCategory>
 							</Row>
 							<Row>
 								<CardIcon>
@@ -91,6 +93,7 @@ const RegisterChallengeCard = ({ ...props }) => {
 								<UpdateButton
 									id="update"
 									onClick={(e) => {
+										e.stopPropagation();
 										handleOpenDialog(e.target.id);
 										handleOpenToggle();
 									}}
@@ -98,6 +101,7 @@ const RegisterChallengeCard = ({ ...props }) => {
 									수정
 								</UpdateButton>
 								<ModifyChallengeDialog
+									id="update"
 									open={open}
 									handleOpenToggle={handleOpenToggle}
 									openDialog={openDialog}
@@ -107,6 +111,7 @@ const RegisterChallengeCard = ({ ...props }) => {
 								<DeleteButton
 									id="delete"
 									onClick={(e) => {
+										e.stopPropagation();
 										handleOpenDialog(e.target.id);
 										handleOpenToggle();
 									}}
@@ -114,6 +119,7 @@ const RegisterChallengeCard = ({ ...props }) => {
 									삭제
 								</DeleteButton>
 								<CommonDialog
+									id="delete"
 									open={open}
 									handleOpenToggle={handleOpenToggle}
 									openDialog={openDialog}
@@ -121,6 +127,7 @@ const RegisterChallengeCard = ({ ...props }) => {
 									handleChallengeDelete={handleChallengeDelete}
 									mainText={"챌린지를 정말 삭제하시겠어요?"}
 									subText={"챌린지에 대한 데이터가 모두 삭제됩니다."}
+									participants={props.challenge?.participants}
 								/>
 							</ButtonRow>
 						</StyledCardContent>
@@ -179,13 +186,46 @@ const CardTitle = styled.div`
 const CardCategory = styled(Category)`
 	font-size: 1.2rem;
 	padding: 0.5rem 1rem;
-	color: #8f8f8f;
-	background-color: #e5e5e5;
 	border: none;
-	&:hover {
-		color: #8f8f8f;
-		background-color: #e5e5e5;
-	}
+
+	${(props) => {
+		if (props.locationType === "온라인") {
+			return css`
+				background-color: #ff7539;
+				color: #ffffff;
+			`;
+		} else if (props.locationType === "오프라인") {
+			return css`
+				background-color: #0057ff;
+				color: #ffffff;
+			`;
+		} else if (props.category === "운동") {
+			return css`
+				background-color: #04c50c;
+				color: #ffffff;
+			`;
+		} else if (props.category === "공부") {
+			return css`
+				background-color: #9900cf;
+				color: #ffffff;
+			`;
+		} else if (props.category === "취미") {
+			return css`
+				background-color: #e2cd0f;
+				color: #ffffff;
+			`;
+		} else if (props.category === "독서") {
+			return css`
+				background-color: #e71aad;
+				color: #ffffff;
+			`;
+		} else if (props.category === "기타") {
+			return css`
+				background-color: #6ae4c7;
+				color: #ffffff;
+			`;
+		}
+	}}
 `;
 
 const CardIcon = styled.div`

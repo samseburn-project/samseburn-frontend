@@ -155,7 +155,13 @@ const ModifyChallengeDialog = ({ ...props }) => {
 				>
 					<StyledDialogContent>
 						<CloseButton>
-							<Close alt="Close icon" onClick={props.handleOpenToggle} />
+							<Close
+								alt="Close icon"
+								onClick={(e) => {
+									e.stopPropagation();
+									props.handleOpenToggle();
+								}}
+							/>
 						</CloseButton>
 						<form onSubmit={handleSubmit}>
 							<Grid container direction="column">
@@ -188,7 +194,9 @@ const ModifyChallengeDialog = ({ ...props }) => {
 												<Delete
 													alt="Delete icon"
 													style={{ zIndex: 10 }}
-													onClick={handleImgDelete}
+													onClick={(e) => {
+														handleImgDelete();
+													}}
 												/>
 											</DeleteButton>
 										</ChallengeThumbnail>
@@ -230,7 +238,12 @@ const ModifyChallengeDialog = ({ ...props }) => {
 														readOnly: true,
 													}}
 												/>
-												<AddressButton onClick={handleModalOpen}>
+												<AddressButton
+													onClick={(e) => {
+														e.stopPropagation();
+														handleModalOpen();
+													}}
+												>
 													주소 검색
 												</AddressButton>
 												<Modal
@@ -264,7 +277,10 @@ const ModifyChallengeDialog = ({ ...props }) => {
 										<EditButton type="submit">수정</EditButton>
 										<CancelButton
 											type="button"
-											onClick={() => props.handleOpenToggle()}
+											onClick={(e) => {
+												e.stopPropagation();
+												props.handleOpenToggle();
+											}}
 										>
 											취소
 										</CancelButton>
