@@ -28,6 +28,7 @@
 		"react-slick": "^0.28.1",
 		"slick-carousel": "^1.8.1",
 		"styled-components": "^5.3.3",
+		"styled-media-query": "^2.1.2",
 		"styled-reset": "^4.3.4",
 		"web-vitals": "^1.0.1"
 	},

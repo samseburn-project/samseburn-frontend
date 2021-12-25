@@ -1,6 +1,7 @@
 import React from "react";
 
 import styled from "styled-components";
+import { customMedia } from "../../GlobalStyles";
 
 import { Dialog, DialogContent } from "@mui/material";
 import StyledButton from "./StyledButton";
@@ -254,6 +255,14 @@ export default CommonDialog;
 const StyledDialogContent = styled(DialogContent)`
 	padding: 6rem 9rem;
 	position: relative;
+
+	${customMedia.between("mobile", "lgMobile")`
+     padding: 5rem 6rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    padding: 4rem 3.5rem;
+  `}
 `;
 
 const CloseButton = styled.span`
@@ -267,6 +276,14 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 3rem;
+
+	${customMedia.between("mobile", "lgMobile")`
+    gap: 3rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    gap: 3rem;
+  `}
 `;
 
 const Row = styled.div`
@@ -278,12 +295,31 @@ const MainText = styled.div`
 	font-weight: bold;
 	letter-spacing: 1px;
 	margin-bottom: 1rem;
+
+	${customMedia.between("mobile", "lgMobile")`
+    font-size: 1.4rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+   	font-size: 1.6rem;
+  `}
 `;
 
 const SubText = styled.div`
 	font-size: 1.6rem;
 	letter-spacing: 1px;
 	padding: 0.5rem;
+
+	${customMedia.between("mobile", "lgMobile")`
+    width: 20rem;
+    font-size: 1.2rem;
+    white-space: pre-line;
+    line-height: 1.6rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    font-size: 1.4rem;
+  `}
 `;
 
 const ButtonRow = styled.div`
@@ -295,17 +331,47 @@ const ButtonRow = styled.div`
 const ConfirmButton = styled(StyledButton)`
 	padding: 0.8rem 1.8rem;
 	font-size: 1.6rem;
+
+	${customMedia.between("mobile", "lgMobile")`
+    padding: 0.8rem 1.8rem;
+    font-size: 1.2rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    padding: 0.8rem 1.8rem;
+	  font-size: 1.4rem;
+  `}
 `;
 
 const ContinueButton = styled(StyledButton)`
 	padding: 0.8rem 1.8rem;
 	font-size: 1.6rem;
+
+	${customMedia.between("mobile", "lgMobile")`
+     padding: 0.8rem 1.8rem;
+    font-size: 1.2rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    padding: 0.8rem 1.8rem;
+	  font-size: 1.4rem;
+  `}
 `;
 
 const CancelButton = styled(StyledButton)`
 	padding: 0.8rem 1.8rem;
 	font-size: 1.6rem;
 	background-color: #c4c4c4;
+
+	${customMedia.between("mobile", "lgMobile")`
+    padding: 0.8rem 1.8rem;
+    font-size: 1.2rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+     padding: 0.8rem 1.8rem;
+    font-size: 1.2rem;
+  `}
 
 	&:hover {
 		background-color: #c4c4c4;
@@ -317,6 +383,16 @@ const StopButton = styled(StyledButton)`
 	font-size: 1.6rem;
 	background-color: #c4c4c4;
 
+	${customMedia.between("mobile", "lgMobile")`
+    padding: 0.8rem 1.8rem;
+    font-size: 1.2rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+     padding: 0.8rem 1.8rem;
+    font-size: 1.2rem;
+  `}
+
 	&:hover {
 		background-color: #c4c4c4;
 	}
@@ -325,4 +401,14 @@ const StopButton = styled(StyledButton)`
 const DeleteButton = styled(StyledButton)`
 	padding: 0.8rem 1.8rem;
 	font-size: 1.6rem;
+
+	${customMedia.between("mobile", "lgMobile")`
+    padding: 0.8rem 1.8rem;
+    font-size: 1.2rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+     padding: 0.8rem 1.8rem;
+    font-size: 1.2rem;
+  `}
 `;

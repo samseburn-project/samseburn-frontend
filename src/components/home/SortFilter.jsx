@@ -1,6 +1,7 @@
 import React from "react";
 
 import styled from "styled-components";
+import { customMedia } from "../../GlobalStyles";
 
 import { FormControl, Select, MenuItem } from "@mui/material";
 
@@ -12,7 +13,8 @@ const SortFilter = ({ ...props }) => {
 	return (
 		<FormControl sx={{ minWidth: 150 }}>
 			<StyledSelect
-				name="sortBy"
+				labelId="sortBy-select-label"
+				id="sortBy-select-label"
 				value={props.sortBy}
 				onChange={handleSortByChange}
 				displayEmpty
@@ -30,13 +32,37 @@ const SortFilter = ({ ...props }) => {
 export default SortFilter;
 
 const StyledSelect = styled(Select)`
+	height: 4rem;
 	font-size: 1.4rem;
 
-	& .MuiOutlinedInput-input {
-		padding: 1rem 0 1rem 1.5rem;
-	}
+	${customMedia.lessThan("mobile")`
+    height: 3.2rem;
+    font-size: 1.2rem;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    height: 3.2rem;
+    font-size: 1.2rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    height: 3.2rem;
+    font-size: 1.2rem;
+  `}
 `;
 
 const StyledMenuItem = styled(MenuItem)`
 	font-size: 1.4rem;
+
+	${customMedia.lessThan("mobile")`
+    font-size: 1.2rem;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    font-size: 1.2rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    font-size: 1.2rem;
+  `}
 `;
