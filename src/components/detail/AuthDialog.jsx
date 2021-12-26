@@ -16,6 +16,7 @@ const AuthDialog = ({ ...props }) => {
 	const [previewImg, setPreviewImg] = useState(null);
 	const [contents, setContents] = useState("");
 	const challengeId = props?.challengeId;
+	const certifies = props?.certifies;
 	const userToken = localStorage.getItem("token");
 	const imgRef = useRef();
 
@@ -24,6 +25,10 @@ const AuthDialog = ({ ...props }) => {
 	const authDate = `${date} ${time}`;
 
 	const { enqueueSnackbar } = useSnackbar();
+
+	const handleAuthDateCheck = certifies.filter(
+		(certify) => certify.createdDate.slice(0, 10) === authDate.slice(0, 10)
+	);
 
 	const handleImgChange = (e) => {
 		let file = e.target.files[0];
@@ -57,12 +62,27 @@ const AuthDialog = ({ ...props }) => {
 		const formData = new FormData();
 
 		if (!imgFile) {
-			alert("인증 이미지를 등록해주세요!");
+			enqueueSnackbar("인증 이미지를 등록해주세요!", {
+				variant: "warning",
+				autoHideDuration: 2000,
+			});
 			return;
 		}
 
 		if (!contents) {
-			alert("인증 후기를 입력해주세요!");
+			enqueueSnackbar("인증 후기를 입력해주세요!", {
+				variant: "warning",
+				autoHideDuration: 2000,
+			});
+			return;
+		}
+
+		if (handleAuthDateCheck !== []) {
+			enqueueSnackbar("인증은 하루에 한 번만 할 수 있어요!", {
+				variant: "warning",
+				autoHideDuration: 2000,
+			});
+			return;
 		}
 
 		formData.append("image", imgFile);
@@ -257,7 +277,8 @@ const AuthThumbnail = styled.div`
 
 	${customMedia.between("lgMobile", "tablet")`
     width: 25rem;
-	  height: 20rem;
+    height: 20rem;
+    margin: 1rem 2.5rem;
   `}
 
 	img {
@@ -278,6 +299,10 @@ const DeleteButton = styled.span`
 	padding: 0.7rem;
 	opacity: 0.6;
 	transition: opacity 0.3s;
+
+  &:hover {
+		opacity: 1;
+	}
 
 	${customMedia.lessThan("mobile")`
     padding: 0.4rem;
@@ -306,10 +331,6 @@ const DeleteButton = styled.span`
       width: 1.4rem;
       height: 1.4rem;
     `}
-	}
-
-	&:hover {
-		opacity: 1;
 	}
 `;
 
@@ -461,7 +482,11 @@ const EnrollButton = styled(StyledButton)`
 const CancelButton = styled(StyledButton)`
 	padding: 0.8rem 1.8rem;
 	font-size: 1.6rem;
-	background-color: #c4c4c4;
+  background-color: #c4c4c4;
+  
+  &:hover {
+		background-color: #c4c4c4;
+	}
 
 	${customMedia.lessThan("mobile")`
     font-size: 1.2rem;
@@ -480,8 +505,4 @@ const CancelButton = styled(StyledButton)`
     padding: 0.6rem 1rem;
     letter-spacing: 3px;
   `}
-
-	&:hover {
-		background-color: #c4c4c4;
-	}
 `;

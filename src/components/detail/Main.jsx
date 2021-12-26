@@ -113,6 +113,7 @@ const Main = () => {
 		try {
 			const res = await axios.put(
 				`https://api.samseburn.site/challenges/${challengeId}/continue`,
+				null,
 				{
 					headers: {
 						Authorization: `Bearer ${userToken}`,

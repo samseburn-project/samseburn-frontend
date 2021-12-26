@@ -99,6 +99,7 @@ const Intro = ({ ...props }) => {
 					openDialog={openDialog}
 					handleOpenDialog={handleOpenDialog}
 					challengeId={props.challenge?.challengeId}
+					certifies={props.userChallenge?.certifies}
 				/>
 			);
 		}
