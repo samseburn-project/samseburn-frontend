@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import styled from "styled-components";
 
+import { customMedia } from "../../GlobalStyles";
 import Slider from "react-slick";
 import AuthViewDialog from "./AuthViewDialog";
 
@@ -186,7 +187,27 @@ const CarouselContainer = styled.div`
 
 	display: flex;
 	justify-content: center;
-	align-items: center;
+  align-items: center;
+  
+  ${customMedia.lessThan("mobile")`
+    width: 31.5rem;
+	  height: 10rem;
+  `}
+
+  ${customMedia.between("mobile", "lgMobile")`
+    width: 31.5rem;
+	  height: 10rem;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+    width: 31.5rem;
+    height: 10rem;
+  `}
+
+  ${customMedia.between("tablet", "desktop")`
+    width: 48rem;
+    height: 15rem;
+  `}
 `;
 
 const StyledCarousel = styled(Slider)`
@@ -194,14 +215,92 @@ const StyledCarousel = styled(Slider)`
 
 	.slick-next:before,
 	.slick-prev:before {
-		color: #000;
-	}
+    color: #000000;
+
+    ${customMedia.lessThan("mobile")`
+      font-size: 1.2rem;
+    `}
+
+    ${customMedia.between("mobile", "lgMobile")`
+      font-size: 1.2rem;
+    `}
+    
+    ${customMedia.between("lgMobile", "tablet")`
+      font-size: 1.2rem;
+    `}
+    
+    ${customMedia.between("tablet", "desktop")`
+      font-size: 1.2rem;
+    `}
+  }
+
+    .slick-prev{
+      ${customMedia.lessThan("mobile")`
+        left: -1.5rem;
+      `}
+
+      ${customMedia.between("mobile", "lgMobile")`
+        left: -1.5rem;
+      `}
+
+      ${customMedia.between("tablet", "desktop")`
+        left: -1.5rem;
+      `}
+    }
+
+    .slick-next{
+      ${customMedia.lessThan("mobile")`
+        right: -1.5rem;
+      `}
+
+      ${customMedia.between("mobile", "lgMobile")`
+        right: -1.5rem;
+      `}
+
+      ${customMedia.between("tablet", "desktop")`
+        right: -1.5rem;
+      `}
+    }
+
+    .slick-dots{
+      ${customMedia.lessThan("mobile")`
+        bottom: -1rem;
+      `}
+
+      ${customMedia.between("mobile", "lgMobile")`
+        bottom: -1rem;
+      `}
+      
+      ${customMedia.between("lgMobile", "tablet")`
+        bottom: -1rem;
+      `}
+
+      ${customMedia.between("tablet", "desktop")`
+        bottom: -1.5rem;
+      `}
+    }
 `;
 
 const Feed = styled.div`
 	height: 15rem;
 	padding: 1rem;
-	box-sizing: border-box;
+  box-sizing: border-box;
+  
+  ${customMedia.lessThan("mobile")`
+    height: 8rem;
+  `}
+
+  ${customMedia.between("mobile", "lgMobile")`
+    height: 8rem;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+    height: 8.5rem;
+  `}
+
+  ${customMedia.between("tablet", "desktop")`
+    height: 12rem;
+  `}
 `;
 
 const FeedThumbnail = styled.img`

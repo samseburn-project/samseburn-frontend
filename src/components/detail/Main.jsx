@@ -4,9 +4,9 @@ import axios from "axios";
 import { useSnackbar } from "notistack";
 
 import styled from "styled-components";
+import { customMedia } from "../../GlobalStyles";
 
 import { Divider, Grid, CircularProgress } from "@mui/material";
-
 import Intro from "./Intro";
 import Participant from "./Participant";
 import PlaceMap from "./PlaceMap";
@@ -230,7 +230,27 @@ const Wrapper = styled.section`
 	width: 104rem;
 	margin: 0 auto;
 	padding-bottom: 20rem;
-	flex: 1;
+  flex: 1;
+  
+  ${customMedia.lessThan("mobile")`
+    width: 31.5rem;
+	  padding-bottom: 5rem;
+  `}
+
+  ${customMedia.between("mobile", "lgMobile")`
+    width: 31.5rem;
+	  padding-bottom: 5rem;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+    width: 42rem;
+    padding-bottom: 5rem;
+  `}
+
+  ${customMedia.between("tablet", "desktop")`
+    width: 66.8rem;
+    padding-bottom: 10rem;
+  `}
 `;
 
 const Row = styled.div`
@@ -240,26 +260,96 @@ const Row = styled.div`
 const Title = styled.div`
 	font-size: 2.4rem;
 	font-weight: bold;
-	margin-bottom: 3rem;
+  margin-bottom: 3rem;
+  
+  ${customMedia.lessThan("mobile")`
+    font-size: 1.6rem;
+  `}
+
+  ${customMedia.between("mobile", "lgMobile")`
+    font-size: 1.6rem;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+    font-size: 1.6rem;
+  `}
+
+  ${customMedia.between("tablet", "desktop")`
+    font-size: 2.4rem;
+  `}
 `;
 
 const AddressText = styled.div`
 	font-size: 2rem;
 	margin-bottom: 2rem;
-	text-align: center;
+  text-align: center;
+  
+  ${customMedia.lessThan("mobile")`
+    font-size: 1.2rem;
+    text-align: none;
+  `}
+
+  ${customMedia.between("mobile", "lgMobile")`
+    font-size: 1.2rem;
+    text-align: none;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+    font-size: 1.4rem;
+    text-align: none;
+  `}
+
+  ${customMedia.between("tablet", "desktop")`
+    width: 66.8rem;
+  `}
 `;
 
 const Text = styled.div`
 	font-size: 2rem;
 	line-height: 2.8rem;
 	white-space: pre-wrap;
-	margin-bottom: 10rem;
+  margin-bottom: 10rem;
+  
+  ${customMedia.lessThan("mobile")`
+    font-size: 1.2rem;
+  `}
+
+  ${customMedia.between("mobile", "lgMobile")`
+    font-size: 1.2rem;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+    font-size: 1.4rem;
+  `}
+
+  ${customMedia.between("tablet", "desktop")`
+    width: 66.8rem;
+  `}
 `;
 
 const MapContainer = styled.div`
 	width: 86.2rem;
 	height: 30rem;
-	margin: 0 auto;
+  margin: 0 auto;
+  
+  ${customMedia.lessThan("mobile")`
+    width: 31.5rem;
+    height: 20rem;
+  `}
+
+  ${customMedia.between("mobile", "lgMobile")`
+    width: 31.5rem;
+    height: 20rem;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+    width: 42rem;
+    height: 20rem;
+  `}
+
+  ${customMedia.between("tablet", "desktop")`
+    width: 66.8rem;
+  `}
 
 	#map {
 		border-radius: 0.5rem;
@@ -269,7 +359,23 @@ const MapContainer = styled.div`
 const OnlineText = styled.div`
 	margin: 8rem 0;
 	font-size: 2rem;
-	text-align: center;
+  text-align: center;
+  
+  ${customMedia.lessThan("mobile")`
+    font-size: 1.2rem;
+  `}
+
+  ${customMedia.between("mobile", "lgMobile")`
+    font-size: 1.2rem;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+    font-size: 1.4rem;
+  `}
+
+  ${customMedia.between("tablet", "desktop")`
+    width: 66.8rem;
+  `}
 `;
 
 const SpinnerContainer = styled.div`

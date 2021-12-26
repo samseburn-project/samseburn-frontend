@@ -5,6 +5,8 @@ import { useSnackbar } from "notistack";
 
 import styled, { css } from "styled-components";
 
+import { customMedia } from "../../GlobalStyles";
+
 import {
 	Card,
 	CardContent,
@@ -12,7 +14,6 @@ import {
 	CardActionArea,
 	Box,
 } from "@mui/material";
-// import { useTheme } from "@mui/material/styles";
 import Category from "../common/Category";
 
 import { ReactComponent as FirstMedal } from "../../assets/icons/1st-medal-icon.svg";
@@ -199,22 +200,70 @@ const MyChallengeCard = ({
 export default MyChallengeCard;
 
 const CardContainer = styled.div`
-	margin: 2rem;
+  margin: 2rem;
+  ${customMedia.between("mobile", "lgMobile")`
+    margin: 1rem 0;
+    `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+      
+    `}
+    
+    ${customMedia.between("tablet", "desktop")`
+      margin: 1rem;
+    `}
 `;
 
 const StyledCard = styled(Card)`
-	height: 20rem;
-	box-shadow: 0.6rem 1.1rem 2rem rgba(0, 0, 0, 0.25);
-	border-radius: 0.5rem;
-	padding: 0 3rem;
-	word-break: break-all;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 20rem;
+  padding: 0 3rem;
+  box-shadow: 0.6rem 1.1rem 2rem rgba(0, 0, 0, 0.25);
+  border-radius: 0.5rem;
+  word-break: break-all;
+  ${customMedia.between("mobile", "lgMobile")`
+    padding: 0 2rem;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+    padding: 0 2rem;
+  `}
+  
+	${customMedia.between("tablet", "desktop")`
+    flex-direction: column;
+    height: 32rem;
+    padding: 0;
+
+  `}
+
+  ${customMedia.greaterThan("desktop")`
+    
+  `};
 `;
 
 const StyledCardMedia = styled(CardMedia)`
-	width: 15rem;
-	height: 15rem;
-	border-radius: 0.5rem;
-	object-fit: cover;
+  width: 15rem;
+  height: 15rem;
+  border-radius: 0.5rem;
+  object-fit: cover;
+
+  ${customMedia.between("mobile", "lgMobile")`
+     width: 13rem;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+    width: 13rem;
+    
+  `}
+  
+	${customMedia.between("tablet", "desktop")`
+    
+    width: 100%;
+  height: 12rem;
+  border-radius: 0rem;
+  `}
 `;
 
 const StyledCardContent = styled(CardContent)`
@@ -224,18 +273,45 @@ const StyledCardContent = styled(CardContent)`
 const StyledBox = styled(Box)``;
 
 const CardTitle = styled.div`
-	font-size: 2rem;
-	font-weight: bold;
+  font-size: 2rem;
+  font-weight: bold;
+
+  ${customMedia.between("mobile", "lgMobile")`
+    font-size: 1.4rem;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+    font-size: 1.6rem;
+    
+  `}
+  
+	${customMedia.between("tablet", "desktop")`
+    font-size: 1.8rem;
+  `}
 `;
 
 const CardMedal = styled.div``;
 
 const CardCategory = styled(Category)`
-	font-size: 1.2rem;
-	padding: 0.5rem 1rem;
-	border: none;
+  font-size: 1.2rem;
+  padding: 0.5rem 1rem;
+  border: none;
 
-	${(props) => {
+  ${customMedia.between("mobile", "lgMobile")`
+    font-size: 1rem;
+    padding: 0.3rem;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+    font-size: 1rem;
+    
+  `}
+  
+	${customMedia.between("tablet", "desktop")`
+    font-size: 1.2rem;
+  `}
+
+  ${(props) => {
 		if (props.locationType === "온라인") {
 			return css`
 				background-color: #ff7539;
@@ -276,17 +352,46 @@ const CardCategory = styled(Category)`
 `;
 
 const CardIcon = styled.div`
-	width: 1.6rem;
-	height: 1.6rem;
-	img {
-		width: 100%;
-		height: 100%;
-	}
+  width: 1.6rem;
+  height: 1.6rem;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+
+  ${customMedia.between("mobile", "lgMobile")`
+    width: 1.3rem;
+  height: 1.3rem;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+    width: 1.4rem;
+  height: 1.4rem;
+    
+  `}
+  
+	${customMedia.between("tablet", "desktop")`
+    width: 1.5rem;
+  height: 1.5rem;
+  `}
 `;
 
 const CardDate = styled.div`
-	font-size: 1.6rem;
-	letter-spacing: 0.2px;
+  font-size: 1.6rem;
+  letter-spacing: 0.2px;
+
+  ${customMedia.between("mobile", "lgMobile")`
+    font-size: 1.3rem;
+    letter-spacing: 0;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+    font-size: 1.4rem;
+  `}
+  
+	${customMedia.between("tablet", "desktop")`
+    font-size: 1.5rem;
+  `}
 `;
 
 const Progress = styled.div`
@@ -296,10 +401,23 @@ const Progress = styled.div`
 `;
 
 const ProgressTitle = styled.div`
-	font-size: 1.6rem;
-	font-weight: bold;
-	color: #eb3901;
-	margin-bottom: 0.5rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #eb3901;
+  margin-bottom: 0.5rem;
+
+  ${customMedia.between("mobile", "lgMobile")`
+    font-size: 1.4rem;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+    font-size: 1.4rem;
+    
+  `}
+  
+	${customMedia.between("tablet", "desktop")`
+    
+  `}
 `;
 
 const ProgressIcons = styled.div`
@@ -311,44 +429,99 @@ const ProgressIcons = styled.div`
 `;
 
 const CertiCount = styled.div`
-	font-size: 2rem;
-	font-weight: bold;
-	letter-spacing: 2px;
-	width: 100%;
-	display: flex;
-	align-items: center;
+  font-size: 2rem;
+  font-weight: bold;
+  letter-spacing: 2px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+
+  ${customMedia.between("mobile", "lgMobile")`
+ font-size: 1.4rem;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+  font-size: 1.6rem;
+    
+  `}
+  
+	${customMedia.between("tablet", "desktop")`
+    font-size: 1.8rem;
+  `}
 `;
 
 const CertiCountNumber = styled.span`
-	font-size: 3.4rem;
-	font-weight: bold;
-	color: #eb3901;
+  font-size: 3.4rem;
+  font-weight: bold;
+  color: #eb3901;
+  ${customMedia.between("mobile", "lgMobile")`
+ font-size: 2.8rem;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+  font-size: 3rem;
+    
+  `}
+  
+	${customMedia.between("tablet", "desktop")`
+    font-size: 3.2rem;
+  `}
 `;
 
 const Row = styled.div`
-	display: flex;
-	gap: 0.5rem;
-	margin-bottom: 1.5rem;
-	flex-wrap: wrap;
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+
+  ${customMedia.between("mobile", "lgMobile")`
+
+margin-bottom: 1rem;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+   
+  margin-bottom: 1rem;
+  `}
+  
+	${customMedia.between("tablet", "desktop")`
+    
+    margin-bottom: 1.2rem;
+  `}
 `;
 
 const RetryButton = styled.span`
-	width: 100%;
-	height: 3.2rem;
-	padding: 0.2rem;
-	font-size: 1.6rem;
-	font-weight: bold;
-	color: #ffffff;
-	background-color: #eb3901;
-	border-radius: 0.5rem;
-	transition: opacity 0.3s;
-	cursor: pointer;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+  width: 100%;
+  height: 3.2rem;
+  padding: 0.2rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #eb3901;
+  border-radius: 0.5rem;
+  transition: opacity 0.3s;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-	&:hover {
-		background-color: #eb3901;
-		opacity: 0.6;
-	}
+  &:hover {
+    background-color: #eb3901;
+    opacity: 0.6;
+  }
+
+  ${customMedia.between("mobile", "lgMobile")`
+ font-size: 1.4rem;
+ height: 3rem;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+  font-size: 1.4rem;
+  height: 3rem;
+    
+  `}
+  
+	${customMedia.between("tablet", "desktop")`
+    
+  `}
 `;

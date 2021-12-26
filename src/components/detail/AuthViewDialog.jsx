@@ -3,6 +3,7 @@ import axios from "axios";
 import { useSnackbar } from "notistack";
 
 import styled from "styled-components";
+import { customMedia } from "../../GlobalStyles";
 
 import { Grid, Dialog, DialogContent, TextField } from "@mui/material";
 import StyledButton from "../common/StyledButton";
@@ -72,7 +73,11 @@ const AuthViewDialog = ({ ...props }) => {
 				<Dialog onClose={props.handleOpenToggle} open={props.open}>
 					<StyledDialogContent>
 						<CloseButton>
-							<Close alt="Close icon" onClick={props.handleOpenToggle} />
+							<Close
+								className="auth-modal-close"
+								alt="Close icon"
+								onClick={props.handleOpenToggle}
+							/>
 						</CloseButton>
 						<form onSubmit={handleSubmit}>
 							<Grid container direction="column" rowSpacing={4}>
@@ -81,7 +86,11 @@ const AuthViewDialog = ({ ...props }) => {
 										<AuthThumbnail>
 											<img src={previewImg} alt="Auth Thumbnail" />
 											<DeleteButton style={{ cursor: "default" }}>
-												<Delete alt="Delete icon" style={{ zIndex: 10 }} />
+												<Delete
+													className="auth-img-delete"
+													alt="Delete icon"
+													style={{ zIndex: 10 }}
+												/>
 											</DeleteButton>
 										</AuthThumbnail>
 									</Grid>
@@ -155,6 +164,18 @@ export default AuthViewDialog;
 const StyledDialogContent = styled(DialogContent)`
 	padding: 4rem 7.5rem;
 	position: relative;
+
+	${customMedia.lessThan("mobile")`
+    padding: 4rem 2.5rem;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    padding: 4rem 2.5rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    padding: 4rem 3.5rem;
+  `}
 `;
 
 const CloseButton = styled.span`
@@ -162,6 +183,18 @@ const CloseButton = styled.span`
 	top: 1rem;
 	right: 1rem;
 	cursor: pointer;
+
+	.auth-modal-close {
+		${customMedia.lessThan("mobile")`
+      width: 1.2rem;
+      height: 1.2rem;
+    `}
+
+		${customMedia.between("mobile", "lgMobile")`
+      width: 1.4rem;
+      height: 1.4rem;
+    `}
+	}
 `;
 
 const AuthThumbnail = styled.div`
@@ -171,9 +204,27 @@ const AuthThumbnail = styled.div`
 	position: relative;
 	border-radius: 0.5rem;
 
+	${customMedia.lessThan("mobile")`
+    width: 20rem;
+    height: 15rem;
+    margin: 1rem 2.5rem;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    width: 20rem;
+    height: 15rem;
+    margin: 1rem 2.5rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    width: 25rem;
+	  height: 20rem;
+  `}
+
 	img {
 		width: 100%;
 		height: 100%;
+		border-radius: 0.5rem;
 	}
 `;
 
@@ -189,6 +240,35 @@ const DeleteButton = styled.span`
 	opacity: 0.6;
 	transition: opacity 0.3s;
 
+	${customMedia.lessThan("mobile")`
+    padding: 0.4rem;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    padding: 0.4rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    padding: 0.4rem;
+  `}
+
+  .auth-img-delete {
+		${customMedia.lessThan("mobile")`
+      width: 1.4rem;
+      height: 1.4rem;
+    `}
+
+		${customMedia.between("mobile", "lgMobile")`
+      width: 1.4rem;
+      height: 1.4rem;
+    `}
+
+		${customMedia.between("lgMobile", "tablet")`
+      width: 1.4rem;
+      height: 1.4rem;
+    `}
+	}
+
 	&:hover {
 		opacity: 1;
 	}
@@ -199,6 +279,14 @@ const LabelText = styled.div`
 	font-weight: bold;
 	letter-spacing: 1px;
 	line-height: 3.2rem;
+
+	${customMedia.lessThan("mobile")`
+    font-size: 1.2rem;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    font-size: 1.2rem;
+  `}
 `;
 
 const DateInput = styled(TextField)`
@@ -206,10 +294,22 @@ const DateInput = styled(TextField)`
 	border: 1px solid #c4c4c4;
 	border-radius: 0.5rem;
 
-	.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+	& .MuiOutlinedInput-input {
 		font-size: 1.4rem;
 		padding: 1rem 1.8rem;
 		text-align: center;
+
+		${customMedia.lessThan("mobile")`
+      font-size: 1.2rem;
+    `}
+
+		${customMedia.between("mobile", "lgMobile")`
+      font-size: 1.2rem;
+    `}
+
+		${customMedia.between("lgMobile", "tablet")`
+      font-size: 1.2rem;
+    `}
 	}
 `;
 
@@ -218,9 +318,33 @@ const TextInput = styled(TextField)`
 	border: 1px solid #c4c4c4;
 	border-radius: 0.5rem;
 
-	.css-dpjnhs-MuiInputBase-root-MuiOutlinedInput-root {
+	${customMedia.lessThan("mobile")`
+    width: 25rem;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    width: 25rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    width: 30rem;
+  `}
+
+	& .MuiOutlinedInput-root {
 		font-size: 1.4rem;
 		padding: 1.2rem;
+
+		${customMedia.lessThan("mobile")`
+      font-size: 1.2rem;
+    `}
+
+		${customMedia.between("mobile", "lgMobile")`
+      font-size: 1.2rem;
+    `}
+
+		${customMedia.between("lgMobile", "tablet")`
+      font-size: 1.2rem;
+    `}
 	}
 `;
 
@@ -233,12 +357,48 @@ const ButtonRow = styled.div`
 const EditButton = styled(StyledButton)`
 	padding: 0.8rem 1.8rem;
 	font-size: 1.6rem;
+
+	${customMedia.lessThan("mobile")`
+    font-size: 1.2rem;
+    padding: 0.6rem 1rem;
+    letter-spacing: 3px;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    font-size: 1.2rem;
+    padding: 0.6rem 1rem;
+    letter-spacing: 3px;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    font-size: 1.2rem;
+    padding: 0.6rem 1rem;
+    letter-spacing: 3px;
+  `}
 `;
 
 const CancelButton = styled(StyledButton)`
 	padding: 0.8rem 1.8rem;
 	font-size: 1.6rem;
 	background-color: #c4c4c4;
+
+	${customMedia.lessThan("mobile")`
+    font-size: 1.2rem;
+    padding: 0.6rem 1rem;
+    letter-spacing: 3px;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    font-size: 1.2rem;
+    padding: 0.6rem 1rem;
+    letter-spacing: 3px;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    font-size: 1.2rem;
+    padding: 0.6rem 1rem;
+    letter-spacing: 3px;
+  `}
 
 	&:hover {
 		background-color: #c4c4c4;
@@ -248,4 +408,22 @@ const CancelButton = styled(StyledButton)`
 const ConfirmButton = styled(StyledButton)`
 	padding: 0.8rem 1.8rem;
 	font-size: 1.6rem;
+
+	${customMedia.lessThan("mobile")`
+    font-size: 1.2rem;
+    padding: 0.6rem 1rem;
+    letter-spacing: 3px;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    font-size: 1.2rem;
+    padding: 0.6rem 1rem;
+    letter-spacing: 3px;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    font-size: 1.2rem;
+    padding: 0.6rem 1rem;
+    letter-spacing: 3px;
+  `}
 `;

@@ -3,6 +3,7 @@ import { useSnackbar } from "notistack";
 
 import styled, { css } from "styled-components";
 
+import { customMedia } from "../../GlobalStyles";
 import Category from "../common/Category";
 import StyledButton from "../common/StyledButton";
 import CommonDialog from "../common/CommonDialog";
@@ -233,20 +234,74 @@ const IntroBox = styled.div`
 	background-color: #f6f6f6;
 
 	display: flex;
+
+	${customMedia.lessThan("mobile")`
+    height: 30rem;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    height: 30rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    height: 35rem;
+  `}
 `;
 
 const IntroContainer = styled.div`
 	width: 104rem;
 	margin: 0 auto;
-	align-items: center;
-
+  
 	display: flex;
-	gap: 5rem;
+	align-items: center;
+  gap: 5rem;
+  
+  ${customMedia.lessThan("mobile")`
+    width: 31.5rem;
+    justify-content: space-between;
+    gap: 3rem;
+  `}
+
+  ${customMedia.between("mobile", "lgMobile")`
+    width: 31.5rem;
+    justify-content: space-between;
+    gap: 3rem;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+    width: 42rem;
+    gap: 0;
+  `}
+
+  ${customMedia.between("tablet", "desktop")`
+    width: 66.8rem;
+    gap: 3rem;
+  `}
 `;
 
 const IntroThumbnail = styled.div`
 	width: 50.8rem;
-	height: 36.6rem;
+  height: 36.6rem;
+  
+  ${customMedia.lessThan("mobile")`
+    width: 35.4rem;
+    height: 60%;
+  `}
+
+  ${customMedia.between("mobile", "lgMobile")`
+    width: 35.4rem;
+    height: 60%;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+    width: 33.5rem;
+    height: 70%;
+  `}
+
+  ${customMedia.between("tablet", "desktop")`
+    width: 45.7rem;
+    height: 70%;
+  `}
 
 	img {
 		width: 100%;
@@ -259,26 +314,90 @@ const ContentsContainer = styled.div`
 	width: 50%;
 	padding: 4rem;
 
-	display: fle column;
-	justify-content: center;
+	display: flex;
+	flex-direction: column;
+  justify-content: center;
+  
+  ${customMedia.lessThan("mobile")`
+	  padding: 0.5rem 0;
+  `}
+
+  ${customMedia.between("mobile", "lgMobile")`
+	  padding: 0.5rem 0;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+    padding: 2rem;
+  `}
+
+  ${customMedia.between("tablet", "desktop")`
+    padding: 1rem;
+  `}
 `;
 
 const Title = styled.div`
 	font-size: 3.4rem;
 	font-weight: bold;
-	margin-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+  
+  ${customMedia.lessThan("mobile")`
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+  `}
+
+  ${customMedia.between("mobile", "lgMobile")`
+    font-size: 1.6rem;
+    margin-bottom: 0.5rem;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  `}
+
+  ${customMedia.between("tablet", "desktop")`
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  `}
 `;
 
 const CategoryRow = styled.div`
 	display: flex;
 	gap: 1rem;
 	margin-bottom: 3rem;
+
+	${customMedia.lessThan("mobile")`
+    margin-bottom: 1.5rem;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    margin-bottom: 1.5rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    margin-bottom: 2rem;
+  `}
 `;
 
 const IntroCategory = styled(Category)`
 	font-size: 1.4rem;
 	padding: 0.8rem 1.4rem;
-	cursor: default;
+  cursor: default;
+  
+  ${customMedia.lessThan("mobile")`
+    font-size: 1rem;
+	  padding: 0.4rem 0.8rem;
+  `}
+
+  ${customMedia.between("mobile", "lgMobile")`
+    font-size: 1rem;
+	  padding: 0.4rem 0.8rem;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+    font-size: 1rem;
+	  padding: 0.4rem 0.8rem;
+  `}
 
 	${(props) => {
 		if (props.locationType === "온라인") {
@@ -321,23 +440,81 @@ const IntroCategory = styled(Category)`
 `;
 
 const SubTitle = styled.div`
-	font-size: 2rem;
+	font-size: 2.8rem;
 	font-weight: bold;
 	color: #8f8f8f;
-	margin-bottom: 1rem;
+  margin-bottom: 1rem;
+  
+  ${customMedia.lessThan("mobile")`
+    font-size: 1.4rem;
+  `}
+
+  ${customMedia.between("mobile", "lgMobile")`
+    font-size: 1.4rem;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+    font-size: 1.4rem;
+  `}
+
+  ${customMedia.between("tablet", "desktop")`
+    font-size: 2rem;
+  `}
 `;
 
 const Text = styled.div`
 	font-size: 2.4rem;
 	font-weight: bold;
 	letter-spacing: 2px;
-	margin-bottom: 2.4rem;
+  margin-bottom: 2.4rem;
+  
+  ${customMedia.lessThan("mobile")`
+    font-size: 1.2rem;
+    white-space: pre-line;
+  `}
+
+  ${customMedia.between("mobile", "lgMobile")`
+    font-size: 1.2rem;
+    white-space: pre-line;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+    font-size: 1.2rem;
+  `}
+
+  ${customMedia.between("tablet", "desktop")`
+    font-size: 2rem;
+  `}
 `;
 
 const ApplyButton = styled(StyledButton)`
 	width: 37.7rem;
 	height: 5.5rem;
-	font-size: 2rem;
+  font-size: 2rem;
+  
+  ${customMedia.lessThan("mobile")`
+    width: 12.5rem;
+	  height: 3.3rem;
+    font-size: 1.2rem;
+  `}
+
+  ${customMedia.between("mobile", "lgMobile")`
+    width: 12.5rem;
+	  height: 3.3rem;
+    font-size: 1.2rem;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+  	width: 17.6rem;
+	  height: 3.3rem;  
+    font-size: 1.2rem;
+  `}
+
+  ${customMedia.between("tablet", "desktop")`
+  	width: 30.1rem;
+	  height: 4.4rem;
+    font-size: 1.6rem;
+  `}
 `;
 
 const SuccessDialog = styled(CommonDialog)``;
@@ -351,18 +528,78 @@ const ApplyDialog = styled(CommonDialog)``;
 const ButtonRow = styled.div`
 	display: flex;
 	gap: 2.4rem;
+
+	${customMedia.lessThan("mobile")`
+    gap: 1rem;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    gap: 1rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    gap: 1.4rem;
+  `}
 `;
 
 const AuthButton = styled(StyledButton)`
 	width: 17.6rem;
 	height: 5.5rem;
-	font-size: 2rem;
+  font-size: 2rem;
+  
+  ${customMedia.lessThan("mobile")`
+    width: 8.8rem;
+    height: 3.5rem;
+    font-size: 1.2rem;
+  `}
+
+  ${customMedia.between("mobile", "lgMobile")`
+    width: 8.8rem;
+    height: 3.5rem;
+    font-size: 1.2rem;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+    width: 8.8rem;
+    height: 3.5rem;
+    font-size: 1.2rem;
+  `}
+
+  ${customMedia.between("tablet", "desktop")`
+  	width: 17.6rem;
+    height: 5.5rem;
+    font-size: 2rem;
+  `}
 `;
 
 const CancelButton = styled(StyledButton)`
 	width: 17.6rem;
 	height: 5.5rem;
-	font-size: 2rem;
+  font-size: 2rem;
+  
+  ${customMedia.lessThan("mobile")`
+    width: 8.8rem;
+    height: 3.5rem;
+    font-size: 1.2rem;
+  `}
+
+  ${customMedia.between("mobile", "lgMobile")`
+    width: 8.8rem;
+    height: 3.5rem;
+    font-size: 1.2rem;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+    width: 8.8rem;
+    height: 3.5rem;
+    font-size: 1.2rem;
+  `}
+
+  ${customMedia.between("tablet", "desktop")`
+    width: 17.6rem;
+    height: 5.5rem;
+    font-size: 2rem;
+  `}
 `;
 const CancelDialog = styled(CommonDialog)``;
 
@@ -370,7 +607,31 @@ const ClosedButton = styled(StyledButton)`
 	width: 37.7rem;
 	height: 5.5rem;
 	font-size: 2rem;
-	background-color: #e5e5e5;
+  background-color: #e5e5e5;
+  
+  ${customMedia.lessThan("mobile")`
+    width: 12.5rem;
+	  height: 3.3rem;
+    font-size: 1.2rem;
+  `}
+
+  ${customMedia.between("mobile", "lgMobile")`
+    width: 12.5rem;
+	  height: 3.3rem;
+    font-size: 1.2rem;
+  `}
+
+  ${customMedia.between("lgMobile", "tablet")`
+  	width: 17.6rem;
+	  height: 3.3rem;  
+    font-size: 1.2rem;
+  `}
+
+  ${customMedia.between("tablet", "desktop")`
+  	width: 30.1rem;
+	  height: 4.4rem;
+    font-size: 1.6rem;
+  `}
 
 	&:hover {
 		background-color: #e5e5e5;

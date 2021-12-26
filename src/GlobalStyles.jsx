@@ -1,5 +1,14 @@
-import { createGlobalStyle } from 'styled-components';
-import reset from 'styled-reset';
+import { createGlobalStyle } from "styled-components";
+import { generateMedia } from "styled-media-query";
+import reset from "styled-reset";
+
+export const customMedia = generateMedia({
+	desktop: "1199px",
+	tablet: "767px",
+	lgMobile: "479px",
+	mobile: "375px",
+
+});
 
 const GlobalStyles = createGlobalStyle`
   ${reset}
