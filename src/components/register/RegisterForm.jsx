@@ -14,6 +14,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateRangePicker from '@mui/lab/DateRangePicker';
 import MobileDateRangePicker from '@mui/lab/MobileDateRangePicker';
+import DesktopDateRangePicker from '@mui/lab/DesktopDateRangePicker';
 import { ReactComponent as ArrowForward } from '../../assets/icons/arrow.svg';
 import { ReactComponent as Delete } from '../../assets/icons/delete.svg';
 import { ReactComponent as Close } from '../../assets/icons/close.svg';
@@ -46,9 +47,7 @@ function RegisterForm(props) {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  // const matchesMobile = useMediaQuery('(min-width:375px)');
-  const matchesLgMobile = useMediaQuery('(min-width:480px)');
-  // const matchesTablet = useMediaQuery('(min-width:768px)');
+  const matchesTablet = useMediaQuery('(min-width:768px)');
 
   const onChange = (event) => {
     event.preventDefault();
@@ -282,8 +281,8 @@ function RegisterForm(props) {
               dateAdapter={AdapterDateFns}
               locale={koLocale}
             >
-              {matchesLgMobile ? (
-                <DateRangePicker
+              {matchesTablet ? (
+                <DesktopDateRangePicker
                   disablePast
                   inputFormat={'yyyy-MM-dd'}
                   mask={'____-__-__'}
