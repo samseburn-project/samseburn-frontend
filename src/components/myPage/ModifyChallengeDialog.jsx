@@ -5,6 +5,7 @@ import DaumPostcode from "react-daum-postcode";
 import { useSnackbar } from "notistack";
 
 import styled, { css } from "styled-components";
+import { customMedia } from "../../GlobalStyles";
 
 import { Grid, Dialog, DialogContent, TextField } from "@mui/material";
 import Category from "../common/Category";
@@ -132,15 +133,16 @@ const ModifyChallengeDialog = ({ ...props }) => {
 		},
 		content: {
 			width: "50%",
-			padding: "5rem 2rem",
+			padding: "3rem 7rem",
 			WebkitOverflowScrolling: "touch",
 			borderRadius: "0.5rem",
 			outline: "none",
 			zIndex: 100,
 			overflow: "auto",
-			top: "50%",
-			left: "50%",
-			transform: "translate(-50%, -50%)",
+			top: "8vh",
+			left: "6vw",
+			right: "9vw",
+			bottom: "26vh",
 			position: "relative",
 		},
 	};
@@ -149,13 +151,17 @@ const ModifyChallengeDialog = ({ ...props }) => {
 		<>
 			{props.openDialog === "update" ? (
 				<Dialog
-					onClose={props.handleOpenToggle}
+					onClose={(e) => {
+						e.stopPropagation();
+						props.handleOpenToggle();
+					}}
 					open={props.open}
 					style={{ zIndex: 10 }}
 				>
 					<StyledDialogContent>
 						<CloseButton>
 							<Close
+								className="auth-modal-close"
 								alt="Close icon"
 								onClick={(e) => {
 									e.stopPropagation();
@@ -192,9 +198,11 @@ const ModifyChallengeDialog = ({ ...props }) => {
 											<img src={previewImg} alt="Challenge thumbnail" />
 											<DeleteButton>
 												<Delete
+													className="auth-img-delete"
 													alt="Delete icon"
 													style={{ zIndex: 10 }}
 													onClick={(e) => {
+														e.stopPropagation();
 														handleImgDelete();
 													}}
 												/>
@@ -206,7 +214,10 @@ const ModifyChallengeDialog = ({ ...props }) => {
 												<Delete
 													alt="Delete icon"
 													style={{ zIndex: 10 }}
-													onClick={handleImgDelete}
+													onClick={(e) => {
+														e.stopPropagation();
+														handleImgDelete();
+													}}
 												/>
 											</DeleteButton>
 										</ChallengeThumbnail>
@@ -219,7 +230,10 @@ const ModifyChallengeDialog = ({ ...props }) => {
 											accept="image/*"
 											type="file"
 											ref={imgRef}
-											onChange={handleImgChange}
+											onChange={(e) => {
+												e.stopPropagation();
+												handleImgChange();
+											}}
 										/>
 										<UploadButton type="button">이미지 변경</UploadButton>
 									</label>
@@ -233,7 +247,10 @@ const ModifyChallengeDialog = ({ ...props }) => {
 													id="road-address"
 													placeholder="도로명 주소"
 													value={roadAddress}
-													onChange={handleRoadAddressChange}
+													onChange={(e) => {
+														e.stopPropagation();
+														handleRoadAddressChange();
+													}}
 													InputProps={{
 														readOnly: true,
 													}}
@@ -301,7 +318,23 @@ export default ModifyChallengeDialog;
 
 const StyledDialogContent = styled(DialogContent)`
 	padding: 4rem 7rem;
-	position: relative;
+  position: relative;
+  
+  ${customMedia.lessThan("mobile")`
+    padding: 4rem 2.5rem;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    padding: 4rem 2.5rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    padding: 4rem 3.5rem;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+    padding: 4rem 1.5rem;
+  `}
 `;
 
 const CloseButton = styled.span`
@@ -309,13 +342,37 @@ const CloseButton = styled.span`
 	top: 1rem;
 	right: 1rem;
 	cursor: pointer;
+
+	.auth-modal-close {
+		${customMedia.lessThan("mobile")`
+      width: 1.2rem;
+      height: 1.2rem;
+    `}
+
+		${customMedia.between("mobile", "lgMobile")`
+      width: 1.4rem;
+      height: 1.4rem;
+    `}
+	}
 `;
 
 const Title = styled.div`
 	font-size: 2rem;
 	font-weight: bold;
 	letter-spacing: 2px;
-	margin-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+  
+  ${customMedia.lessThan("mobile")`
+    font-size: 1.4rem;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    font-size: 1.6rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    font-size: 1.6rem;
+  `}
 `;
 
 const CategoryRow = styled.div`
@@ -327,7 +384,19 @@ const CategoryRow = styled.div`
 const SmallCategory = styled(Category)`
 	font-size: 1.2rem;
 	padding: 0.7rem 1rem;
-	cursor: default;
+  cursor: default;
+  
+  ${customMedia.lessThan("mobile")`
+    font-size: 1rem;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    font-size: 1rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    font-size: 1rem;
+  `}
 
 	${(props) => {
 		if (props.locationType === "온라인") {
@@ -378,6 +447,14 @@ const DateRow = styled.div`
 const DateText = styled.div`
 	font-size: 1.6rem;
 	margin-left: 0.3rem;
+
+	${customMedia.lessThan("mobile")`
+    font-size: 1.2rem;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    font-size: 1.2rem;
+  `}
 `;
 
 const ChallengeThumbnail = styled.div`
@@ -386,7 +463,24 @@ const ChallengeThumbnail = styled.div`
 	height: 24rem;
 	background-color: #959595;
 	border-radius: 0.5rem;
-	position: relative;
+  position: relative;
+  
+  ${customMedia.lessThan("mobile")`
+    width: 20rem;
+    height: 15rem;
+    margin: 1rem 2.5rem;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    width: 20rem;
+    height: 15rem;
+    margin: 1rem 2.5rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    width: 25rem;
+	  height: 20rem;
+  `}
 
 	img {
 		width: 100%;
@@ -405,10 +499,39 @@ const DeleteButton = styled.span`
 	border-radius: 50%;
 	padding: 0.7rem;
 	opacity: 0.6;
-	transition: opacity 0.3s;
+  transition: opacity 0.3s;
 
-	&:hover {
+  &:hover {
 		opacity: 1;
+	}
+  
+  ${customMedia.lessThan("mobile")`
+    padding: 0.4rem;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    padding: 0.4rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    padding: 0.4rem;
+  `}
+
+  .auth-img-delete {
+		${customMedia.lessThan("mobile")`
+      width: 1.4rem;
+      height: 1.4rem;
+    `}
+
+		${customMedia.between("mobile", "lgMobile")`
+      width: 1.4rem;
+      height: 1.4rem;
+    `}
+
+		${customMedia.between("lgMobile", "tablet")`
+      width: 1.4rem;
+      height: 1.4rem;
+    `}
 	}
 `;
 
@@ -431,7 +554,27 @@ const UploadButton = styled.span`
 
 	&:hover {
 		opacity: 0.7;
-	}
+  }
+  
+  ${customMedia.lessThan("mobile")`
+    padding: 1rem 1.4rem;
+	  font-size: 1.2rem;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    padding: 1rem 1.4rem;
+	  font-size: 1.2rem;
+  `}
+  
+	${customMedia.between("mobile", "lgMobile")`
+    padding: 1rem 1.4rem;
+	  font-size: 1.2rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    padding: 1rem 1.6rem;
+    font-size: 1.2rem;
+  `}
 `;
 
 const LabelText = styled.div`
@@ -440,6 +583,14 @@ const LabelText = styled.div`
 	letter-spacing: 1px;
 	line-height: 2.5rem;
 	margin-top: 5rem;
+
+	${customMedia.lessThan("mobile")`
+    font-size: 1.2rem;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    font-size: 1.2rem;
+  `}
 `;
 
 const AddressRow = styled.div`
@@ -451,11 +602,43 @@ const AddressRow = styled.div`
 const AddressInput = styled(TextField)`
 	width: 33rem;
 	border: 1px solid #c4c4c4;
-	border-radius: 0.5rem;
+  border-radius: 0.5rem;
+  
+  ${customMedia.lessThan("mobile")`
+    width: 18rem;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    width: 18rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    width: 20rem;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+    width: 25rem;
+  `}
 
 	& .MuiOutlinedInput-input {
 		font-size: 1.4rem;
-		padding: 1.2rem;
+    padding: 1.2rem;
+    
+    ${customMedia.lessThan("mobile")`
+      font-size: 0.5rem;
+    `}
+
+		${customMedia.between("mobile", "lgMobile")`
+      font-size: 0.5rem;
+    `}
+
+		${customMedia.between("lgMobile", "tablet")`
+      font-size: 1.2rem;
+    `}
+
+		${customMedia.between("tablet", "desktop")`
+      font-size: 1.2rem;
+    `}
 	}
 `;
 
@@ -466,7 +649,27 @@ const AddressButton = styled(StyledButton)`
 
 	&:hover {
 		background-color: #c4c4c4;
-	}
+  }
+  
+   ${customMedia.lessThan("mobile")`
+    font-size: 1.2rem;
+    padding: 0.6rem 1rem;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    font-size: 1.2rem;
+    padding: 0;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    font-size: 1.2rem;
+    padding: 0;
+  `}
+
+	${customMedia.between("tablet", "desktop")`
+    font-size: 1.2rem;
+    padding: 0;
+  `}
 `;
 
 const ButtonRow = styled.div`
@@ -478,7 +681,25 @@ const ButtonRow = styled.div`
 
 const EditButton = styled(StyledButton)`
 	padding: 0.8rem 1.8rem;
-	font-size: 1.6rem;
+  font-size: 1.6rem;
+  
+  ${customMedia.lessThan("mobile")`
+    font-size: 1.2rem;
+    padding: 0.6rem 1rem;
+    letter-spacing: 3px;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    font-size: 1.2rem;
+    padding: 0.6rem 1rem;
+    letter-spacing: 3px;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    font-size: 1.2rem;
+    padding: 0.6rem 1rem;
+    letter-spacing: 3px;
+  `}
 `;
 
 const CancelButton = styled(StyledButton)`
@@ -488,5 +709,23 @@ const CancelButton = styled(StyledButton)`
 
 	&:hover {
 		background-color: #c4c4c4;
-	}
+  }
+  
+  ${customMedia.lessThan("mobile")`
+    font-size: 1.2rem;
+    padding: 0.6rem 1rem;
+    letter-spacing: 3px;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    font-size: 1.2rem;
+    padding: 0.6rem 1rem;
+    letter-spacing: 3px;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    font-size: 1.2rem;
+    padding: 0.6rem 1rem;
+    letter-spacing: 3px;
+  `}
 `;

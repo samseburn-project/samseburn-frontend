@@ -93,7 +93,6 @@ const MyChallengeCard = ({
 						justifyContent: "space-between",
 					}}
 					onClick={(e) => {
-						// if (e.target !== e.currentTarget) return;
 						navigate(`/detail/${id}`);
 					}}
 				>

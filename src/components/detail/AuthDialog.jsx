@@ -277,7 +277,8 @@ const AuthThumbnail = styled.div`
 
 	${customMedia.between("lgMobile", "tablet")`
     width: 25rem;
-	  height: 20rem;
+    height: 20rem;
+    margin: 1rem 2.5rem;
   `}
 
 	img {
@@ -298,6 +299,10 @@ const DeleteButton = styled.span`
 	padding: 0.7rem;
 	opacity: 0.6;
 	transition: opacity 0.3s;
+
+  &:hover {
+		opacity: 1;
+	}
 
 	${customMedia.lessThan("mobile")`
     padding: 0.4rem;
@@ -326,10 +331,6 @@ const DeleteButton = styled.span`
       width: 1.4rem;
       height: 1.4rem;
     `}
-	}
-
-	&:hover {
-		opacity: 1;
 	}
 `;
 
@@ -481,7 +482,11 @@ const EnrollButton = styled(StyledButton)`
 const CancelButton = styled(StyledButton)`
 	padding: 0.8rem 1.8rem;
 	font-size: 1.6rem;
-	background-color: #c4c4c4;
+  background-color: #c4c4c4;
+  
+  &:hover {
+		background-color: #c4c4c4;
+	}
 
 	${customMedia.lessThan("mobile")`
     font-size: 1.2rem;
@@ -500,8 +505,4 @@ const CancelButton = styled(StyledButton)`
     padding: 0.6rem 1rem;
     letter-spacing: 3px;
   `}
-
-	&:hover {
-		background-color: #c4c4c4;
-	}
 `;
