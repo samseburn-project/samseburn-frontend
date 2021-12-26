@@ -164,7 +164,7 @@ function RegisterForm(props) {
         !participants ||
         !category ||
         !locationType ||
-        (locationType === '오프라인' && !address) ||
+        (locationType === '오프라인' && address.trim() === '') ||
         !description
       ) {
         enqueueSnackbar('필수 항목을 입력해주세요', {
