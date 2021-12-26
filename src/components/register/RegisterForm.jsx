@@ -147,7 +147,7 @@ function RegisterForm(props) {
   const onSubmitFormData = async () => {
     try {
       const address =
-        locationType === '온라인' ? '' : roadAddress + detailAddress;
+        locationType === '온라인' ? '' : `${roadAddress} ${detailAddress}`;
 
       if (participants < 1 || participants > 33) {
         enqueueSnackbar('챌린지 인원은 최소 1명, 최대 33명까지 가능합니다.', {
@@ -164,7 +164,7 @@ function RegisterForm(props) {
         !participants ||
         !category ||
         !locationType ||
-        (locationType === '오프라인' && !address) ||
+        (locationType === '오프라인' && address.trim() === '') ||
         !description
       ) {
         enqueueSnackbar('필수 항목을 입력해주세요', {
@@ -186,6 +186,10 @@ function RegisterForm(props) {
       formData.append('locationType', locationType);
       formData.append('address', address);
       formData.append('challengeProgress', 'INPROGRESS');
+
+      // for (let data of formData.entries()) {
+      //   console.log(data[0] + ', ' + data[1]);
+      // }
 
       const res = await axios.post(
         'https://api.samseburn.site/challenge',

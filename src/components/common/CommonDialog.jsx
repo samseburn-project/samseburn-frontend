@@ -94,6 +94,7 @@ const CommonDialog = ({ ...props }) => {
 					<StyledDialogContent>
 						<CloseButton>
 							<Close
+								className="auth-modal-close"
 								alt="Close icon"
 								onClick={(e) => {
 									e.stopPropagation();
@@ -116,6 +117,7 @@ const CommonDialog = ({ ...props }) => {
 					<StyledDialogContent>
 						<CloseButton>
 							<Close
+								className="auth-modal-close"
 								alt="Close icon"
 								onClick={(e) => {
 									e.stopPropagation();
@@ -141,6 +143,7 @@ const CommonDialog = ({ ...props }) => {
 					<StyledDialogContent>
 						<CloseButton>
 							<Close
+								className="auth-modal-close"
 								alt="Close icon"
 								onClick={(e) => {
 									e.stopPropagation();
@@ -256,8 +259,12 @@ const StyledDialogContent = styled(DialogContent)`
 	padding: 6rem 9rem;
 	position: relative;
 
+	${customMedia.lessThan("mobile")`
+    padding: 5rem 6rem;
+  `}
+
 	${customMedia.between("mobile", "lgMobile")`
-     padding: 5rem 6rem;
+    padding: 5rem 6rem;
   `}
 
 	${customMedia.between("lgMobile", "tablet")`
@@ -270,12 +277,28 @@ const CloseButton = styled.span`
 	top: 1rem;
 	right: 1rem;
 	cursor: pointer;
+
+	.auth-modal-close {
+		${customMedia.lessThan("mobile")`
+      width: 1.2rem;
+      height: 1.2rem;
+    `}
+
+		${customMedia.between("mobile", "lgMobile")`
+      width: 1.4rem;
+      height: 1.4rem;
+    `}
+	}
 `;
 
 const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 3rem;
+
+	${customMedia.lessThan("mobile")`
+    gap: 3rem;
+  `}
 
 	${customMedia.between("mobile", "lgMobile")`
     gap: 3rem;
@@ -296,12 +319,16 @@ const MainText = styled.div`
 	letter-spacing: 1px;
 	margin-bottom: 1rem;
 
+	${customMedia.lessThan("mobile")`
+    font-size: 1.4rem;
+  `}
+
 	${customMedia.between("mobile", "lgMobile")`
     font-size: 1.4rem;
   `}
 
 	${customMedia.between("lgMobile", "tablet")`
-   	font-size: 1.6rem;
+    font-size: 1.6rem;
   `}
 `;
 
@@ -309,6 +336,13 @@ const SubText = styled.div`
 	font-size: 1.6rem;
 	letter-spacing: 1px;
 	padding: 0.5rem;
+
+	${customMedia.lessThan("mobile")`
+    width: 20rem;
+    font-size: 1.2rem;
+    white-space: pre-line;
+    line-height: 1.6rem;
+  `}
 
 	${customMedia.between("mobile", "lgMobile")`
     width: 20rem;
@@ -332,6 +366,11 @@ const ConfirmButton = styled(StyledButton)`
 	padding: 0.8rem 1.8rem;
 	font-size: 1.6rem;
 
+	${customMedia.lessThan("mobile")`
+    padding: 0.8rem 1.8rem;
+    font-size: 1.2rem;
+  `}
+
 	${customMedia.between("mobile", "lgMobile")`
     padding: 0.8rem 1.8rem;
     font-size: 1.2rem;
@@ -347,8 +386,13 @@ const ContinueButton = styled(StyledButton)`
 	padding: 0.8rem 1.8rem;
 	font-size: 1.6rem;
 
+	${customMedia.lessThan("mobile")`
+    padding: 0.8rem 1.8rem;
+    font-size: 1.2rem;
+  `}
+
 	${customMedia.between("mobile", "lgMobile")`
-     padding: 0.8rem 1.8rem;
+    padding: 0.8rem 1.8rem;
     font-size: 1.2rem;
   `}
 
@@ -363,13 +407,18 @@ const CancelButton = styled(StyledButton)`
 	font-size: 1.6rem;
 	background-color: #c4c4c4;
 
+	${customMedia.lessThan("mobile")`
+    padding: 0.8rem 1.8rem;
+    font-size: 1.2rem;
+  `}
+
 	${customMedia.between("mobile", "lgMobile")`
     padding: 0.8rem 1.8rem;
     font-size: 1.2rem;
   `}
 
 	${customMedia.between("lgMobile", "tablet")`
-     padding: 0.8rem 1.8rem;
+    padding: 0.8rem 1.8rem;
     font-size: 1.2rem;
   `}
 
@@ -383,13 +432,18 @@ const StopButton = styled(StyledButton)`
 	font-size: 1.6rem;
 	background-color: #c4c4c4;
 
+	${customMedia.lessThan("mobile")`
+    padding: 0.8rem 1.8rem;
+    font-size: 1.2rem;
+  `}
+
 	${customMedia.between("mobile", "lgMobile")`
     padding: 0.8rem 1.8rem;
     font-size: 1.2rem;
   `}
 
 	${customMedia.between("lgMobile", "tablet")`
-     padding: 0.8rem 1.8rem;
+    padding: 0.8rem 1.8rem;
     font-size: 1.2rem;
   `}
 
@@ -402,13 +456,18 @@ const DeleteButton = styled(StyledButton)`
 	padding: 0.8rem 1.8rem;
 	font-size: 1.6rem;
 
+	${customMedia.lessThan("mobile")`
+    padding: 0.8rem 1.8rem;
+    font-size: 1.2rem;
+  `}
+
 	${customMedia.between("mobile", "lgMobile")`
     padding: 0.8rem 1.8rem;
     font-size: 1.2rem;
   `}
 
 	${customMedia.between("lgMobile", "tablet")`
-     padding: 0.8rem 1.8rem;
+    padding: 0.8rem 1.8rem;
     font-size: 1.2rem;
   `}
 `;
