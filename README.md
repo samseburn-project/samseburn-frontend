@@ -7,11 +7,11 @@
 ## 목차
 
 - [웹서비스 설명](#웹서비스-설명)
-- [사이트](#사이트)
-- [기획 & 설계 문서](#기획--설계-문서)
 - [개발 기간](#개발-기간)
 - [개발 인원](#개발-인원)
 - [기술 스택](#기술-스택)
+- [사이트](#사이트)
+- [기획 & 설계 문서](#기획--설계-문서)
 
 <br/>
 
@@ -102,22 +102,6 @@
 
 <br/>
 
-## 사이트
-
-- 🔗실서버 링크: [https://www.samseburn.site/](https://www.samseburn.site/)
-
-<br/>
-
-## 기획 & 설계 문서
-
-- [기능 명세서](https://www.notion.so/c34a196e2a274d58aae874346116be9b)
-- [API 명세서](https://www.notion.so/API-ec69cc5d028f4605a1dfb6a2dd77f5dc)
-- [페이지 기획서](https://www.notion.so/833672fce0bd4ca891f52f712bbc9fdb)
-- [트렐로 대시보드](https://trello.com/b/xciXGqYG/%EC%82%BC%EC%84%B8%EB%B2%88-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8)
-- [FE 개발 일지](https://www.notion.so/FE-1ddf7f862baf4bb6bdaedcc7d003f8c2)
-
-<br/>
-
 ## 개발 기간
 
 2021.11.24 ~ 2021.12.26
@@ -141,4 +125,19 @@
 - Material UI
 - Figma
 
+<br/>
+
+## 사이트
+
+- 🔗실서버 링크: [https://www.samseburn.site/](https://www.samseburn.site/)
+
+<br/>
+
+## 기획 & 설계 문서
+
+- [기능 명세서](https://www.notion.so/c34a196e2a274d58aae874346116be9b)
+- [API 명세서](https://www.notion.so/API-ec69cc5d028f4605a1dfb6a2dd77f5dc)
+- [페이지 기획서](https://www.notion.so/833672fce0bd4ca891f52f712bbc9fdb)
+- [트렐로 대시보드](https://trello.com/b/xciXGqYG/%EC%82%BC%EC%84%B8%EB%B2%88-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8)
+- [FE 개발 일지](https://www.notion.so/FE-1ddf7f862baf4bb6bdaedcc7d003f8c2)
 
