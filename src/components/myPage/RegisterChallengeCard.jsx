@@ -84,9 +84,6 @@ const RegisterChallengeCard = ({ ...props }) => {
                 </CardCategory>
               </Row>
               <Row>
-                <CardIcon>
-                  <Calendar alt="Calendar icon" />
-                </CardIcon>
                 <CardDate>
                   {props.challenge?.challengeStartDate} ~{' '}
                   {props.challenge?.challengeEndDate}
@@ -166,11 +163,11 @@ const Row = styled.div`
   flex-wrap: wrap;
 
   ${customMedia.lessThan('mobile')`
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.8rem;
   `}
 
   ${customMedia.between('mobile', 'lgMobile')`
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.8rem;
   `}
 `;
 
@@ -186,10 +183,12 @@ const StyledCard = styled(Card)`
 
   ${customMedia.lessThan('mobile')`
     padding: 0 2rem;
+    height: 22rem;
   `}
 
   ${customMedia.between('mobile', 'lgMobile')`
     padding: 0 2rem;
+    height: 22rem;
   `}
 
   ${customMedia.between('lgMobile', 'tablet')`
@@ -242,11 +241,11 @@ const CardTitle = styled.div`
   font-weight: bold;
 
   ${customMedia.lessThan('mobile')`
-    font-size: 1.4rem;
+    font-size: 1.6rem;
   `}
 
   ${customMedia.between('mobile', 'lgMobile')`
-    font-size: 1.4rem;
+    font-size: 1.6rem;
   `}
 
   ${customMedia.between('lgMobile', 'tablet')`
@@ -264,17 +263,17 @@ const CardCategory = styled(Category)`
   border: none;
 
   ${customMedia.lessThan('mobile')`
-    font-size: 1rem;
-    padding: 0.3rem;
+    font-size: 1.2rem;
+    padding: 0.2rem;
   `}
 
   ${customMedia.between('mobile', 'lgMobile')`
-    font-size: 1rem;
+    font-size: 1.2rem;
     padding: 0.3rem;
   `}
 
   ${customMedia.between('lgMobile', 'tablet')`
-    font-size: 1rem;
+    font-size: 1.2rem;
   `}
   
 	${customMedia.between('tablet', 'desktop')`
@@ -319,35 +318,6 @@ const CardCategory = styled(Category)`
       `;
     }
   }}
-`;
-
-const CardIcon = styled.div`
-  width: 1.6rem;
-  height: 1.6rem;
-  img {
-    width: 100%;
-    height: 100%;
-  }
-
-  ${customMedia.lessThan('mobile')`
-    width: 1.3rem;
-    height: 1.3rem;
-  `}
-
-  ${customMedia.between('mobile', 'lgMobile')`
-    width: 1.3rem;
-    height: 1.3rem;
-  `}
-
-  ${customMedia.between('lgMobile', 'tablet')`
-    width: 1.4rem;
-    height: 1.4rem;
-  `}
-  
-	${customMedia.between('tablet', 'desktop')`
-    width: 1.5rem;
-    height: 1.5rem;
-  `}
 `;
 
 const CardDate = styled.div`

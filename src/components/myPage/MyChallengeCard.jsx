@@ -115,9 +115,6 @@ const MyChallengeCard = ({
                 <CardCategory category={category}>{category}</CardCategory>
               </Row>
               <Row>
-                <CardIcon>
-                  <Calender alt="Calendar icon" />
-                </CardIcon>
                 <CardDate>
                   {challengeStartDate} ~ {challengeEndDate}
                 </CardDate>
@@ -226,10 +223,12 @@ const StyledCard = styled(Card)`
 
   ${customMedia.lessThan('mobile')`
     padding: 0 2rem;
+    height: 22rem;
   `}
 
   ${customMedia.between('mobile', 'lgMobile')`
     padding: 0 2rem;
+    height: 22rem;
   `}
 
   ${customMedia.between('lgMobile', 'tablet')`
@@ -279,11 +278,11 @@ const CardTitle = styled.div`
   font-weight: bold;
 
   ${customMedia.lessThan('mobile')`
-    font-size: 1.4rem;
+    font-size: 1.6rem;
   `}
 
   ${customMedia.between('mobile', 'lgMobile')`
-    font-size: 1.4rem;
+    font-size: 1.6rem;
   `}
 
   ${customMedia.between('lgMobile', 'tablet')`
@@ -303,17 +302,17 @@ const CardCategory = styled(Category)`
   border: none;
 
   ${customMedia.lessThan('mobile')`
-    font-size: 1rem;
-    padding: 0.3rem;
+    font-size: 1.2rem;
+    padding: 0.6rem;
   `}
 
   ${customMedia.between('mobile', 'lgMobile')`
-    font-size: 1rem;
-    padding: 0.3rem;
+    font-size: 1.2rem;
+    padding: 0.6rem;
   `}
 
   ${customMedia.between('lgMobile', 'tablet')`
-    font-size: 1rem;
+    font-size: 1.2rem;
   `}
   
 	${customMedia.between('tablet', 'desktop')`
@@ -360,36 +359,6 @@ const CardCategory = styled(Category)`
   }}
 `;
 
-const CardIcon = styled.div`
-  width: 1.6rem;
-  height: 1.6rem;
-  img {
-    width: 100%;
-    height: 100%;
-  }
-
-  ${customMedia.lessThan('mobile')`
-    width: 1.3rem;
-    height: 1.3rem;
-  `}
-
-  ${customMedia.between('mobile', 'lgMobile')`
-    width: 1.3rem;
-    height: 1.3rem;
-  `}
-
-  ${customMedia.between('lgMobile', 'tablet')`
-    width: 1.4rem;
-    height: 1.4rem;
-    
-  `}
-  
-	${customMedia.between('tablet', 'desktop')`
-    width: 1.5rem;
-    height: 1.5rem;
-  `}
-`;
-
 const CardDate = styled.div`
   font-size: 1.6rem;
   letter-spacing: 0.2px;
@@ -426,15 +395,15 @@ const ProgressTitle = styled.div`
   margin-bottom: 0.5rem;
 
   ${customMedia.lessThan('mobile')`
-    font-size: 1.4rem;
+    font-size: 1.5rem;
   `}
 
   ${customMedia.between('mobile', 'lgMobile')`
-    font-size: 1.4rem;
+    font-size: 1.5rem;
   `}
 
   ${customMedia.between('lgMobile', 'tablet')`
-    font-size: 1.4rem;
+    font-size: 1.5rem;
   `}
 `;
 
