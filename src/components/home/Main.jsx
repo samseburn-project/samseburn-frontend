@@ -25,6 +25,10 @@ const Main = () => {
   const [totalCount, setTotalCount] = useState();
   const [searchChallenges, setSearchChallenges] = useState([]);
   const [isSearch, setIsSearch] = useState(false);
+  const [searchPage, setSearchPage] = useState(1);
+  const [searchHasMore, setSearchHasMore] = useState(false);
+  const [searchTotalCount, setSearchTotalCount] = useState();
+  const [searchKeyword, setSearchKeyword] = useState('');
 
   const theme = createTheme({
     breakpoints: {
@@ -79,43 +83,95 @@ const Main = () => {
     setChallenges([]);
   };
 
-  const onSearchSubmit = async (searchKeyword) => {
+  const fetchSearchChallenges = async (searchKeyword) => {
     try {
+      console.log(searchPage, searchKeyword);
       const res = await axios.get(
         'https://api.samseburn.site/challenges/search',
         {
           params: {
             search: searchKeyword,
-            page: 1,
+            page: searchPage,
           },
         }
       );
 
       if (res.status === 200) {
         console.log(res.data);
+        const { challengeList, totalCount } = res.data;
         setIsSearch(true);
-        setSearchChallenges(res.data.challengeList);
+        setSearchChallenges([...searchChallenges, ...challengeList]);
+        setSearchTotalCount(totalCount);
       }
+      setSearchHasMore(true);
     } catch (err) {
       console.error(err);
     }
+  };
+
+  const onSearchSubmit = async (keyword) => {
+    setSearchKeyword(keyword);
+    setSearchPage(1);
+    setSearchChallenges([]);
+    fetchSearchChallenges(keyword);
+    // try {
+    //   const res = await axios.get(
+    //     'https://api.samseburn.site/challenges/search',
+    //     {
+    //       params: {
+    //         search: searchKeyword,
+    //         page: 1,
+    //       },
+    //     }
+    //   );
+
+    //   if (res.status === 200) {
+    //     console.log(res.data);
+    //     setIsSearch(true);
+    //     setSearchChallenges(res.data.challengeList);
+    //   }
+    // } catch (err) {
+    //   console.error(err);
+    // }
   };
 
   const onSearchBar = (bool) => {
     setIsSearch(bool);
   };
 
+  const fetchMoreSearchData = () => {
+    setSearchPage((prevPage) => prevPage + 1);
+  };
+
+  const refreshSearch = () => {
+    setSearchPage(1);
+    setSearchChallenges([]);
+  };
+
   useEffect(() => {
     let controller = new AbortController();
-    if (totalCount === challenges.length || challenges === []) {
-      setHasMore(false);
-      return;
+
+    if (isSearch) {
+      if (
+        searchTotalCount === searchChallenges.length ||
+        searchChallenges === []
+      ) {
+        setSearchHasMore(false);
+        return;
+      }
+      fetchSearchChallenges(searchKeyword);
+    } else {
+      if (totalCount === challenges.length || challenges === []) {
+        setHasMore(false);
+        return;
+      }
+      fetchChallenges();
     }
-    fetchChallenges();
-    setLoading(false);
+
+    setLoading(false); // !!
 
     return () => controller.abort();
-  }, [page, sortBy, categoryName]);
+  }, [page, sortBy, categoryName, searchPage]);
 
   return (
     <>
@@ -137,27 +193,32 @@ const Main = () => {
             </SearchBarRow>
             {isSearch &&
               (searchChallenges.length ? (
-                <SearchListContainer sx={{ width: '100%' }}>
-                  <ThemeProvider theme={theme}>
-                    <Grid container spacing={4}>
-                      {searchChallenges.map((challenge) => (
-                        <Grid
-                          item
-                          xs={12}
-                          sm={12}
-                          lg={6}
-                          xl={4}
-                          key={challenge.challengeId}
-                        >
-                          <ChallengeCard
-                            key={challenge.challengeId}
-                            challenge={challenge}
-                          />
-                        </Grid>
-                      ))}
-                    </Grid>
-                  </ThemeProvider>
-                </SearchListContainer>
+                <InfiniteScroll
+                  dataLength={searchChallenges.length}
+                  next={fetchMoreSearchData}
+                  hasMore={searchHasMore}
+                  loader={
+                    <Loading>
+                      <CircularProgress />
+                    </Loading>
+                  }
+                  refreshFunction={refreshSearch}
+                >
+                  <SearchListContainer sx={{ width: '100%' }}>
+                    <ThemeProvider theme={theme}>
+                      <Grid container spacing={4}>
+                        {searchChallenges.map((challenge, i) => (
+                          <Grid item xs={12} sm={12} lg={6} xl={4} key={i}>
+                            <ChallengeCard
+                              key={challenge.challengeId}
+                              challenge={challenge}
+                            />
+                          </Grid>
+                        ))}
+                      </Grid>
+                    </ThemeProvider>
+                  </SearchListContainer>
+                </InfiniteScroll>
               ) : (
                 <EmptyContainer>검색 결과가 없습니다.</EmptyContainer>
               ))}
