@@ -15,6 +15,7 @@ const AuthDialog = ({ ...props }) => {
 	const [previewImg, setPreviewImg] = useState(null);
 	const [contents, setContents] = useState("");
 	const challengeId = props?.challengeId;
+	const certifies = props?.certifies;
 	const userToken = localStorage.getItem("token");
 	const imgRef = useRef();
 
@@ -23,6 +24,10 @@ const AuthDialog = ({ ...props }) => {
 	const authDate = `${date} ${time}`;
 
 	const { enqueueSnackbar } = useSnackbar();
+
+	const handleAuthDateCheck = certifies.filter(
+		(certify) => certify.createdDate.slice(0, 10) === authDate.slice(0, 10)
+	);
 
 	const handleImgChange = (e) => {
 		let file = e.target.files[0];
@@ -65,6 +70,14 @@ const AuthDialog = ({ ...props }) => {
 
 		if (!contents) {
 			enqueueSnackbar("인증 후기를 입력해주세요!", {
+				variant: "warning",
+				autoHideDuration: 2000,
+			});
+			return;
+		}
+
+		if (handleAuthDateCheck !== []) {
+			enqueueSnackbar("인증은 하루에 한 번만 할 수 있어요!", {
 				variant: "warning",
 				autoHideDuration: 2000,
 			});
