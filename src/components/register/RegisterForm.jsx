@@ -188,10 +188,6 @@ function RegisterForm(props) {
       formData.append('address', address);
       formData.append('challengeProgress', 'INPROGRESS');
 
-      // for (let data of formData.entries()) {
-      //   console.log(data[0] + ', ' + data[1]);
-      // }
-
       const res = await axios.post(
         'https://api.samseburn.site/challenge',
         formData,
@@ -240,14 +236,10 @@ function RegisterForm(props) {
       alignItems: 'center',
       background: 'white',
       overflow: 'auto',
-      top: '35%',
-      left: 'auto',
-      right: 'auto',
-      bottom: '35%',
-      // top: '22vh',
-      // left: '18vw',
-      // right: '18vw',
-      // bottom: '30vh',
+      top: '22vh',
+      left: '14vw',
+      right: '14vw',
+      bottom: '30vh',
       WebkitOverflowScrolling: 'touch',
       borderRadius: '14px',
       outline: 'none',
