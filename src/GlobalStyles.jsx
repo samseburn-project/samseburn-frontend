@@ -7,6 +7,7 @@ export const customMedia = generateMedia({
 	tablet: "767px",
 	lgMobile: "479px",
 	mobile: "375px",
+
 });
 
 const GlobalStyles = createGlobalStyle`
