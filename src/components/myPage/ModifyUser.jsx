@@ -212,19 +212,19 @@ const ImageThumbnail = styled.img`
   object-fit: cover;
   margin-bottom: 2rem;
 
+  ${customMedia.lessThan('mobile')`
+    width: 20.2rem;
+    height: 20.2rem;
+  `}
+
   ${customMedia.between('mobile', 'lgMobile')`
     width: 20.2rem;
-  height: 20.2rem;
+    height: 20.2rem;
   `}
 
   ${customMedia.between('lgMobile', 'tablet')`
-width: 22.2rem;
-  height: 22.2rem;
-    
-  `}
-  
-	${customMedia.between('tablet', 'desktop')`
-
+    width: 22.2rem;
+    height: 22.2rem;
   `}
 `;
 
@@ -235,19 +235,19 @@ const DefaultThumbnail = styled.div`
   background-color: lightgray;
   margin-bottom: 2rem;
 
+  ${customMedia.lessThan('mobile')`
+    width: 20.2rem;
+    height: 20.2rem;
+  `}
+
   ${customMedia.between('mobile', 'lgMobile')`
     width: 20.2rem;
-  height: 20.2rem;
+    height: 20.2rem;
   `}
 
   ${customMedia.between('lgMobile', 'tablet')`
-width: 22.2rem;
-  height: 22.2rem;
-    
-  `}
-  
-	${customMedia.between('tablet', 'desktop')`
-
+    width: 22.2rem;
+    height: 22.2rem;
   `}
 `;
 
@@ -275,6 +275,10 @@ const DeleteButtonContainer = styled.div`
 const ImageUploadButton = styled(StyledButton)`
   font-size: 1.6rem;
 
+  ${customMedia.lessThan('mobile')`
+    font-size: 1.4rem;
+  `}
+
   ${customMedia.between('mobile', 'lgMobile')`
     font-size: 1.4rem;
   `}
@@ -288,6 +292,10 @@ const LabelText = styled.div`
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 2rem;
+
+  ${customMedia.lessThan('mobile')`
+    font-size: 1.8rem;
+  `}
 
   ${customMedia.between('mobile', 'lgMobile')`
     font-size: 1.8rem;
@@ -307,6 +315,11 @@ const SubmitButton = styled(StyledButton)`
 
   width: 33rem;
   height: 5rem;
+
+  ${customMedia.lessThan('mobile')`
+    width: 25rem;
+    font-size: 1.6rem;
+  `}
 
   ${customMedia.between('mobile', 'lgMobile')`
     font-size: 1.6rem;
@@ -328,6 +341,10 @@ const NameInput = styled(TextField)`
     font-size: 1.6rem;
     padding: 1.2rem;
   }
+
+  ${customMedia.lessThan('mobile')`
+    width: 25rem;
+  `}
 `;
 
 const SpinnerContainer = styled.div`

@@ -36,6 +36,10 @@ const Wrapper = styled.section`
   margin: 4rem auto 10rem auto;
   flex: 1;
 
+  ${customMedia.lessThan('mobile')`
+    width: 31.5rem;
+  `}
+
   ${customMedia.between('mobile', 'lgMobile')`
     width: 31.5rem;
   `}

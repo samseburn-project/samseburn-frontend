@@ -506,14 +506,16 @@ const Title = styled.div`
 
   margin-bottom: 5rem;
 
+  ${customMedia.lessThan('mobile')`
+    font-size: 1.8rem;
+  `}
+
   ${customMedia.between('mobile', 'lgMobile')`
     font-size: 1.8rem;
-    
   `}
 
   ${customMedia.between('lgMobile', 'tablet')`
     font-size: 2rem;
-    
   `}
   
 	${customMedia.between('tablet', 'desktop')`
@@ -539,14 +541,16 @@ const CustomContainer = styled.div`
   display: flex;
   justify-content: space-between;
 
+  ${customMedia.lessThan('mobile')`
+    flex-direction: column-reverse;
+  `}
+
   ${customMedia.between('mobile', 'lgMobile')`
     flex-direction: column-reverse;
-    
   `}
 
   ${customMedia.between('lgMobile', 'tablet')`
     flex-direction: column-reverse;
-    
   `}
 `;
 
@@ -555,14 +559,16 @@ const LabelText = styled.div`
   font-weight: bold;
   margin: 2rem 0;
 
+  ${customMedia.lessThan('mobile')`
+    font-size: 1.8rem;
+  `}
+
   ${customMedia.between('mobile', 'lgMobile')`
     font-size: 1.8rem;
-    
   `}
 
   ${customMedia.between('lgMobile', 'tablet')`
     font-size: 1.8rem;
-    
   `}
 `;
 
@@ -590,14 +596,16 @@ const BasicInput = styled.input`
 const DateInput = styled(BasicInput)`
   width: 16.5rem;
 
+  ${customMedia.lessThan('mobile')`
+    width: 13rem;
+  `}
+
   ${customMedia.between('mobile', 'lgMobile')`
     width: 13rem;
-    
   `}
 
   ${customMedia.between('lgMobile', 'tablet')`
     width: 18.2rem;
-    
   `}
 `;
 
@@ -621,9 +629,12 @@ const AddressInput = styled(TextField)`
     padding: 1.2rem;
   }
 
+  ${customMedia.lessThan('mobile')`
+    width: 24.6rem;
+  `}
+
   ${customMedia.between('mobile', 'lgMobile')`
     width: 24.6rem;
-    
   `}
 `;
 
@@ -654,16 +665,19 @@ const ImageThumbnail = styled.img`
   object-fit: cover;
   margin-bottom: 2rem;
 
+  ${customMedia.lessThan('mobile')`
+    width:20.2rem;
+    height:20.2rem;
+  `}
+
   ${customMedia.between('mobile', 'lgMobile')`
     width:20.2rem;
     height:20.2rem;
-    
   `}
 
   ${customMedia.between('lgMobile', 'tablet')`
     width:22.2rem;
     height:22.2rem;
-    
   `}
 `;
 
@@ -674,16 +688,19 @@ const DefaultThumbnail = styled.div`
   background-color: lightgray;
   margin-bottom: 2rem;
 
+  ${customMedia.lessThan('mobile')`
+    width: 20.2rem;
+    height: 20.2rem;
+  `}
+
   ${customMedia.between('mobile', 'lgMobile')`
     width: 20.2rem;
-  height: 20.2rem;
-    
+    height: 20.2rem;
   `}
 
   ${customMedia.between('lgMobile', 'tablet')`
-    
     width: 22.2rem;
-  height: 22.2rem;
+    height: 22.2rem;
   `}
 `;
 
@@ -710,6 +727,11 @@ const AddressButton = styled(StyledButton)`
     opacity: 0.6;
   }
 
+  ${customMedia.lessThan('mobile')`
+    font-size: 1.3rem;
+    padding: 0;  
+  `}
+
   ${customMedia.between('mobile', 'lgMobile')`
     font-size: 1.3rem;
     padding: 0;    
@@ -717,7 +739,6 @@ const AddressButton = styled(StyledButton)`
 
   ${customMedia.between('lgMobile', 'tablet')`
     font-size: 1.5rem;
-    
   `}
 `;
 
@@ -730,14 +751,16 @@ const CancelButton = styled(StyledButton)`
     background-color: #e5e5e5;
   }
 
+  ${customMedia.lessThan('mobile')`
+    font-size: 1.8rem;
+  `}
+
   ${customMedia.between('mobile', 'lgMobile')`
     font-size: 1.8rem;
-    
   `}
 
   ${customMedia.between('lgMobile', 'tablet')`
     font-size: 1.8rem;
-    
   `}
 `;
 
@@ -747,6 +770,10 @@ const UploadButton = styled(StyledButton)`
   padding: 0.7rem 1rem;
 
   margin-bottom: 2rem;
+
+  ${customMedia.lessThan('mobile')`
+    font-size: 1.4rem;
+  `}
 
   ${customMedia.between('mobile', 'lgMobile')`
     font-size: 1.4rem;
@@ -761,14 +788,16 @@ const EnrollButton = styled(StyledButton)`
   font-size: 2rem;
   font-weight: bold;
 
+  ${customMedia.lessThan('mobile')`
+    font-size: 1.8rem;
+  `}
+
   ${customMedia.between('mobile', 'lgMobile')`
     font-size: 1.8rem;
-    
   `}
 
   ${customMedia.between('lgMobile', 'tablet')`
     font-size: 1.8rem;
-    
   `}
 `;
 
@@ -917,6 +946,10 @@ const CategoryButton = styled(Category)`
       `;
     }
   }}
+
+  ${customMedia.lessThan('mobile')`
+    padding: 0.8rem 1rem;
+  `}
 
   ${customMedia.between('mobile', 'lgMobile')`
     padding: 0.8rem 1rem;
