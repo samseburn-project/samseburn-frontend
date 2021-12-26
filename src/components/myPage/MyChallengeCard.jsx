@@ -162,7 +162,13 @@ const MyChallengeCard = ({
 											onClick={(e) => {
 												e.stopPropagation();
 												if (retryCount === 3)
-													alert("챌린지 재도전은 3번까지만 가능합니다!");
+													enqueueSnackbar(
+														"챌린지 재도전은 3번까지만 가능합니다!",
+														{
+															variant: "warning",
+															autoHideDuration: 2000,
+														}
+													);
 												onRetryHandler();
 											}}
 										>

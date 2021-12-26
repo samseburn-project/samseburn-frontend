@@ -56,12 +56,19 @@ const AuthDialog = ({ ...props }) => {
 		const formData = new FormData();
 
 		if (!imgFile) {
-			alert("인증 이미지를 등록해주세요!");
+			enqueueSnackbar("인증 이미지를 등록해주세요!", {
+				variant: "warning",
+				autoHideDuration: 2000,
+			});
 			return;
 		}
 
 		if (!contents) {
-			alert("인증 후기를 입력해주세요!");
+			enqueueSnackbar("인증 후기를 입력해주세요!", {
+				variant: "warning",
+				autoHideDuration: 2000,
+			});
+			return;
 		}
 
 		formData.append("image", imgFile);
