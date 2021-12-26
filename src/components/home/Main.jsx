@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import InfiniteScroll from "react-infinite-scroll-component";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
 import { customMedia } from "../../GlobalStyles";
 import { Box, Grid, CircularProgress } from "@mui/material";
@@ -81,23 +81,25 @@ const Main = () => {
 
 	const onSearchSubmit = async (searchKeyword) => {
 		try {
-			const res = await axios.get(
-				"https://api.samseburn.site/challenges/search",
-				{
-					params: {
-						search: searchKeyword,
-					},
-				}
-			);
 
-			if (res.status === 200) {
-				console.log(res.data);
-				setIsSearch(true);
-				setSearchChallenges(res.data);
-			}
-		} catch (err) {
-			console.error(err);
-		}
+      const res = await axios.get(
+        'https://api.samseburn.site/challenges/search',
+        {
+          params: {
+            search: searchKeyword,
+            page: 1,
+          },
+        }
+      );
+
+      if (res.status === 200) {
+        console.log(res.data);
+        setIsSearch(true);
+        setSearchChallenges(res.data.challengeList);
+      }
+    } catch (err) {
+      console.error(err);
+    }
 	};
 
 	const onSearchBar = (bool) => {
@@ -200,6 +202,7 @@ const Main = () => {
 			)}
 		</>
 	);
+
 };
 
 export default Main;
@@ -254,12 +257,13 @@ const Title = styled.div`
 const SearchListContainer = styled(Box)`
 	margin-top: 6rem;
 	margin-bottom: 18rem;
+
 `;
 
 const SearchBarRow = styled.div`
-	margin-top: 3.7rem;
-	display: flex;
-	justify-content: center;
+  margin-top: 3.7rem;
+  display: flex;
+  justify-content: center;
 `;
 
 const FilterRow = styled.div`
@@ -269,27 +273,30 @@ const FilterRow = styled.div`
 `;
 
 const ListContainer = styled(Box)`
+
 	margin-top: 6rem;
 	margin-bottom: 10rem;
+
 `;
 
 const Loading = styled.div`
-	margin: 2rem 0;
-	display: flex;
-	justify-content: center;
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
 `;
 
+
 const EmptyContainer = styled.div`
-	width: 100%;
-	text-align: center;
-	font-size: 2rem;
-	margin: 8rem 0;
+  width: 100%;
+  text-align: center;
+  font-size: 2rem;
+  margin: 8rem 0;
 `;
 
 const SpinnerContainer = styled.div`
-	width: 100%;
-	height: 80vh;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+  width: 100%;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
