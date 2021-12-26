@@ -14,6 +14,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateRangePicker from '@mui/lab/DateRangePicker';
 import MobileDateRangePicker from '@mui/lab/MobileDateRangePicker';
+import DesktopDateRangePicker from '@mui/lab/DesktopDateRangePicker';
 import { ReactComponent as ArrowForward } from '../../assets/icons/arrow.svg';
 import { ReactComponent as Delete } from '../../assets/icons/delete.svg';
 import { ReactComponent as Close } from '../../assets/icons/close.svg';
@@ -46,9 +47,7 @@ function RegisterForm(props) {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  // const matchesMobile = useMediaQuery('(min-width:375px)');
-  const matchesLgMobile = useMediaQuery('(min-width:480px)');
-  // const matchesTablet = useMediaQuery('(min-width:768px)');
+  const matchesTablet = useMediaQuery('(min-width:768px)');
 
   const onChange = (event) => {
     event.preventDefault();
@@ -188,10 +187,6 @@ function RegisterForm(props) {
       formData.append('address', address);
       formData.append('challengeProgress', 'INPROGRESS');
 
-      // for (let data of formData.entries()) {
-      //   console.log(data[0] + ', ' + data[1]);
-      // }
-
       const res = await axios.post(
         'https://api.samseburn.site/challenge',
         formData,
@@ -240,14 +235,10 @@ function RegisterForm(props) {
       alignItems: 'center',
       background: 'white',
       overflow: 'auto',
-      top: '35%',
-      left: 'auto',
-      right: 'auto',
-      bottom: '35%',
-      // top: '22vh',
-      // left: '18vw',
-      // right: '18vw',
-      // bottom: '30vh',
+      top: '22vh',
+      left: '14vw',
+      right: '14vw',
+      bottom: '30vh',
       WebkitOverflowScrolling: 'touch',
       borderRadius: '14px',
       outline: 'none',
@@ -286,8 +277,8 @@ function RegisterForm(props) {
               dateAdapter={AdapterDateFns}
               locale={koLocale}
             >
-              {matchesLgMobile ? (
-                <DateRangePicker
+              {matchesTablet ? (
+                <DesktopDateRangePicker
                   disablePast
                   inputFormat={'yyyy-MM-dd'}
                   mask={'____-__-__'}
