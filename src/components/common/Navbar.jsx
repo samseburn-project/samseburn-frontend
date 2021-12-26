@@ -5,6 +5,7 @@ import axios from "axios";
 import { Menu, MenuItem, Dialog, DialogContent } from "@mui/material";
 
 import styled, { css } from "styled-components";
+import { customMedia } from "../../GlobalStyles";
 
 import { ReactComponent as Logo } from "../../assets/logo.svg";
 import { ReactComponent as Profile } from "../../assets/icons/profile.svg";
@@ -84,10 +85,10 @@ const Navbar = ({ ...props }) => {
 				<Nav isSticky={props?.isSticky}>
 					<NavContainer>
 						<NavLink to="/">
-							<Logo alt="Logo" />
+							<Logo className="nav-logo" alt="Logo" />
 						</NavLink>
 						<NavProfile type="button" onClick={handleModalOpen}>
-							<Profile alt="Profile icon" />
+							<Profile className="nav-profile" alt="Profile icon" />
 						</NavProfile>
 						<StyledDialog open={modalOpen} onClose={handleModalClose}>
 							<StyledDialogContent>
@@ -95,7 +96,7 @@ const Navbar = ({ ...props }) => {
 								건강한 습관을 만들어보세요!
 								<KakaoLoginButton onClick={kakaoLoginHandler}>
 									<LoginIcon>
-										<KakaoIcon alt="Kakao icon" />
+										<KakaoIcon className="nav-kakao" alt="Kakao icon" />
 									</LoginIcon>
 									<LoginText>카카오 로그인</LoginText>
 								</KakaoLoginButton>
@@ -107,7 +108,7 @@ const Navbar = ({ ...props }) => {
 				<Nav isSticky={props?.isSticky}>
 					<NavContainer>
 						<NavLink to="/">
-							<Logo alt="Logo" />
+							<Logo className="nav-logo" alt="Logo" />
 						</NavLink>
 						<NavIcon>
 							<NavProfile
@@ -116,7 +117,7 @@ const Navbar = ({ ...props }) => {
 								aria-expanded={open ? "true" : undefined}
 								onMouseOver={handleMouseOver}
 							>
-								<Profile alt="Profile icon" />
+								<Profile className="nav-profile" alt="Profile icon" />
 							</NavProfile>
 							<StyledMenu
 								anchorEl={anchorEl}
@@ -130,7 +131,7 @@ const Navbar = ({ ...props }) => {
 							</StyledMenu>
 							<NavLink to="/register">
 								<NavRegister>
-									<Register alt="Register icon" />
+									<Register className="nav-register" alt="Register icon" />
 								</NavRegister>
 							</NavLink>
 						</NavIcon>
@@ -156,10 +157,41 @@ const Nav = styled.nav`
 			z-index: 1000;
 			box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.2);
 		`}
+
+	${customMedia.lessThan("mobile")`
+    height: 6rem;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    height: 6rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    height: 8rem;
+  `}
+
+
 `;
 
 const NavLink = styled(Link)`
 	text-decoration: none;
+
+	.nav-logo {
+		${customMedia.lessThan("mobile")`
+      width: 4.7rem;
+      height: 3.2rem;
+    `}
+
+		${customMedia.between("mobile", "lgMobile")`
+      width: 4.7rem;
+      height: 3.2rem;
+    `}
+
+		${customMedia.between("lgMobile", "tablet")`
+      width: 5.7rem;
+      height: 3.2rem;
+    `}
+	}
 `;
 
 const NavContainer = styled.div`
@@ -168,7 +200,27 @@ const NavContainer = styled.div`
 	padding: 2.8rem 0;
 
 	display: flex;
-	justify-content: space-between;
+  justify-content: space-between;
+  
+  ${customMedia.lessThan("mobile")`
+    width: 31.5rem;
+    padding: 1.4rem 0;
+  `}
+  
+  ${customMedia.between("mobile", "lgMobile")`
+    width: 31.5rem;
+    padding: 1.4rem 0;
+  `}
+  
+	${customMedia.between("lgMobile", "tablet")`
+    width: 42rem;
+    padding: 2.4rem 0;
+
+  `}
+  
+	${customMedia.between("tablet", "desktop")`
+    width: 66.8rem;
+  `}
 `;
 
 const NavIcon = styled.div`
@@ -179,10 +231,25 @@ const NavIcon = styled.div`
 
 const NavProfile = styled.div`
 	width: 3rem;
-	height: 3rem;
+	height: 3.2rem;
 	cursor: pointer;
 
-	img {
+	${customMedia.lessThan("mobile")`
+    width: 1.6rem;
+    height: 3.2rem;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    width: 1.6rem;
+    height: 3.2rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    width: 2rem;
+    height: 3.2rem;
+  `}
+
+	svg {
 		width: 100%;
 		height: 100%;
 	}
@@ -193,13 +260,31 @@ const NavRegister = styled.div`
 	height: 2.4rem;
 	cursor: pointer;
 
-	img {
+	${customMedia.lessThan("mobile")`
+    width: 1.6rem;
+    height: 1.6rem;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    width: 1.6rem;
+    height: 1.6rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    width: 2rem;
+    height: 2rem;
+  `}
+  
+	svg {
 		width: 100%;
 		height: 100%;
 	}
 `;
 
 const StyledMenu = styled(Menu)`
+	left: -2.5rem;
+	top: 0.2rem;
+
 	& .MuiMenu-list {
 		background-color: #ffa883;
 	}
@@ -212,6 +297,18 @@ const StyledMenu = styled(Menu)`
 	& .MuiMenuItem-root {
 		font-size: 1.4rem;
 		color: #ffffff;
+
+		${customMedia.lessThan("mobile")`
+      font-size: 1rem;
+    `}
+
+		${customMedia.between("mobile", "lgMobile")`
+      font-size: 1rem;
+    `}
+
+		${customMedia.between("lgMobile", "tablet")`
+    	font-size: 1.2rem;
+    `}
 	}
 `;
 
@@ -229,6 +326,24 @@ const StyledDialogContent = styled(DialogContent)`
 	display: flex;
 	flex-direction: column;
 	gap: 4rem;
+
+	${customMedia.lessThan("mobile")`
+    padding: 2.5rem 4.5rem;
+    font-size: 1.6rem;
+    gap: 2rem;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    padding: 2.5rem 4.5rem;
+    font-size: 1.6rem;
+    gap: 2rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    padding: 4rem 6rem;
+    font-size: 2rem;
+    gap: 2rem;
+  `}
 `;
 
 const KakaoLoginButton = styled.button`
@@ -243,8 +358,28 @@ const KakaoLoginButton = styled.button`
 	border-radius: 0.5rem;
 	outline: none;
 	cursor: pointer;
+
 	display: flex;
 	align-items: center;
+
+	${customMedia.lessThan("mobile")`
+    width: 23.7rem;
+    padding: 1rem;
+    font-size: 1.4rem;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    width: 23.7rem;
+    padding: 1rem;
+    font-size: 1.4rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    width: 26.6rem;
+	  padding: 1rem;
+	  font-size: 1.4rem;
+  `}
+
 	&:hover {
 		opacity: 0.7;
 	}
@@ -252,6 +387,23 @@ const KakaoLoginButton = styled.button`
 
 const LoginIcon = styled.span`
 	flex: 0.1;
+
+	.nav-kakao {
+		${customMedia.lessThan("mobile")`
+      width: 2rem;
+      height: 2rem;
+    `}
+
+		${customMedia.between("mobile", "lgMobile")`
+      width: 2rem;
+      height: 2rem;
+    `}
+
+		${customMedia.between("lgMobile", "tablet")`
+      width: 2.4rem;
+      height: 2.4rem;
+    `}
+	}
 `;
 
 const LoginText = styled.span`

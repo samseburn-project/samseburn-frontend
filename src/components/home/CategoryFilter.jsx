@@ -1,5 +1,8 @@
 import React, { useState } from "react";
+
 import styled, { css } from "styled-components";
+
+import { customMedia } from "../../GlobalStyles";
 import Category from "../common/Category";
 
 const CategoryFilter = ({ ...props }) => {
@@ -32,11 +35,41 @@ export default CategoryFilter;
 const CategoryContainer = styled.div`
 	display: flex;
 	gap: 1rem;
+
+	${customMedia.lessThan("mobile")`
+    flex-wrap: wrap;
+  `}
+
+	${customMedia.between("mobile", "lgMobile")`
+    flex-wrap: wrap;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  `}
 `;
 
 const MainCategory = styled(Category)`
 	font-size: 1.6rem;
-	padding: 0.6rem 1.4rem;
+  padding: 0.6rem 1.4rem;
+  
+  ${customMedia.lessThan("mobile")`
+    font-size: 1.2rem;
+  `}
+
+  ${customMedia.between("mobile", "lgMobile")`
+    font-size: 1.4rem;
+  `}
+  
+	${customMedia.between("lgMobile", "tablet")`
+    font-size: 1.4rem;
+  `}
+  
+	${customMedia.between("tablet", "desktop")`
+   font-size: 1.6rem;
+  padding: 0.6rem 1.4rem;
+  `}
 
 	${(props) => {
 		switch (props.category) {
