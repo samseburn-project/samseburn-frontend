@@ -172,6 +172,10 @@ const Wrapper = styled.section`
   width: 104rem;
   margin: 0 auto;
   flex: 1;
+  ${customMedia.lessThan('mobile')`
+    width: 31.5rem;
+  `}
+
   ${customMedia.between('mobile', 'lgMobile')`
     width: 31.5rem;
   `}
