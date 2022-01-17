@@ -286,7 +286,9 @@ const StyledMenu = styled(Menu)`
 	top: 0.2rem;
 
 	& .MuiMenu-list {
-		background-color: #ffa883;
+    background-color: #ffa883;
+    padding-top: 4px;
+    padding-bottom: 4px;
 	}
 
 	& .MuiPopover-paper {
@@ -295,8 +297,9 @@ const StyledMenu = styled(Menu)`
 	}
 
 	& .MuiMenuItem-root {
-		font-size: 1.4rem;
-		color: #ffffff;
+    font-size: 1.4rem;
+    color: #ffffff;
+    min-height: 3.2rem;
 
 		${customMedia.lessThan("mobile")`
       font-size: 1rem;
