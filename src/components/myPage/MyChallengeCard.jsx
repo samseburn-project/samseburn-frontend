@@ -200,17 +200,18 @@ export default MyChallengeCard;
 
 const CardContainer = styled.div`
   margin: 2rem;
+
   ${customMedia.between("mobile", "lgMobile")`
     margin: 1rem 0;
-    `}
+  `}
 
-  ${customMedia.between("lgMobile", "tablet")`
+  // ${customMedia.between("lgMobile", "tablet")`
       
-    `}
+  // `}
     
-    ${customMedia.between("tablet", "desktop")`
-      margin: 1rem;
-    `}
+  ${customMedia.between("tablet", "desktop")`
+    margin: 1rem;
+  `}
 `;
 
 const StyledCard = styled(Card)`
@@ -222,6 +223,7 @@ const StyledCard = styled(Card)`
   box-shadow: 0.6rem 1.1rem 2rem rgba(0, 0, 0, 0.25);
   border-radius: 0.5rem;
   word-break: break-all;
+
   ${customMedia.between("mobile", "lgMobile")`
     padding: 0 2rem;
   `}
@@ -234,12 +236,7 @@ const StyledCard = styled(Card)`
     flex-direction: column;
     height: 32rem;
     padding: 0;
-
   `}
-
-  ${customMedia.greaterThan("desktop")`
-    
-  `};
 `;
 
 const StyledCardMedia = styled(CardMedia)`
@@ -249,24 +246,26 @@ const StyledCardMedia = styled(CardMedia)`
   object-fit: cover;
 
   ${customMedia.between("mobile", "lgMobile")`
-     width: 13rem;
+    width: 13rem;
   `}
 
   ${customMedia.between("lgMobile", "tablet")`
     width: 13rem;
-    
   `}
   
 	${customMedia.between("tablet", "desktop")`
-    
     width: 100%;
-  height: 12rem;
-  border-radius: 0rem;
+    height: 12rem;
+    border-radius: 0rem;
   `}
 `;
 
 const StyledCardContent = styled(CardContent)`
 	height: 15rem;
+
+	${customMedia.between("mobile", "lgMobile")`
+    padding: 2rem 1rem;
+  `}
 `;
 
 const StyledBox = styled(Box)``;
@@ -280,8 +279,7 @@ const CardTitle = styled.div`
   `}
 
   ${customMedia.between("lgMobile", "tablet")`
-    font-size: 1.6rem;
-    
+    font-size: 1.4rem;
   `}
   
 	${customMedia.between("tablet", "desktop")`
@@ -289,7 +287,22 @@ const CardTitle = styled.div`
   `}
 `;
 
-const CardMedal = styled.div``;
+const CardMedal = styled.div`
+	svg {
+		width: 100%;
+		height: 100%;
+	}
+
+	${customMedia.between("mobile", "lgMobile")`
+    width: 1.2rem;
+    height: 1.2rem;
+  `}
+
+	${customMedia.between("lgMobile", "tablet")`
+    width: 1.2rem;
+    height: 1.2rem;
+  `}
+`;
 
 const CardCategory = styled(Category)`
   font-size: 1.2rem;
@@ -298,12 +311,11 @@ const CardCategory = styled(Category)`
 
   ${customMedia.between("mobile", "lgMobile")`
     font-size: 1rem;
-    padding: 0.3rem;
+    padding: 0.4rem 0.7rem;
   `}
 
   ${customMedia.between("lgMobile", "tablet")`
     font-size: 1rem;
-    
   `}
   
 	${customMedia.between("tablet", "desktop")`
@@ -351,27 +363,20 @@ const CardCategory = styled(Category)`
 `;
 
 const CardIcon = styled.div`
-  width: 1.6rem;
-  height: 1.6rem;
-  img {
-    width: 100%;
-    height: 100%;
-  }
+	width: 1.6rem;
+	height: 1.6rem;
 
-  ${customMedia.between("mobile", "lgMobile")`
-    width: 1.3rem;
-  height: 1.3rem;
+	img {
+		width: 100%;
+		height: 100%;
+	}
+
+	${customMedia.between("mobile", "lgMobile")`
+    display: none;
   `}
 
-  ${customMedia.between("lgMobile", "tablet")`
-    width: 1.4rem;
-  height: 1.4rem;
-    
-  `}
-  
-	${customMedia.between("tablet", "desktop")`
-    width: 1.5rem;
-  height: 1.5rem;
+	${customMedia.between("lgMobile", "tablet")`
+    display: none;
   `}
 `;
 
@@ -382,6 +387,7 @@ const CardDate = styled.div`
   ${customMedia.between("mobile", "lgMobile")`
     font-size: 1.3rem;
     letter-spacing: 0;
+    white-space: pre;
   `}
 
   ${customMedia.between("lgMobile", "tablet")`
@@ -400,22 +406,17 @@ const Progress = styled.div`
 `;
 
 const ProgressTitle = styled.div`
-  font-size: 1.6rem;
-  font-weight: bold;
-  color: #eb3901;
-  margin-bottom: 0.5rem;
+	font-size: 1.6rem;
+	font-weight: bold;
+	color: #eb3901;
+	margin-bottom: 0.5rem;
 
-  ${customMedia.between("mobile", "lgMobile")`
-    font-size: 1.4rem;
+	${customMedia.between("mobile", "lgMobile")`
+    font-size: 1.2rem;
   `}
 
-  ${customMedia.between("lgMobile", "tablet")`
-    font-size: 1.4rem;
-    
-  `}
-  
-	${customMedia.between("tablet", "desktop")`
-    
+	${customMedia.between("lgMobile", "tablet")`
+    font-size: 1.2rem;
   `}
 `;
 
@@ -436,12 +437,19 @@ const CertiCount = styled.div`
   align-items: center;
 
   ${customMedia.between("mobile", "lgMobile")`
- font-size: 1.4rem;
+    font-size: 1.2rem;
+
+    svg{
+      padding-left: 0.3rem;
+    }
   `}
 
   ${customMedia.between("lgMobile", "tablet")`
-  font-size: 1.6rem;
-    
+    font-size: 1.4rem;
+
+    svg{
+      padding-left: 0.5rem;
+    }
   `}
   
 	${customMedia.between("tablet", "desktop")`
@@ -453,17 +461,17 @@ const CertiCountNumber = styled.span`
   font-size: 3.4rem;
   font-weight: bold;
   color: #eb3901;
+
   ${customMedia.between("mobile", "lgMobile")`
- font-size: 2.8rem;
+    font-size: 2rem;
   `}
 
   ${customMedia.between("lgMobile", "tablet")`
-  font-size: 3rem;
-    
+    font-size: 2.4rem;
   `}
   
 	${customMedia.between("tablet", "desktop")`
-    font-size: 3.2rem;
+    font-size: 3rem;
   `}
 `;
 
@@ -474,53 +482,58 @@ const Row = styled.div`
   flex-wrap: wrap;
 
   ${customMedia.between("mobile", "lgMobile")`
-
-margin-bottom: 1rem;
+    margin-bottom: 1rem;
   `}
 
   ${customMedia.between("lgMobile", "tablet")`
-   
-  margin-bottom: 1rem;
+    margin-bottom: 1rem;
   `}
   
 	${customMedia.between("tablet", "desktop")`
-    
     margin-bottom: 1.2rem;
   `}
+
+  &:last-child {
+    ${customMedia.between("mobile", "lgMobile")`
+      justify-content: center;
+      padding-top: 2rem;
+    `}
+
+    ${customMedia.between("lgmobile", "tablet")`
+      padding-top: 2rem;
+    `}
+  }
 `;
 
 const RetryButton = styled.span`
-  width: 100%;
-  height: 3.2rem;
-  padding: 0.2rem;
-  font-size: 1.6rem;
-  font-weight: bold;
-  color: #ffffff;
-  background-color: #eb3901;
-  border-radius: 0.5rem;
-  transition: opacity 0.3s;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	width: 100%;
+	height: 3.2rem;
+	padding: 0.2rem;
+	font-size: 1.6rem;
+	font-weight: bold;
+	color: #ffffff;
+	background-color: #eb3901;
+	border-radius: 0.5rem;
+	transition: opacity 0.3s;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
-  &:hover {
-    background-color: #eb3901;
-    opacity: 0.6;
-  }
+	&:hover {
+		background-color: #eb3901;
+		opacity: 0.6;
+	}
 
-  ${customMedia.between("mobile", "lgMobile")`
- font-size: 1.4rem;
- height: 3rem;
+	${customMedia.between("mobile", "lgMobile")`
+    font-size: 1.2rem;
+    letter-spacing: 1.5px;
+    height: 3rem;
   `}
 
-  ${customMedia.between("lgMobile", "tablet")`
-  font-size: 1.4rem;
-  height: 3rem;
-    
-  `}
-  
-	${customMedia.between("tablet", "desktop")`
-    
+	${customMedia.between("lgMobile", "tablet")`
+    font-size: 1.2rem;
+    letter-spacing: 1.5px;
+    height: 3rem;
   `}
 `;
