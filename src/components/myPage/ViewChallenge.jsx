@@ -194,6 +194,10 @@ const Title = styled.div`
   font-size: 2.4rem;
   font-weight: bold;
   margin: 5rem 0 2rem 0;
+  
+  ${customMedia.lessThan("mobile")`
+    font-size: 1.4rem;
+  `}
 
   ${customMedia.between("mobile", "lgMobile")`
     font-size: 1.4rem;
@@ -227,6 +231,13 @@ const CountCard = styled.div`
 	box-shadow: 0.6rem 1.1rem 2rem rgba(0, 0, 0, 0.25);
 	margin-bottom: 6rem;
 	border-radius: 0.5rem;
+  
+  ${customMedia.lessThan("mobile")`
+    justify-content: flex-start;
+    flex: 0.3;
+    height: 7rem;
+    margin-bottom: 0;
+  `}
 
 	${customMedia.between("mobile", "lgMobile")`
     justify-content: flex-start;
@@ -247,6 +258,12 @@ const CountNumber = styled.div`
   font-size: 3.4rem;
   font-weight: bold;
   color: #eb3901;
+  
+  ${customMedia.lessThan("mobile")`
+    font-size: 2rem;
+    padding-left: 1.5rem;
+    padding-right: 1rem;
+  `}
   
   ${customMedia.between("mobile", "lgMobile")`
     font-size: 2rem;
@@ -270,7 +287,12 @@ const CountText = styled.div`
 	font-weight: bold;
 	color: #959595;
 
-	${customMedia.between("mobile", "lgMobile")`
+	${customMedia.lessThan("mobile")`
+    font-size: 1.2rem;
+    word-spacing: 2rem;
+  `}
+  
+  ${customMedia.between("mobile", "lgMobile")`
     font-size: 1.2rem;
     word-spacing: 2rem;
   `}
