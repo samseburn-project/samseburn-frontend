@@ -12,7 +12,6 @@ import { ReactComponent as Close } from "../../assets/icons/close.svg";
 import { ReactComponent as Delete } from "../../assets/icons/delete.svg";
 
 const AuthDialog = ({ ...props }) => {
-	console.log("props", props);
 	const [imgFile, setImgFile] = useState(null);
 	const [previewImg, setPreviewImg] = useState(null);
 	const [contents, setContents] = useState("");
@@ -77,8 +76,6 @@ const AuthDialog = ({ ...props }) => {
 			});
 			return;
 		}
-
-		console.log(checkAuthDate);
 
 		if (checkAuthDate.length !== 0) {
 			enqueueSnackbar("인증은 하루에 한 번만 할 수 있어요!", {

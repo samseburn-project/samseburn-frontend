@@ -57,7 +57,6 @@ const FeedCarousel = ({ ...props }) => {
 							src={list[0]?.imgUrl}
 							alt="Feed Thumbnail"
 							onClick={(e) => {
-								console.log(e.target);
 								handleOpenDialog(e.target.id);
 								handleOpenToggle();
 							}}
