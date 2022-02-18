@@ -128,7 +128,6 @@ const Main = () => {
 
 	useEffect(() => {
 		const controller = new AbortController();
-		const signal = controller.signal;
 
 		const fetchChallenges = async () => {
 			try {
@@ -141,7 +140,7 @@ const Main = () => {
 							sortBy: sortBy,
 						},
 					},
-					{ signal }
+					{ signal: controller.signal }
 				);
 
 				const { challengeList, totalCount } = res.data;
