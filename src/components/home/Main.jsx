@@ -43,26 +43,6 @@ const Main = () => {
 		},
 	});
 
-	const fetchChallenges = async () => {
-		try {
-			const res = await axios.get("https://api.samseburn.site/challenges", {
-				params: {
-					kind: categoryName,
-					page: page,
-					sortBy: sortBy,
-				},
-			});
-
-			const { challengeList, totalCount } = res.data;
-
-			setChallengeList(challengeList);
-			setChallenges([...challenges, ...challengeList]);
-			setTotalCount(totalCount);
-		} catch (e) {
-			console.error(e);
-		}
-	};
-
 	const fetchMoreData = () => {
 		setPage((prevPage) => prevPage + 1);
 	};
@@ -147,6 +127,33 @@ const Main = () => {
 	};
 
 	useEffect(() => {
+		const controller = new AbortController();
+		const signal = controller.signal;
+
+		const fetchChallenges = async () => {
+			try {
+				const res = await axios.get(
+					"https://api.samseburn.site/challenges",
+					{
+						params: {
+							kind: categoryName,
+							page: page,
+							sortBy: sortBy,
+						},
+					},
+					{ signal }
+				);
+
+				const { challengeList, totalCount } = res.data;
+
+				setChallengeList(challengeList);
+				setChallenges([...challenges, ...challengeList]);
+				setTotalCount(totalCount);
+			} catch (e) {
+				console.error(e);
+			}
+		};
+
 		if (isSearch) {
 			if (
 				searchTotalCount <= searchChallenges.length ||
@@ -163,6 +170,10 @@ const Main = () => {
 		}
 
 		setLoading(false);
+
+		return () => {
+			controller.abort();
+		};
 	}, [page, categoryName, sortBy, isSearch, searchKeyword, hasMore]);
 
 	return (
@@ -240,25 +251,14 @@ const Main = () => {
 									<ListContainer sx={{ width: "100%" }}>
 										<ThemeProvider theme={theme}>
 											<Grid container spacing={4}>
-												{challenges.map((challenge, i) => {
-													return i === challenges.length - 1 && !loading ? (
-														<>
-															<Grid item xs={12} sm={12} lg={6} xl={4} key={i}>
-																<ChallengeCard
-																	key={challenge.challengeId}
-																	challenge={challenge}
-																/>
-															</Grid>
-														</>
-													) : (
-														<Grid item xs={12} sm={12} lg={6} xl={4} key={i}>
-															<ChallengeCard
-																key={challenge.challengeId}
-																challenge={challenge}
-															/>
-														</Grid>
-													);
-												})}
+												{challenges.map((challenge, i) => (
+													<Grid item xs={12} sm={12} lg={6} xl={4} key={i}>
+														<ChallengeCard
+															key={challenge.challengeId}
+															challenge={challenge}
+														/>
+													</Grid>
+												))}
 											</Grid>
 										</ThemeProvider>
 									</ListContainer>
