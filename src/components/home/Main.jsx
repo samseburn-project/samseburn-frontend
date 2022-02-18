@@ -85,7 +85,6 @@ const Main = () => {
 
 	const fetchSearchChallenges = async (searchKeyword) => {
 		try {
-			console.log(searchPage, searchKeyword);
 			const res = await axios.get(
 				"https://api.samseburn.site/challenges/search",
 				{
@@ -165,8 +164,6 @@ const Main = () => {
 
 		setLoading(false);
 	}, [page, categoryName, sortBy, isSearch, searchKeyword, hasMore]);
-
-	console.log(challengeList, totalCount, hasMore, page);
 
 	return (
 		<>

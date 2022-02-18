@@ -26,7 +26,7 @@ const AuthDialog = ({ ...props }) => {
 
 	const { enqueueSnackbar } = useSnackbar();
 
-	const handleAuthDateCheck = certifies.filter(
+	const checkAuthDate = certifies.filter(
 		(certify) => certify.createdDate.slice(0, 10) === authDate.slice(0, 10)
 	);
 
@@ -77,7 +77,7 @@ const AuthDialog = ({ ...props }) => {
 			return;
 		}
 
-		if (handleAuthDateCheck !== []) {
+		if (checkAuthDate.length !== 0) {
 			enqueueSnackbar("인증은 하루에 한 번만 할 수 있어요!", {
 				variant: "warning",
 				autoHideDuration: 2000,
@@ -87,8 +87,6 @@ const AuthDialog = ({ ...props }) => {
 
 		formData.append("image", imgFile);
 		formData.append("contents", contents);
-
-		console.log(formData);
 
 		try {
 			const { status } = await axios.post(
