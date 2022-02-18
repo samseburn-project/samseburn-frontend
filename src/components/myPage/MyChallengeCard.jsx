@@ -115,6 +115,9 @@ const MyChallengeCard = ({
 								<CardCategory category={category}>{category}</CardCategory>
 							</Row>
 							<Row>
+								<CardIcon>
+									<Calender />
+								</CardIcon>
 								<CardDate>
 									{challengeStartDate} ~ {challengeEndDate}
 								</CardDate>
@@ -385,45 +388,7 @@ const CardIcon = styled.div`
 	${customMedia.between("lgMobile", "tablet")`
     display: none;
   `}
-  
-  ${(props) => {
-		if (props.locationType === "온라인") {
-			return css`
-				background-color: #ff7539;
-				color: #ffffff;
-			`;
-		} else if (props.locationType === "오프라인") {
-			return css`
-				background-color: #0057ff;
-				color: #ffffff;
-			`;
-		} else if (props.category === "운동") {
-			return css`
-				background-color: #04c50c;
-				color: #ffffff;
-			`;
-		} else if (props.category === "공부") {
-			return css`
-				background-color: #9900cf;
-				color: #ffffff;
-			`;
-		} else if (props.category === "취미") {
-			return css`
-				background-color: #e2cd0f;
-				color: #ffffff;
-			`;
-		} else if (props.category === "독서") {
-			return css`
-				background-color: #e71aad;
-				color: #ffffff;
-			`;
-		} else if (props.category === "기타") {
-			return css`
-				background-color: #6ae4c7;
-				color: #ffffff;
-			`;
-		}
-	}}`;
+`;
 
 const CardDate = styled.div`
   font-size: 1.6rem;
@@ -438,6 +403,7 @@ const CardDate = styled.div`
   ${customMedia.between("mobile", "lgMobile")`
     font-size: 1.3rem;
     letter-spacing: 0;
+    white-space: pre;
   `}
 
   ${customMedia.between("lgMobile", "tablet")`
